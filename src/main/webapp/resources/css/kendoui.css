@@ -1,0 +1,69 @@
+
+/*kendoui更改后的样式*/
+.k-tabstrip{
+    background-color: #4c1b1b;
+}
+.k-header{
+    background-image: none;
+    border: none;
+    height: 40px;
+    font-size: 15px;
+}
+.k-tabstrip-items{
+    padding-left: 0;
+    padding-right: 0;
+}
+.k-tabstrip>.k-content{
+    width: auto;
+    height: auto;
+    /*position: fixed;*/
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+/*.k-tabstrip-items .k-link{*/
+/*padding-right: 0;*/
+/*}*/
+.close-tab-btn{
+    color: #510a0a;
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    width: 19px;
+    height: 19px;
+    position: absolute;
+}
+
+.k-tabstrip-top .k-tabstrip-items .k-state-active{
+    background: #fff;
+}
+.k-tabstrip-top .k-tabstrip-items .k-state-active span{
+    color: #2e2e2e;
+}
+.k-tabstrip-top .k-tabstrip-items .k-state-active span button{
+    color: #4c1b1b;
+}
+.k-tabstrip-items .k-item{
+    background-image: none;
+    /*background-color: #4c1b1b;*/
+    /* Webkit: Safari 4-5, Chrome 1-9 */
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#953636), to(#4c1b1b));
+    /* Webkit: Safari 5.1+, Chrome 10+ */
+    background: -webkit-linear-gradient(top, #953636, #4c1b1b);
+    /* Firefox 3.6+ */
+    background: -moz-linear-gradient(top, #953636, #4c1b1b);
+    /* Opera 11.10+ */
+    background: -o-linear-gradient(top, #953636, #4c1b1b);
+    /* IE 10 */
+    background: -ms-linear-gradient(top, #953636, #4c1b1b);
+    /* IE < 10 */
+    FILTER: progid:DXImageTransform.Microsoft.Gradient(startColorStr=#953636, endColorStr=#f5f7f8);
+}
+.k-tabstrip-items .k-item span button{
+    color: #f5f7f8;
+}
+
+.k-tabstrip-items .k-state-default .k-link{
+    color: #f5f7f8;
+}

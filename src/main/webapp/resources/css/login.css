@@ -1,0 +1,65 @@
+/*
+有几个CSS的属性要提一下：background-size：cover，
+这个CSS3的属性作用是把背景图像扩展至足够大，以使背景图像完全覆盖背景区域，
+背景图像的某些部分也许无法显示在背景定位区域中，如果不使用这个属性，
+在IE11和FireFox中缩放浏览器，背景图片会随之缩小，
+同时使用
+-webkit-background-size: cover
+和-o-background-size: cover兼容webkit内核浏览器和Opera浏览器；
+background-attachment属性设置背景图像是否固定或者随着页面的其余部分滚动，
+当设置为fixed时页面的其余部分滚动时，背景图像不会移动。
+*/
+
+.back-ground{
+    position:absolute;
+    top:0;
+    left:0;
+    height:100%;
+    width:100%;
+    background-image: url("../images/background.png");
+    background-position: center 0;
+    background-repeat: no-repeat;
+    background-attachment:fixed;
+    background-size: cover;
+    -webkit-background-size: cover;/* 兼容Webkit内核浏览器如Chrome和Safari */
+    -o-background-size: cover;/* 兼容Opera */
+    zoom: 1;
+}
+.login-div{
+    width: 29%;
+    height: 380px;
+    margin-top: 8%;
+    padding: 20px;
+    /* Webkit: Safari 4-5, Chrome 1-9 */
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(100%,100%,100%,0.6)), to(#f5f7f8));
+    /* Webkit: Safari 5.1+, Chrome 10+ */
+    background: -webkit-linear-gradient(top, rgba(100%,100%,100%,0.6), #f5f7f8);
+    /* Firefox 3.6+ */
+    background: -moz-linear-gradient(top, rgba(100%,100%,100%,0.6), #f5f7f8);
+    /* Opera 11.10+ */
+    background: -o-linear-gradient(top, rgba(100%,100%,100%,0.6), #f5f7f8);
+    /* IE 10 */
+    background: -ms-linear-gradient(top, rgba(100%,100%,100%,0.6), #f5f7f8);
+    /* IE < 10 */
+    FILTER: progid:DXImageTransform.Microsoft.Gradient(startColorStr=rgba(100%,100%,100%,0.6), endColorStr=#f5f7f8);
+}
+.logo{
+    width: 80px;
+    height: 60px;
+    top: -5px;
+    background: url("../images/logo.png") no-repeat;
+
+}
+.login-btn{
+    margin-top: 25px;
+}
+.verify-code-img{
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.verify-code-btn{
+    float: right;
+}
+.verify-code-div{
+    width: 48%;
+}

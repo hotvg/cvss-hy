@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cvss.mapper.PartsMapper" >
+    <!--Cvparts-->
+    <resultMap id="CvPartsResultMap" type="com.cvss.pojo.CvParts" >
+        <id column="parts_id" property="partsId" jdbcType="INTEGER" />
+        <result column="parts_name" property="partsName" jdbcType="VARCHAR" />
+        <result column="type_id" property="typeId" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+    </resultMap>
+    <!--CvPartsAdd-->
+    <resultMap id="CvPartsAddResultMap" type="com.cvss.pojo.CvPartsAdd" >
+        <id column="add_id" property="addId" jdbcType="INTEGER" />
+        <result column="add_name" property="addName" jdbcType="VARCHAR" />
+        <result column="type_id" property="typeId" jdbcType="INTEGER" />
+        <result column="unit" property="unit" jdbcType="VARCHAR" />
+        <result column="tax_price" property="taxPrice" jdbcType="DECIMAL" />
+        <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+    </resultMap>
+    <!--CvPartsReplace-->
+    <resultMap id="CvPartsReplaceResultMap" type="com.cvss.pojo.CvPartsReplace" >
+        <id column="replace_id" property="replaceId" jdbcType="INTEGER" />
+        <result column="replace_before" property="replaceBefore" jdbcType="INTEGER" />
+        <result column="replace_after" property="replaceAfter" jdbcType="INTEGER" />
+        <result column="unit" property="unit" jdbcType="VARCHAR" />
+        <result column="tax_price" property="taxPrice" jdbcType="DECIMAL" />
+        <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+        <result column="type_id" property="typeId" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+    </resultMap>
+    <!--CvPartsType-->
+    <resultMap id="CvPartsTypeResultMap" type="com.cvss.pojo.CvPartsType" >
+        <id column="type_id" property="typeId" jdbcType="INTEGER" />
+        <result column="type_name" property="typeName" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+    </resultMap>
+    
+    <!--insert-->
+    <insert id="insertParts" parameterType="com.cvss.pojo.CvParts">
+        INSERT INTO
+        cv_parts (parts_name,type_id,create_time,status)
+        VALUES (#{partsName},#{typeId},#{createTime},#{status});
+    </insert>
+    <insert id="insertPartsAdd" parameterType="com.cvss.pojo.CvPartsAdd">
+        INSERT INTO
+        cv_parts_add (add_name,type_id,unit,tax_price,remarks,create_time,status)
+        VALUES (#{addName},#{typeId},#{unit},#{taxPrice},#{remarks},#{createTime},#{status});
+    </insert>
+    <insert id="insertPartsReplace" parameterType="com.cvss.pojo.CvPartsReplace">
+        INSERT INTO
+        cv_parts_replace (replace_before,replace_after,unit,tax_price,remarks,type_id,create_time,status)
+        VALUES (#{replaceBefore},#{replaceAfter},#{unit},#{taxPrice},#{remarks},#{typeId},#{createTime},#{status});
+    </insert>
+    <insert id="insertPartsType" parameterType="com.cvss.pojo.CvPartsType">
+        INSERT INTO
+        cv_parts_type (type_name,create_time,status)
+        VALUES (#{typeName},#{createTime},#{status});
+    </insert>
+    
+    <!--delete-->
+    <delete id="deleteParts" parameterType="Integer">
+        DELETE FROM cv_parts WHERE parts_id = #{id};
+    </delete>
+    <delete id="deletePartsAdd" parameterType="Integer">
+        DELETE FROM cv_parts_add WHERE add_id = #{id};
+    </delete>
+    <delete id="deletePartsReplace" parameterType="Integer">
+        DELETE FROM cv_parts_replace WHERE replace_id = #{id};
+    </delete>
+    <delete id="deletePartsType" parameterType="Integer">
+        DELETE FROM cv_parts_type WHERE type_id = #{id};
+    </delete>
+
+    <!--update-->
+    <update id="updateParts" parameterType="com.cvss.pojo.CvParts">
+        UPDATE cv_parts
+        <trim prefix="set" prefixOverrides=",">
+            <if test="partsName != null">
+                ,parts_name = #{partsName}
+            </if>
+            <if test="typeId != null">
+                ,type_id = #{typeId}
+            </if>
+            <if test="createTime != null">
+                ,create_time = #{createTime}
+            </if>
+            <if test="status != null">
+                ,status = #{status}
+            </if>
+        </trim>
+        WHERE parts_id = #{partsId}
+    </update>
+    <update id="updatePartsAdd" parameterType="com.cvss.pojo.CvPartsAdd">
+        UPDATE cv_parts_add
+        <trim prefix="set" prefixOverrides=",">
+            <if test="addName != null">
+                ,add_name = #{addName}
+            </if>
+            <if test="typeId != null">
+                ,type_id = #{typeId}
+            </if>
+            <if test="unit != null">
+                ,unit = #{unit}
+            </if>
+            <if test="taxPrice">
+                ,tax_price = #{taxPrice}
+            </if>
+            <if test="remarks">
+                ,remarks = #{remarks}
+            </if>
+            <if test="createTime != null">
+                ,create_time = #{createTime}
+            </if>
+            <if test="status != null">
+                ,status = #{status}
+            </if>
+        </trim>
+        WHERE add_id = #{addId}
+    </update>
+    <update id="updatePartsReplace" parameterType="com.cvss.pojo.CvPartsReplace">
+        UPDATE cv_parts_replace
+        <trim prefix="set" prefixOverrides=",">
+            <if test="replaceBefore != null">
+                ,replace_before = #{replaceBefore}
+            </if>
+            <if test="replaceAfter != null">
+                ,replace_after = #{replaceAfter}
+            </if>
+            <if test="unit != null">
+                ,unit = #{unit}
+            </if>
+            <if test="taxPrice">
+                ,tax_price = #{taxPrice}
+            </if>
+            <if test="remarks">
+                ,remarks = #{remarks}
+            </if>
+            <if test="typeId != null">
+                ,type_id = #{typeId}
+            </if>
+            <if test="createTime != null">
+                ,create_time = #{createTime}
+            </if>
+            <if test="status != null">
+                ,status = #{status}
+            </if>
+        </trim>
+        WHERE replace_id = #{replaceId}
+    </update>
+    <update id="updatePartsType" parameterType="com.cvss.pojo.CvPartsType">
+        UPDATE cv_parts_type
+        <trim prefix="set" prefixOverrides=",">
+            <if test="typeName != null">
+                ,type_name = #{typeName}
+            </if>
+            <if test="createTime != null">
+                ,create_time = #{createTime}
+            </if>
+            <if test="status != null">
+                ,status = #{status}
+            </if>
+        </trim>
+        WHERE type_id = #{typeId}
+    </update>
+
+    <!--select-->
+    <select id="selectAllParts" parameterType="com.cvss.pojo.CvParts" resultMap="CvPartsResultMap">
+        SELECT * FROM cv_parts
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="partsName != null">
+                and parts_name = #{partsName}
+            </if>
+            <if test="typeId != null">
+                and type_id = #{typeId}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </trim>
+    </select>
+    <select id="selectAllPartsAdd" parameterType="com.cvss.pojo.CvPartsAdd" resultMap="CvPartsAddResultMap">
+        SELECT * FROM cv_parts_add
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="addName != null">
+                and add_name = #{addName}
+            </if>
+            <if test="typeId != null">
+                and type_id = #{typeId}
+            </if>
+            <if test="unit != null">
+                and unit = #{unit}
+            </if>
+            <if test="taxPrice">
+                and tax_price = #{taxPrice}
+            </if>
+            <if test="remarks">
+                and remarks = #{remarks}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </trim>
+    </select>
+    <select id="selectAllPartsReplace" parameterType="com.cvss.pojo.CvPartsReplace" resultMap="CvPartsReplaceResultMap">
+        SELECT * FROM cv_parts_replace
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="replaceBefore != null">
+                and replace_before = #{replaceBefore}
+            </if>
+            <if test="replaceAfter != null">
+                and replace_after = #{replaceAfter}
+            </if>
+            <if test="unit != null">
+                and unit = #{unit}
+            </if>
+            <if test="taxPrice">
+                and tax_price = #{taxPrice}
+            </if>
+            <if test="remarks">
+                and remarks = #{remarks}
+            </if>
+            <if test="typeId != null">
+                and type_id = #{typeId}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </trim>
+    </select>
+    <select id="selectAllPartsType" parameterType="com.cvss.pojo.CvPartsType" resultMap="CvPartsTypeResultMap">
+        SELECT * FROM cv_parts_type
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="typeName != null">
+                and type_name = #{typeName}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </trim>
+    </select>
+
+
+
+</mapper>

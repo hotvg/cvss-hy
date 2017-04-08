@@ -1,0 +1,13 @@
+ul{
+    margin: 0;
+    padding: 0;
+}
+.parts-tab ul{
+    list-style: none;
+}
+
+.parts-tab li{
+    list-style: none;
+    display: inline;
+}
+
