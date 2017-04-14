@@ -2,7 +2,7 @@ package com.cvss.pojo;
 
 import java.math.BigDecimal;
 
-public class Cv{
+public class Cv extends BasePojo{
     private Integer cvId;
 
     private String internalModels;

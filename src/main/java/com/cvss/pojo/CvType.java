@@ -1,15 +1,9 @@
 package com.cvss.pojo;
 
-import java.util.Date;
-
-public class CvType {
+public class CvType extends BasePojo{
     private Integer typeId;
 
     private String typeName;
-
-    private Date createTime;
-
-    private Integer status;
 
     public Integer getTypeId() {
         return typeId;
@@ -27,19 +21,4 @@ public class CvType {
         this.typeName = typeName == null ? null : typeName.trim();
     }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
 }

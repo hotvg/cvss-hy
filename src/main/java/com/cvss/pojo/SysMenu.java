@@ -1,6 +1,6 @@
 package com.cvss.pojo;
 
-public class SysMenu {
+public class SysMenu extends BasePojo{
     private Integer menuId;
 
     private String menuName;
