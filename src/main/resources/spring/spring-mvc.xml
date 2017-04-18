@@ -38,5 +38,12 @@
         <property name="suffix" value=".html"/>
     </bean>
 
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/"/>
+            <bean class="com.cvss.interceptor.UserInterceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>
+
 
 </beans>

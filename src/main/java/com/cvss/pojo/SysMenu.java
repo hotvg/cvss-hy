@@ -5,9 +5,17 @@ public class SysMenu extends BasePojo{
 
     private String menuName;
 
-    private Integer menuLevel;
-
     private Integer menuParent;
+
+    private String menuUrl;
+
+    public String getMenuUrl() {
+        return menuUrl;
+    }
+
+    public void setMenuUrl(String menuUrl) {
+        this.menuUrl = menuUrl;
+    }
 
     public Integer getMenuId() {
         return menuId;
@@ -23,14 +31,6 @@ public class SysMenu extends BasePojo{
 
     public void setMenuName(String menuName) {
         this.menuName = menuName == null ? null : menuName.trim();
-    }
-
-    public Integer getMenuLevel() {
-        return menuLevel;
-    }
-
-    public void setMenuLevel(Integer menuLevel) {
-        this.menuLevel = menuLevel;
     }
 
     public Integer getMenuParent() {
