@@ -3,13 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>驾驶室</title>
-    <link href="lib/kendoui/styles/kendo.common.min.css" rel="stylesheet">
-    <link href="lib/kendoui/styles/kendo.rtl.min.css" rel="stylesheet">
-    <link href="lib/kendoui/styles/kendo.default.min.css" rel="stylesheet">
-    <script type="text/javascript" src="resources/js/jquery-3.1.1.min.js"></script>
-    <script src="lib/kendoui/js/kendo.ui.core.min.js"></script>
-    <link rel="stylesheet" href="resources/css/kendoui.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=8">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <!--<link href="lib/kendoui/styles/kendo.common.min.css" rel="stylesheet">-->
+    <!--<link href="lib/kendoui/styles/kendo.rtl.min.css" rel="stylesheet">-->
+    <!--<link href="lib/kendoui/styles/kendo.default.min.css" rel="stylesheet">-->
+    <!--<script type="text/javascript" src="resources/js/jquery-3.1.1.min.js"></script>-->
+    <!--<script src="lib/kendoui/js/kendo.ui.core.min.js"></script>-->
+    <!--<link rel="stylesheet" href="resources/css/kendoui.css">-->
     <link rel="stylesheet" href="resources/css/parts.css">
+    <script src="resources/js/parts.js"></script>
 </head>
 <body>
 <div id="tab-cab" class="parts-tab">
@@ -18,9 +25,86 @@
         <li>可加装</li>
         <li>可换装</li>
     </ul>
-    <div id="content-cab"></div>
+    <div id="content-cab">
+        <div style="clear: both">
+
+                <div class="table-responsive table-margin">
+                    <table id="film-table"
+                           class="table table-striped table-bordered table-condensed table-hover">
+                        <thead>
+                        <tr class="active ">
+                            <th class="col-md-1 text-center">film_id</th>
+                            <th class="col-md-2 text-center">title</th>
+                            <th class="col-md-6 text-center">description</th>
+                            <th class="col-md-1 text-center">language</th>
+                            <th class="col-md-2 text-center">operation</th>
+                        </tr>
+                        </thead>
+                        <tbody id="film-tbody">
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-lg-1 page-rows">
+                    <select class="form-control" id="page-rows">
+                        <option>10</option>
+                        <option>15</option>
+                        <option>20</option>
+                        <option>25</option>
+                        <option>30</option>
+                        <option>35</option>
+                    </select>
+                </div>
+
+                <input id="page" type="hidden" value="">
+                <nav>
+                    <ul class="pagination page-nav">
+                        <li><a id="laquo-btn" href="javascript:;">&laquo;</a></li>
+                        <li class="active page-btn"><a href="javascript:;">1</a></li>
+                        <li class="page-btn"><a href="javascript:;">2</a></li>
+                        <li class="page-btn"><a href="javascript:;">3</a></li>
+                        <li class="page-btn"><a href="javascript:;">4</a></li>
+                        <li class="page-btn"><a href="javascript:;">5</a></li>
+                        <li><a id="raquo-btn" href="javascript:;">&raquo;</a></li>
+                    </ul>
+                </nav>
+
+
+                <div class="input-group col-lg-1 page-go">
+                    <input type="text" class="form-control" id="page-num"> <span
+                        class="input-group-btn">
+				<button id="page-btn-go" class="btn btn-default" type="button">Go</button>
+			</span>
+                </div>
+
+                <div id="last-page">共 <span></span> 页</div>
+
+
+                <ul class="pager page-up-down">
+                    <li><a href="javascript:;" id="page-up">上一页</a></li>
+                    <li><a href="javascript:;" id="page-down">下一页</a></li>
+                </ul>
+
+            </div>
+
+    </div>
     <div id="content-cab-add"></div>
     <div id="content-cab-replace"></div>
 </div>
+<script type="text/javascript">
+    var tabCabScript = $('#tab-cab').kendoTabStrip({
+        animation: {
+            close: {
+                duration: 100,
+                effects: "fadeOut"
+            },
+            open: {
+                duration: 100,
+                effects: "fadeIn"
+            }
+        }
+    }).data("kendoTabStrip");
+    tabCabScript.select(0);
+</script>
 </body>
 </html>

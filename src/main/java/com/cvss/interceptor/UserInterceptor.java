@@ -23,9 +23,9 @@ public class UserInterceptor extends HandlerInterceptorAdapter {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
-        if (sysUser.getUserName() == null) {
-            request.getRequestDispatcher("/login").forward(request, response);
+        SysUser sysUser = (SysUser)request.getSession().getAttribute("sysUser");
+        if (sysUser == null) {
+            response.sendRedirect("/login");
             return false;
         } else
             return true;
