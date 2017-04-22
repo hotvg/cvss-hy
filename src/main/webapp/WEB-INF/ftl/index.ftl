@@ -1,27 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>商用车结算系统</title>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=8">
-    <meta http-equiv="Expires" content="0">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Cache-control" content="no-cache">
-    <meta http-equiv="Cache" content="no-cache">
-    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="lib/fontawesome/css/font-awesome.min.css">
-    <link href="lib/kendoui/styles/kendo.common.min.css" rel="stylesheet">
-    <link href="lib/kendoui/styles/kendo.rtl.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="resources/css/index.css">
-    <link href="lib/kendoui/styles/kendo.default.min.css" rel="stylesheet">
-    <script type="text/javascript" src="resources/js/jquery-3.1.1.min.js"></script>
-    <script type="text/javascript" src="lib/bootstrap/js/bootstrap.min.js"></script>
-    <!--<script src="lib/kendoui/js/jquery.min.js"></script>-->
-    <script src="lib/kendoui/js/kendo.ui.core.min.js"></script>
-    <script src="resources/js/jQueryRotate.js"></script>
-    <script type="text/javascript" src="resources/js/index.js"></script>
-</head>
+<#include "include/header.ftl"/>
 <body>
 <div class="index-div">
     <div class="header">

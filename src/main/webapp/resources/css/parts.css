@@ -26,8 +26,8 @@ ul{
     padding-right: 20px;
 }
 .parts-tab .k-content{
-    width: 98%;
-    height: 77%;
+    width: calc(100% - 22px);
+    height: calc(100% - 150px);
     position: fixed;
     margin-left: 10px;
     margin-right:10px;

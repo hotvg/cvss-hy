@@ -1,19 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>驾驶室</title>
-    <!--<link href="lib/kendoui/styles/kendo.common.min.css" rel="stylesheet">-->
-    <!--<link href="lib/kendoui/styles/kendo.rtl.min.css" rel="stylesheet">-->
-    <!--<link href="lib/kendoui/styles/kendo.default.min.css" rel="stylesheet">-->
-    <!--<script type="text/javascript" src="resources/js/jquery-3.1.1.min.js"></script>-->
-    <!--<script src="lib/kendoui/js/kendo.ui.core.min.js"></script>-->
-    <!--<link rel="stylesheet" href="resources/css/kendoui.css">-->
-    <link rel="stylesheet" href="resources/css/parts.css">
-    <link rel="stylesheet" href="resources/css/dataGrid.css">
-    <script src="resources/js/parts.js"></script>
-    <script src="resources/js/dataGrid.js"></script>
-</head>
+<#include "../include/header.ftl"/>
+<link rel="stylesheet" href="resources/css/kendoui.css">
+<link rel="stylesheet" href="resources/css/parts.css">
+<link rel="stylesheet" href="resources/css/dataGrid.css">
+<script src="resources/js/parts.js"></script>
+<script src="resources/js/dataGrid.js"></script>
 <body>
 <div id="tab-cab" class="parts-tab">
     <ul>
