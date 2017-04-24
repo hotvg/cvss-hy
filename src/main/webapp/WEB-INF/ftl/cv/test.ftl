@@ -58,7 +58,7 @@
 
             <div class="grid-footer">
                 <div class="input-group col-lg-1 page-rows">
-                    <select class="form-control">
+                    <select title="page-rows" class="form-control">
                         <option>10</option>
                         <option>15</option>
                         <option>20</option>
@@ -121,7 +121,9 @@
         </div>
 
     </div>
-    <div id="content-cab-add"></div>
+    <div id="content-cab-add">
+
+    </div>
     <div id="content-cab-replace"></div>
 </div>
 <script type="text/javascript">
@@ -141,25 +143,91 @@
     tabCabScript.select(0);
 
 
+    var cabDataSource = new kendo.data.DataSource({
+        transport: {
+            read: {
+                url: "parts/cab",
+                dataType: "jsonp"
+//            },
+//            // make JSONP request to http://demos.telerik.com/kendo-ui/service/products/destroy
+//            destroy: {
+//                url: "http://demos.telerik.com/kendo-ui/service/products/destroy",
+//                dataType: "jsonp" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+//            },
+//            parameterMap: function (data, type) {
+//                if (type == "destroy") {
+//                    // send the destroyed data items as the "models" service parameter encoded in JSON
+//                    return {models: kendo.stringify(data.models)}
+//                }
+            }
+        }
+    });
+    console.log(cabDataSource);
+
+
 
     var args = {
         toolBar:true,
         columns:[
             {
-                field:"",
-                title:"",
-                attributes:"",
-                template:""
-
-            },
-            {field:""}
+                field:'partsName',
+                title:'名称',
+                attributes:{
+                    style:{
+                        'width':'25%',
+                        'text-align': 'center'
+                        }
+                    },
+                template:
+                '<div class="input-group grid-input">'+
+                    '<input style="display: none;" type="text" class="form-control" placeholder="" value="" name="partsName">'+
+                    '<span></span>'+
+                '</div>'
+            },{
+                field:'createTime',
+                title:'创建时间',
+                attributes:{
+                    style:{
+                        'width':'40%',
+                        'text-align': 'center'
+                    }
+                },
+                template:
+                '<div class="input-group grid-input">'+
+                    '<input style="display: none;" type="text" class="form-control" placeholder="" value="" name="createTime">'+
+                    '<span></span>'+
+                '</div>'
+            },{
+                field:'status',
+                title:'状态',
+                attributes:{
+                    style:{
+                        'width':'auto',
+                        'text-align': 'center'
+                    }
+                },
+                template:
+                '<div class="input-group grid-input">'+
+                    '<input style="display: none;" type="text" class="form-control" placeholder="" value="" name="status">'+
+                    '<span></span>'+
+                '</div>'
+            }
         ],
         dataSource:{
-            pageSize:2
-        },
-        editable: true
+            pageSize:1,
+            pageRows:10,
+            data:[
+                {partsName:'高顶',createTime:'2016-11-05 10:20:34',status:"1"},
+                {partsName:'平顶',createTime:'2016-12-15 13:46:13',status:"1"},
+                {partsName:'短体',createTime:'2017-10-25 15:27:56',status:"0"}
+            ]
+        }
     };
-    $('#content-cab-add').dataGrid(args);
+
+    $(function () {
+        $('#content-cab-add').dataGrid(args); //调用jQuery对象方法
+    });
+
 </script>
 </body>
 </html>

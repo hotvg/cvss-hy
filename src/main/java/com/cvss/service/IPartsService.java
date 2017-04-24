@@ -31,7 +31,7 @@ public interface IPartsService {
     boolean updatePartsType(CvPartsType record);
 
     //查
-    List<CvParts> selectAllParts(CvParts record);
+    List<CvParts> selectAllParts(CvParts record, Integer pageNum,Integer pageSize);
     List<CvPartsAdd> selectAllPartsAdd(CvPartsAdd record);
     List<CvPartsReplace> selectAllPartsReplace(CvPartsReplace record);
     List<CvPartsType> selectAllPartsType(CvPartsType record);

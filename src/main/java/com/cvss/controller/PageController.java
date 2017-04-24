@@ -44,6 +44,16 @@ public class PageController {
     }
 
     /**
+     * 页面返回
+     * @param page
+     * @return
+     */
+    @RequestMapping(value = "/include/{page}")
+    public String showIncludePage(@PathVariable String page){
+        return "include/"+page;
+    }
+
+    /**
      * 验证码
      * @param response
      */

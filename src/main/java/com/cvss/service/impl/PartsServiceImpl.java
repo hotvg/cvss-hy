@@ -6,9 +6,11 @@ import com.cvss.pojo.CvPartsAdd;
 import com.cvss.pojo.CvPartsReplace;
 import com.cvss.pojo.CvPartsType;
 import com.cvss.service.IPartsService;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -81,7 +83,8 @@ public class PartsServiceImpl implements IPartsService {
     }
 
     @Override
-    public List<CvParts> selectAllParts(CvParts record) {
+    public List<CvParts> selectAllParts(CvParts record, Integer pageNum,Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
         return this.partsMapper.selectAllParts(record);
     }
 
