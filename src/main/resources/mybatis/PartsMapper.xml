@@ -46,34 +46,90 @@
         cv_parts (parts_name,type_id,create_time,status)
         VALUES (#{partsName},#{typeId},#{createTime},#{status});
     </insert>
+    <insert id="batchInsertParts" parameterType="List">
+        INSERT INTO cv_parts (parts_name,type_id,create_time,status) VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.partsName},#{item.typeId},#{item.createTime},#{item.status})
+        </foreach>
+    </insert>
+
     <insert id="insertPartsAdd" parameterType="com.cvss.pojo.CvPartsAdd">
         INSERT INTO
         cv_parts_add (add_name,type_id,unit,tax_price,remarks,create_time,status)
         VALUES (#{addName},#{typeId},#{unit},#{taxPrice},#{remarks},#{createTime},#{status});
     </insert>
+    <insert id="batchInsertPartsAdd" parameterType="List">
+        INSERT INTO cv_parts_add (add_name,type_id,unit,tax_price,remarks,create_time,status) VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.addName},#{item.typeId},#{item.unit},#{item.taxPrice},#{item.remarks},#{item.createTime},#{item.status})
+        </foreach>
+    </insert>
+
     <insert id="insertPartsReplace" parameterType="com.cvss.pojo.CvPartsReplace">
         INSERT INTO
         cv_parts_replace (replace_before,replace_after,unit,tax_price,remarks,type_id,create_time,status)
         VALUES (#{replaceBefore},#{replaceAfter},#{unit},#{taxPrice},#{remarks},#{typeId},#{createTime},#{status});
     </insert>
+    <insert id="batchInsertPartsReplace" parameterType="List">
+        INSERT INTO
+        cv_parts_replace (replace_before,replace_after,unit,tax_price,remarks,type_id,create_time,status)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.replaceBefore},#{item.replaceAfter},#{item.unit},#{item.taxPrice},#{item.remarks},#{item.typeId},#{item.createTime},#{item.status})
+        </foreach>
+    </insert>
+
     <insert id="insertPartsType" parameterType="com.cvss.pojo.CvPartsType">
         INSERT INTO
         cv_parts_type (type_name,create_time,status)
         VALUES (#{typeName},#{createTime},#{status});
     </insert>
+    <insert id="batchInsertPartsType" parameterType="List">
+        INSERT INTO
+        cv_parts_type (type_name,create_time,status)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.typeName},#{item.createTime},#{item.status})
+        </foreach>
+    </insert>
     
     <!--delete-->
+    <sql id="deleteForeach">
+        <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+            #{item.id}
+        </foreach>
+    </sql>
+
     <delete id="deleteParts" parameterType="Integer">
         DELETE FROM cv_parts WHERE parts_id = #{id};
     </delete>
+    <delete id="batchDeleteParts" parameterType="List">
+        DELETE FROM cv_parts WHERE parts_id IN
+        <include refid="deleteForeach" />
+    </delete>
+
     <delete id="deletePartsAdd" parameterType="Integer">
         DELETE FROM cv_parts_add WHERE add_id = #{id};
     </delete>
+    <delete id="batchDeletePartsAdd" parameterType="List">
+        DELETE FROM cv_parts_add WHERE add_id IN
+        <include refid="deleteForeach" />
+    </delete>
+
     <delete id="deletePartsReplace" parameterType="Integer">
         DELETE FROM cv_parts_replace WHERE replace_id = #{id};
     </delete>
+    <delete id="batchDeletePartsReplace" parameterType="List">
+        DELETE FROM cv_parts_replace WHERE replace_id IN
+        <include refid="deleteForeach" />
+    </delete>
+
     <delete id="deletePartsType" parameterType="Integer">
         DELETE FROM cv_parts_type WHERE type_id = #{id};
+    </delete>
+    <delete id="batchDeletePartsType" parameterType="List">
+        DELETE FROM cv_parts_type WHERE type_id = IN
+        <include refid="deleteForeach" />
     </delete>
 
     <!--update-->
@@ -95,6 +151,27 @@
         </trim>
         WHERE parts_id = #{partsId}
     </update>
+    <update id="batchUpdateParts" parameterType="List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            UPDATE cv_parts
+            <trim prefix="set" prefixOverrides=",">
+                <if test="item.partsName != null">
+                    ,parts_name = #{item.partsName}
+                </if>
+                <if test="item.typeId != null">
+                    ,type_id = #{item.typeId}
+                </if>
+                <if test="item.createTime != null">
+                    ,create_time = #{item.createTime}
+                </if>
+                <if test="item.status != null">
+                    ,status = #{item.status}
+                </if>
+            </trim>
+            WHERE parts_id = #{item.partsId}
+        </foreach>
+    </update>
+
     <update id="updatePartsAdd" parameterType="com.cvss.pojo.CvPartsAdd">
         UPDATE cv_parts_add
         <trim prefix="set" prefixOverrides=",">
@@ -122,6 +199,36 @@
         </trim>
         WHERE add_id = #{addId}
     </update>
+    <update id="batchUpdatePartsAdd" parameterType="List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            UPDATE cv_parts_add
+            <trim prefix="set" prefixOverrides=",">
+                <if test="item.addName != null">
+                    ,add_name = #{item.addName}
+                </if>
+                <if test="item.typeId != null">
+                    ,type_id = #{item.typeId}
+                </if>
+                <if test="item.unit != null">
+                    ,unit = #{item.unit}
+                </if>
+                <if test="item.taxPrice">
+                    ,tax_price = #{item.taxPrice}
+                </if>
+                <if test="item.remarks">
+                    ,remarks = #{item.remarks}
+                </if>
+                <if test="item.createTime != null">
+                    ,create_time = #{item.createTime}
+                </if>
+                <if test="item.status != null">
+                    ,status = #{item.status}
+                </if>
+            </trim>
+            WHERE add_id = #{item.addId}
+        </foreach>
+    </update>
+
     <update id="updatePartsReplace" parameterType="com.cvss.pojo.CvPartsReplace">
         UPDATE cv_parts_replace
         <trim prefix="set" prefixOverrides=",">
@@ -152,6 +259,39 @@
         </trim>
         WHERE replace_id = #{replaceId}
     </update>
+    <update id="batchUpdatePartsReplace" parameterType="List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            UPDATE cv_parts_replace
+            <trim prefix="set" prefixOverrides=",">
+                <if test="item.replaceBefore != null">
+                    ,replace_before = #{item.replaceBefore}
+                </if>
+                <if test="item.replaceAfter != null">
+                    ,replace_after = #{item.replaceAfter}
+                </if>
+                <if test="item.unit != null">
+                    ,unit = #{item.unit}
+                </if>
+                <if test="item.taxPrice">
+                    ,tax_price = #{item.taxPrice}
+                </if>
+                <if test="item.remarks">
+                    ,remarks = #{item.remarks}
+                </if>
+                <if test="item.typeId != null">
+                    ,type_id = #{item.typeId}
+                </if>
+                <if test="item.createTime != null">
+                    ,create_time = #{item.createTime}
+                </if>
+                <if test="item.status != null">
+                    ,status = #{item.status}
+                </if>
+            </trim>
+            WHERE replace_id = #{item.replaceId}
+        </foreach>
+    </update>
+
     <update id="updatePartsType" parameterType="com.cvss.pojo.CvPartsType">
         UPDATE cv_parts_type
         <trim prefix="set" prefixOverrides=",">
@@ -166,6 +306,23 @@
             </if>
         </trim>
         WHERE type_id = #{typeId}
+    </update>
+    <update id="batchUpdatePartsType" parameterType="List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            UPDATE cv_parts_type
+            <trim prefix="set" prefixOverrides=",">
+                <if test="item.typeName != null">
+                    ,type_name = #{item.typeName}
+                </if>
+                <if test="item.createTime != null">
+                    ,create_time = #{item.createTime}
+                </if>
+                <if test="item.status != null">
+                    ,status = #{item.status}
+                </if>
+            </trim>
+            WHERE type_id = #{item.typeId}
+        </foreach>
     </update>
 
     <!--select-->

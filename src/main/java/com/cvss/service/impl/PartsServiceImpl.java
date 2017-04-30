@@ -28,13 +28,28 @@ public class PartsServiceImpl implements IPartsService {
     }
 
     @Override
+    public int batchInsertParts(List<CvParts> partsList) {
+        return this.partsMapper.batchInsertParts(partsList);
+    }
+
+    @Override
     public boolean insertPartsAdd(CvPartsAdd record) {
         return this.partsMapper.insertPartsAdd(record)>0;
     }
 
     @Override
+    public int batchInsertPartsAdd(List<CvPartsAdd> partsAddList) {
+        return this.partsMapper.batchInsertPartsAdd(partsAddList);
+    }
+
+    @Override
     public boolean insertPartsReplace(CvPartsReplace record) {
         return this.partsMapper.insertPartsReplace(record)>0;
+    }
+
+    @Override
+    public int batchInsertPartsReplace(List<CvPartsReplace> partsReplaceList) {
+        return this.partsMapper.batchInsertPartsReplace(partsReplaceList);
     }
 
     @Override
@@ -48,13 +63,28 @@ public class PartsServiceImpl implements IPartsService {
     }
 
     @Override
+    public int batchDeleteParts(List<Integer> idList) {
+        return this.partsMapper.batchDeleteParts(idList);
+    }
+
+    @Override
     public boolean deletePartsAdd(Integer id) {
         return this.partsMapper.deletePartsAdd(id)>0;
     }
 
     @Override
+    public int batchDeletePartsAdd(List<Integer> idList) {
+        return this.partsMapper.batchDeletePartsAdd(idList);
+    }
+
+    @Override
     public boolean deletePartsReplace(Integer id) {
         return this.partsMapper.deletePartsReplace(id)>0;
+    }
+
+    @Override
+    public int batchDeletePartsReplace(List<Integer> idList) {
+        return this.partsMapper.batchDeletePartsReplace(idList);
     }
 
     @Override
@@ -68,8 +98,18 @@ public class PartsServiceImpl implements IPartsService {
     }
 
     @Override
+    public int batchUpdateParts(List<CvParts> partsList) {
+        return this.partsMapper.batchUpdateParts(partsList);
+    }
+
+    @Override
     public boolean updatePartsAdd(CvPartsAdd record) {
         return this.partsMapper.updatePartsAdd(record)>0;
+    }
+
+    @Override
+    public int batchUpdatePartsAdd(List<CvPartsAdd> partsAddList) {
+        return this.partsMapper.batchUpdatePartsAdd(partsAddList);
     }
 
     @Override
@@ -78,13 +118,17 @@ public class PartsServiceImpl implements IPartsService {
     }
 
     @Override
+    public int batchUpdatePartsReplace(List<CvPartsReplace> partsReplaceList) {
+        return this.partsMapper.batchUpdatePartsReplace(partsReplaceList);
+    }
+
+    @Override
     public boolean updatePartsType(CvPartsType record) {
         return this.partsMapper.updatePartsType(record)>0;
     }
 
     @Override
-    public List<CvParts> selectAllParts(CvParts record, Integer pageNum,Integer pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
+    public List<CvParts> selectAllParts(CvParts record) {
         return this.partsMapper.selectAllParts(record);
     }
 
