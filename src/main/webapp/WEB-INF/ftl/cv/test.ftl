@@ -226,7 +226,7 @@
             }
         ],
         dataSource:cabAddDataSource,
-        dataId: 'partsId'
+        dataId: 'addId'
     };
 
     $(function () {

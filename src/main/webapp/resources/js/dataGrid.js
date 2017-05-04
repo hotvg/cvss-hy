@@ -166,7 +166,6 @@
 
                 var changeTr = gridContent.find('.grid-new-tag').parent().parent().not('.create-tr');
                 var changeTrLength = changeTr.length;
-                console.log(changeTrLength);
                 if(createTrLength>0){
                     util.createEvent(createTr,createTrLength,event.data);
                 }
@@ -319,8 +318,6 @@
             }
             opt.dataSource = ajax.read(transport.read,transport.param,page,pageSize);
             opt.dataSource['transport'] = transport;
-            console.log('----改变后----');
-            console.log(opt.dataSource);
             methods.createGridContent(clearDiv,opt);
             clearDiv.find('.current-page').text(opt.dataSource.page);
             clearDiv.find('.total-page').text(opt.dataSource.totalPage);
