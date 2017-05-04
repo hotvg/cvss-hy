@@ -5,20 +5,11 @@
 <script src="${base}/resources/js/parts.js"></script>
 <script src="${base}/resources/js/dataGrid.js"></script>
 <body>
-<div id="example">
-
-
-        <input id="datetimepicker" style="width: 100%;" />
-
-
-    <script>
-        $(document).ready(function () {
-            // create DateTimePicker from input HTML element
-            $("#datetimepicker").kendoDateTimePicker({
-                value:new Date()
-            });
-        });
-    </script>
-
-</div>
+<input id="datetimepicker" />
+<script>
+    $("#datetimepicker").kendoDateTimePicker({
+        format: "yyyy/MM/dd hh:mm tt",
+        parseFormats: ["MMMM yyyy", "HH:mm"] //format also will be added to parseFormats
+    });
+</script>
 </body>

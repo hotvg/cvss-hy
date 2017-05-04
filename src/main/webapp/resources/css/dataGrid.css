@@ -176,4 +176,14 @@
     width: 8px;
 }
 
+.grid-input{
+    height: 100%;
+}
 
+.grid-input .k-header{
+    height: 100%;
+    width: 100%;
+}
+/*.grid-input .k-picker-wrap.k-state-default{*/
+    /*background-color: #ffffff;*/
+/*}*/

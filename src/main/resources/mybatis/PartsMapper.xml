@@ -96,7 +96,7 @@
     <!--delete-->
     <sql id="deleteForeach">
         <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
-            #{item.id}
+            #{item}
         </foreach>
     </sql>
 

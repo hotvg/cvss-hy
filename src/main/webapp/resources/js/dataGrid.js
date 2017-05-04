@@ -1,431 +1,604 @@
 /**
  * Created by yufeng.liu on 2017-04-21.
  */
-var toolBar = null;//工具栏
-var columns = null;//栏目
-var dataSource = null;//数据源
-var data = null;//数据
-var styleMap = {};//样式集合
-var templateMap = {};//模板集合
-var editable = false;//是否可以编辑
-var transport = null;//数据传输
-var dataId = null;//数据ID
+(function ($) {
 
-//工具栏DIV模板
-var toolBarDiv =
-    '<div class="grid-toolbar">'+
-        '<button class="btn btn-default btn-create">新建</button>'+
-        '<button class="btn btn-success btn-save">保存</button>'+
-        '<button class="btn btn-danger btn-delete">删除</button>'+
-    '</div>';
-//grid头部DIV模板
-var headerDiv =
-    '<div class="grid-header grid-header-toolbar">' +
-        '<table class="table table-bordered table-condensed">' +
-            '<tr class="active">' +
-                '<th style="width: 20px" class="all-select">' +
+    //html模板元素
+    var htmlElement = {
+        //工具栏DIV模板
+        toolBarDiv:
+        '<div class="grid-toolbar">' +
+            '<button class="btn btn-default btn-create">新建</button>' +
+            '<button class="btn btn-success btn-save">保存</button>' +
+            '<button class="btn btn-danger btn-delete">删除</button>' +
+        '</div>',
+        //grid头部DIV模板
+        headerDiv:
+        '<div class="grid-header grid-header-toolbar">' +
+            '<table class="table table-bordered table-condensed">' +
+                '<tr class="active">' +
+                    '<th style="width: 20px" class="all-select">' +
                     '<input title="all-select" type="checkbox">' +
-                '</th>' +
-            '</tr>' +
-    '</table>' +
-    '</div>';
-//grid头部DIV模板，TR中是为了建立bootstrap的样式模板，后会删除该TR
-var contentDiv =
-    '<div class="grid-content grid-content-toolbar">'+
-        '<table class="table table-bordered table-condensed table-hover">' +
-            '<tr>' +
-                '<td style="width: 20px" class="one-select">' +
+                    '</th>' +
+                '</tr>' +
+            '</table>' +
+        '</div>',
+        //grid头部DIV模板，TR中是为了建立bootstrap的样式模板，后会删除该TR
+        contentDiv:
+        '<div class="grid-content grid-content-toolbar">' +
+            '<table class="table table-bordered table-condensed table-hover">' +
+                '<tr>' +
+                    '<td style="width: 20px" class="one-select">' +
                     '<input title="one-select" type="checkbox">' +
-                '</td>' +
-            '</tr>'+
-        '</table>' +
-    '</div>';
-//grid尾部DIV模板
-var footerDiv = ' <div class="grid-footer"></div>';
-//grid尾部pageSize选择DIV模板
-var footerSize =
-    '<div class="input-group col-lg-1 page-size">'+
-        '<select title="page-size" class="form-control">'+
-            '<option>10</option>'+
-            '<option>15</option>'+
-            '<option>20</option>'+
-            '<option>25</option>'+
-            '<option>30</option>'+
-            '<option>35</option>'+
-        '</select>'+
-    '</div>';
-//grid尾部导航列表DIV模板
-var footerNav =
-    '<div class="btn-group grid-nav-container">'+
-        '<div class="btn-group btn-grid-left">'+
-            '<button type="button" class="btn btn-grid-nav prevPage">'+
-                '<i class="fa fa-angle-double-left" aria-hidden="true"></i>'+
-            '</button>'+
-            '<button type="button" class="btn btn-grid-nav btn-grid-angle prev">'+
-                '<i class="fa fa-angle-left" aria-hidden="true"></i>'+
-            '</button>'+
-        '</div>'+
-        '<div class="btn-group grid-nav">'+
-            '<ul class="grid-nav-ul">'+
-                '<li class="active">1</li>'+
-            '</ul>'+
-        '</div>'+
-        '<div class="btn-group btn-grid-right">'+
-            '<button type="button" class="btn btn-grid-nav btn-grid-angle next">'+
-                '<i class="fa fa-angle-right" aria-hidden="true"></i>'+
-            '</button>'+
-            '<button type="button" class="btn btn-grid-nav nextPage">'+
-                '<i class="fa fa-angle-double-right" aria-hidden="true"></i>'+
-            '</button>'+
-        '</div>'+
-    '</div>'+
-    '<div class="input-group col-lg-1 page-go">'+
-        '<input title="page-num" type="text" class="form-control page-num">'+
-        '<span class="input-group-btn">'+
-            '<button class="btn btn-default page-btn-go" type="button">Go</button>'+
-        '</span>'+
-    '</div>';
-//grid页面提示ID DIV模板
-var footPage =
-    '<div class="input-group grid-page">'+
-        '<span class="current-page"></span>'+
-        '/'+
-        '<span class="total-page"></span>'+
-    '</div>';
-//grid刷新按钮DIV模板
-var footRefresh =
-    '<div class="input-group refresh-grid btn">'+
-        '<i class="fa fa-refresh" aria-hidden="true"></i>'+
-    '</div>';
-//默认新增DIV模板
-var createTrTemplate =
-    '<div class="input-group grid-input">'+
-        '<input type="text" class="form-control" placeholder="" value="">'+
-        '<span style="display: none;">test</span>'+
-    '</div>';
-//新增或更改后的标记DIV
-var tdNewTag = '<div class="grid-new-tag"></div>';
-//可编辑事件绑定，失去焦点时判断内容是否更改或添加，如果有，则给TD添加标记
-var inputBlur = function (e1,e2,val) {
-    e1.bind('blur',function () {
-        var value = e1.val();
-        e1.hide();
-        e2.show();
-        if(val!==value){
-            e2.text(value);
-            e1.closest('td').append(tdNewTag);
-        }else{
-            e2.text(val);
-            e1.closest('td').children('.grid-new-tag').remove();
-        }
-    });
-};
-//初始化TD编辑
-var initEdit = function (e,status) {
-    var tdInput = e.find('input');
-    var tdInputVal = tdInput.val();
-    var tdSpan = e.find('span');
-    if(status){
-        tdInput.show();
-        tdSpan.hide();
-    }
-    e.click(function () {
-        $(this).find('input').show();
-        $(this).find('span').hide();
-    });
-    inputBlur(tdInput,tdSpan,tdInputVal);
-
-};
-//创建grid最初始的div
-var createClearDiv = function (e) {
-    e.append('<div style="clear: both"></div>');
-    return e.children();
-};
-//创建工具栏，并重新绑定事件
-var createToolBar = function (e) {
-    e.append(toolBarDiv);
-    e.find('.btn-create').bind('click',function () {
-        var gridContent = $(this).parent().parent().children('.grid-content');
-        gridContent.children('table').prepend('<tr class="create-tr"><td style="width: 20px" class="one-select"><input title="one-select" type="checkbox"></td></tr>');
-        var firstTr = gridContent.children('table').find('tr:first-child');
-        for(var j=0;j<columns.length;j++){
-            var field = columns[j].field;
-            //判断是否有模板
-            if(templateMap.hasOwnProperty(field)){
-                //判断是否有样式
-                if(styleMap.hasOwnProperty(field)){
-                    firstTr.append('<td style="'+ styleMap[field] +'">'+templateMap[field]+'</td>');
-                }else {
-                    firstTr.append('<td>'+templateMap[field]+'</td>');
-                }
-                //选择td最后一个
-                var lastTd = firstTr.children('td:last-child');
-                initEdit(lastTd,true);
-            }else {
-                firstTr.append('<td>'+createTrTemplate+'</td>');
-            }
-        }
-    });
-    //删除
-    e.find('.btn-delete').bind('click',function () {
-        var checkedTr = $(this).parent().parent().children('.grid-content').find('.one-select input:checked').parent().parent();
-        if(checkedTr.length>1){
-            for(var i = 0 ;i < checkedTr.length;i++){
-
-            }
-        }else{
-            var id = checkedTr.attr('id');
-            if(id!==undefined){
-                id = id.split('-')[1];
-                console.log(id);
-                ajax.destroy(transport.destroy,{id:Number(id)})
-            }
-            checkedTr.remove();
-        }
-    });
-    //更新或新增
-    e.find('.btn-save').bind('click',function () {
-        var gridContent = $(this).parent().parent().children('.grid-content');
-        var createTr = gridContent.find('.create-tr');
-        var createTrLength = createTr.length;
-        console.log(createTrLength);
-        if(createTrLength === 0){
-            var gridNewLength = gridContent.find('.grid-new-tag').length;
-            console.log(gridNewLength);
-            if(gridNewLength !== 0){
-                ajax.update(transport.update);
-            }
-        }else if(createTrLength===1){
-            var trInput = createTr.find('input');
-            var inputData = {};
-            for(var i = 1;i<trInput.length;i++){
-                var input = trInput.eq(i);
-                inputData[input.attr('name')] = input.val();
-            }
-            console.log(inputData);
-           ajax.create(transport.create,inputData);
-        }else{
-            // var data = {};
-            // for(var i = 0; i<createTrLength ;i++){
-            //
-            // }
-            // ajax.create(transport.create);
-        }
-    });
-};
-//创建grid的头部DIV
-var createGridHeaderDiv = function (e) {
-    e.append(headerDiv);
-    e.find('.all-select input').bind('click',function () {
-        var oneSelect = $(this).closest('.grid-header').parent().children('.grid-content').find('.one-select').children();
-        if($(this).is(":checked")){
-            oneSelect.prop("checked",true);
-        }else{
-            oneSelect.prop("checked", false);
-        }
-    });
-    return e.find('.active');
-};
-//创建grid的头部，需要根据参数中的栏目进行，并保存样式和模板
-var createGridHeader = function (e) {
-    var headerTr = createGridHeaderDiv(e);
-    for(var i=0;i<columns.length;i++){
-        var title = columns[i].title;
-        var attributes = columns[i].attributes;
-        var field = columns[i].field;
-        if('style' in attributes){
-            //用javascript的for/in循环遍历对象的属性
-            var style = '';
-            for(var item in attributes.style){
-                style = style + item+':'+attributes.style[item] + ';';
-            }
-            styleMap[field] = style;
-            headerTr.append('<th style="'+style+'" class="text-center">'+title+'</th>');
-        }
-        if('template' in columns[i]){
-            templateMap[field] = columns[i].template;
-        }
-    }
-};
-//创建grid内容DIV
-var createGridContentDiv = function (e) {
-    e.append(contentDiv);
-    return e.find('.table-hover');
-};
-//创建grid内容，需要根据data和columns
-var createGridContent = function (e) {
-    var contentTable = createGridContentDiv(e);
-    for(var i=0;i<data.length;i++){
-        contentTable.append('<tr id="'+dataId+'-'+data[i][dataId]+'"><td style="width: 20px" class="one-select"><input title="one-select" type="checkbox"></td></tr>');
-        var tableTr =  contentTable.find('tr:last-child');
-        for(var j=0;j<columns.length;j++){
-            var field = columns[j].field;
-            var contentTd = data[i][field];
-            //判断data中是否有相应的字段，有字段追加内容
-            if( data[i].hasOwnProperty(field)){
-                //判断是否有模板
-                if(templateMap.hasOwnProperty(field)){
-                    //判断是否有样式
-                    if(styleMap.hasOwnProperty(field)){
-                        tableTr.append('<td style="'+ styleMap[field] +'">'+templateMap[field]+'</td>');
+                    '</td>' +
+                '</tr>' +
+            '</table>' +
+        '</div>',
+        //grid尾部DIV模板
+        footerDiv: ' <div class="grid-footer"></div>',
+        //grid尾部pageSize选择DIV模板
+        footerSize:
+        '<div class="input-group col-lg-1 page-size">' +
+            '<select title="page-size" class="form-control">' +
+                '<option>10</option>' +
+                '<option>15</option>' +
+                '<option>20</option>' +
+                '<option>25</option>' +
+                '<option>30</option>' +
+                '<option>35</option>' +
+            '</select>' +
+        '</div>',
+        //grid尾部导航列表DIV模板
+        footerNav:
+        '<div class="btn-group grid-nav-container">' +
+            '<div class="btn-group btn-grid-left">' +
+                '<button type="button" class="btn btn-grid-nav prevPage">' +
+                    '<i class="fa fa-angle-double-left" aria-hidden="true"></i>' +
+                '</button>' +
+                '<button type="button" class="btn btn-grid-nav btn-grid-angle prev">' +
+                    '<i class="fa fa-angle-left" aria-hidden="true"></i>' +
+                '</button>' +
+            '</div>' +
+            '<div class="btn-group grid-nav">' +
+                '<ul class="grid-nav-ul">' +
+                    '<li class="active">1</li>' +
+                '</ul>' +
+            '</div>' +
+            '<div class="btn-group btn-grid-right">' +
+                '<button type="button" class="btn btn-grid-nav btn-grid-angle next">' +
+                    '<i class="fa fa-angle-right" aria-hidden="true"></i>' +
+                '</button>' +
+                '<button type="button" class="btn btn-grid-nav nextPage">' +
+                '   <i class="fa fa-angle-double-right" aria-hidden="true"></i>' +
+                '</button>' +
+            '</div>' +
+        '</div>' +
+        '<div class="input-group col-lg-1 page-go">' +
+            '<input title="page-num" type="text" class="form-control page-num">' +
+            '<span class="input-group-btn">' +
+            '<button class="btn btn-default page-btn-go" type="button">Go</button>' +
+            '</span>' +
+        '</div>',
+        //grid页面提示ID DIV模板
+        footPage:
+        '<div class="input-group grid-page">' +
+            '<span class="current-page"></span>' +
+            '/' +
+            '<span class="total-page"></span>' +
+        '</div>',
+        //grid刷新按钮DIV模板
+        footRefresh :
+        '<div class="input-group refresh-grid btn">' +
+            '<i class="fa fa-refresh" aria-hidden="true"></i>' +
+        '</div>',
+        //默认新增DIV模板
+        createTrTemplate:
+        '<div class="input-group grid-input">' +
+            '<input type="text" class="form-control" placeholder="" value="">' +
+            '<span style="display: none;">test</span>' +
+        '</div>',
+        //新增或更改后的标记DIV
+        tdNewTag: '<div class="grid-new-tag"></div>'
+    };
+    //插件方法
+    var methods = {
+        createClearDiv : function (ele) {
+            ele.append('<div style="clear: both"></div>');
+            return ele.children();
+        },
+        createToolBar : function (ele,opt) {
+            ele.append(htmlElement.toolBarDiv);
+            ele.find('.btn-create').bind('click',function () {
+                var gridContent = $(this).parent().parent().children('.grid-content');
+                gridContent.children('table').prepend('<tr class="create-tr"><td style="width: 20px" class="one-select"><input title="one-select" type="checkbox"></td></tr>');
+                var firstTr = gridContent.children('table').find('tr:first-child');
+                for(var j=0;j<opt.columns.length;j++){
+                    var field = opt.columns[j].field;
+                    //判断是否有模板
+                    if(opt.templateMap.hasOwnProperty(field)){
+                        //判断是否有样式
+                        if(opt.styleMap.hasOwnProperty(field)){
+                            firstTr.append('<td style="'+ opt.styleMap[field] +'">'+opt.templateMap[field]+'</td>');
+                        }else {
+                            firstTr.append('<td>'+opt.templateMap[field]+'</td>');
+                        }
+                        //选择td最后一个
+                        var lastTd = firstTr.children('td:last-child');
+                        var regExp=new RegExp('Time');
+                        if(regExp.test(field)){
+                            util.initKendoTime(lastTd,'',true)
+                        }else {
+                            util.initEdit(lastTd,true);
+                        }
                     }else {
-                        tableTr.append('<td>'+templateMap[field]+'</td>');
+                        firstTr.append('<td>'+htmlElement.createTrTemplate+'</td>');
                     }
-                    //选择td最后一个
-                    var lastTd = tableTr.children('td:last-child');
-                    //判断是否是时间，如果是时间就进行转换
-                    var regExp=new RegExp('Time');
-                    if(regExp.test(field)){
-                        contentTd = dateFormat(contentTd);
-                        lastTd.find('input').kendoDateTimePicker({
-                            value:new Date()
-                        });
-                        var firstSpan = lastTd.find('span:first-child');
-                        var lastSpan = lastTd.find('span:last-child');
-                        lastTd.find('input').val(contentTd);
-                        lastTd.find('span:last-child').text(contentTd);
-                        lastSpan.click(function () {
-                            $(this).find('span:last-child').hide();
-                            firstSpan.find('span:first-child').show();
-                        });
-                        inputBlur(lastTd.find('span:first-child'),lastTd.find('span:last-child'),lastTd.find('input').val());
-                    }else {
-                        lastTd.find('input').val(contentTd);
-                        lastTd.find('span').text(contentTd);
-                        if(editable){
-                            initEdit(lastTd);
+                }
+            });
+            //删除
+            ele.find('.btn-delete').bind('click',function () {
+                var checkedTr = $(this).parent().parent().children('.grid-content').find('.one-select input:checked').parent().parent();
+                if(checkedTr.length>1){
+                    var data = [];
+                    for(var i = 0 ;i < checkedTr.length;i++){
+                        var bId = checkedTr.eq(i).attr('id');
+                        if(bId!==undefined){
+                            bId = bId.split('-')[1];
+                            data.push(Number(bId));
                         }
                     }
-                }else {
-                    tableTr.append('<td>'+contentTd+'</td>');
+                    ajax.destroy(opt.dataSource.transport.destroy,JSON.stringify(data),'/batch');
+                    checkedTr.remove();
+                }else{
+                    var id = checkedTr.attr('id');
+                    if(id!==undefined){
+                        id = id.split('-')[1];
+                        ajax.destroy(opt.dataSource.transport.destroy,JSON.stringify(id),'')
+                    }
+                    checkedTr.remove();
                 }
-            }else {
-                tableTr.append('<td></td>');
+            });
+            //更新或新增
+            ele.find('.btn-save').bind('click',opt,function (event) {
+                var gridContent = $(this).parent().parent().children('.grid-content');
+                var createTr = gridContent.find('.create-tr');
+                var createTrLength = createTr.length;
+
+                var changeTr = gridContent.find('.grid-new-tag').parent().parent().not('.create-tr');
+                var changeTrLength = changeTr.length;
+                console.log(changeTrLength);
+                if(createTrLength>0){
+                    util.createEvent(createTr,createTrLength,event.data);
+                }
+                if(changeTrLength>0){
+                    util.updateEvent(changeTr,changeTrLength,event.data);
+                }
+            });
+        },
+        createGridHeaderDiv : function (ele) {
+            ele.append(htmlElement.headerDiv);
+            ele.find('.all-select input').bind('click',function () {
+                var oneSelect = $(this).closest('.grid-header').parent().children('.grid-content').find('.one-select').children();
+                if($(this).is(":checked")){
+                    oneSelect.prop("checked",true);
+                }else{
+                    oneSelect.prop("checked", false);
+                }
+            });
+            return ele.find('.active');
+        },
+        createGridHeader : function (ele,opt) {
+            var headerTr = methods.createGridHeaderDiv(ele);
+            for(var i=0;i<opt.columns.length;i++){
+                var title = opt.columns[i].title;
+                var attributes = opt.columns[i].attributes;
+                var field = opt.columns[i].field;
+                if('style' in attributes){
+                    //用javascript的for/in循环遍历对象的属性
+                    var style = '';
+                    for(var item in attributes.style){
+                        style = style + item+':'+attributes.style[item] + ';';
+                    }
+                    opt.styleMap[field] = style;
+                    headerTr.append('<th style="'+style+'" class="text-center">'+title+'</th>');
+                }
+                if('template' in opt.columns[i]){
+                    opt.templateMap[field] = opt.columns[i].template;
+                }
             }
+        },
+        createGridContentDiv : function (ele) {
+            ele.append(htmlElement.contentDiv);
+            return ele.find('.table-hover');
+        },
+        createGridContent : function (ele,opt) {
+            var contentTable = methods.createGridContentDiv(ele);
+            var data = opt.dataSource.data;
+            for(var i=0;i<data.length;i++){
+                contentTable.append('<tr id="'+opt.dataId+'-'+data[i][opt.dataId]+'"><td style="width: 20px" class="one-select"><input title="one-select" type="checkbox"></td></tr>');
+                var tableTr =  contentTable.find('tr:last-child');
+                for(var j=0;j<opt.columns.length;j++){
+                    var field = opt.columns[j].field;
+                    var contentTd = data[i][field];
+                    //判断data中是否有相应的字段，有字段追加内容
+                    if( data[i].hasOwnProperty(field)){
+                        //判断是否有模板
+                        if(opt.templateMap.hasOwnProperty(field)){
+                            //判断是否有样式
+                            if(opt.styleMap.hasOwnProperty(field)){
+                                tableTr.append('<td style="'+ opt.styleMap[field] +'">'+opt.templateMap[field]+'</td>');
+                            }else {
+                                tableTr.append('<td>'+opt.templateMap[field]+'</td>');
+                            }
+                            //选择td最后一个
+                            var lastTd = tableTr.children('td:last-child');
+                            //判断是否是时间，如果是时间就进行转换
+                            var regExp=new RegExp('Time');
+                            if(regExp.test(field)){
+                                contentTd = util.dateFormat(contentTd);
+                                util.initKendoTime(lastTd,contentTd,false);
+                            }else {
+                                lastTd.find('input').val(contentTd);
+                                lastTd.find('span').text(contentTd);
+                                if(opt.editable){
+                                    util.initEdit(lastTd);
+                                }
+                            }
+                        }else {
+                            tableTr.append('<td>'+contentTd+'</td>');
+                        }
+                    }else {
+                        tableTr.append('<td></td>');
+                    }
+                }
+            }
+            //滚动条
+            ele.find('.grid-content').perfectScrollbar();
+            //删除第一个模板
+            contentTable.find('tr:first-child').remove();
+        },
+        //创建尾部DIV
+        createFooterDiv : function (ele) {
+            ele.append(htmlElement.footerDiv);
+            return ele.find('.grid-footer');
+        },
+        createFooterSize : function (ele,opt){
+            ele.append(htmlElement.footerSize);
+            ele.find('.page-size').children().on('change',function () {
+                var totalPage = $(this).closest('.grid-footer').find('.total-page').text();
+                var $frame = $(this).closest('.grid-footer').find('.grid-nav');
+                var $frameUl = $frame.children('ul').eq(0);
+                //选择后回归第一页面
+                $frame.sly('activate', 0);
+                methods.navBtnEvent($(this),false,opt);
+                if(Number(totalPage)<Number(opt.dataSource.totalPage)){
+                    // Add item
+                    for(var i = 0; i < Number(opt.dataSource.totalPage)-Number(totalPage) ; i++){
+                        $frame.sly('add', '<li>' + Number($frameUl.children().length +1) + '</li>');
+                    }
+                    $frameUl.children().on('click',function () {
+                        methods.navBtnEvent($(this),true,opt);
+                    });
+                }else if(Number(totalPage)>Number(opt.dataSource.totalPage)){
+                    // Remove item
+                    $frame.sly('remove', Number(opt.dataSource.totalPage)-Number(totalPage));
+                }
+            });
+        },
+        //创建尾部导航
+        createFooterNav : function (ele,opt) {
+            ele.append(htmlElement.footerNav);
+            var navUl = ele.find('.grid-nav-ul');
+            for(var i = 1;i<opt.dataSource.totalPage;i++){
+                navUl.append('<li>'+(i+1)+'</li>');
+            }
+            methods.navSly(ele,opt);
+            var $prev = ele.find('.prev');
+            var $next = ele.find('.next');
+            $prev.on('click',opt,function (event) {
+                methods.navBtnEvent($(this),false,event.data);
+            });
+            $next.on('click',opt,function (event) {
+                methods.navBtnEvent($(this),false,event.data);
+            });
+            navUl.children().on('click',opt,function (event) {
+                methods.navBtnEvent($(this),true,event.data);
+            });
+        },
+        navBtnEvent : function (ele,isLi,opt) {
+            var transport = opt.dataSource.transport;
+            var clearDiv = ele.closest('.grid-footer').parent();
+            clearDiv.children('.grid-content').remove();
+            var pageSize = clearDiv.find('.page-size').children().val();
+            var page;
+            if(isLi){
+                page = Number(ele.text());
+            }else {
+                var activeLi = clearDiv.find('.grid-nav-ul').find('.active');
+                page = Number(activeLi.text());
+            }
+            opt.dataSource = ajax.read(transport.read,transport.param,page,pageSize);
+            opt.dataSource['transport'] = transport;
+            console.log('----改变后----');
+            console.log(opt.dataSource);
+            methods.createGridContent(clearDiv,opt);
+            clearDiv.find('.current-page').text(opt.dataSource.page);
+            clearDiv.find('.total-page').text(opt.dataSource.totalPage);
+        },
+        //添加导航动态样式
+        navSly : function (ele,opt) {
+            var $gridNav  = ele.find('.grid-nav');
+            var $container  = $gridNav.parent();
+            $gridNav.sly({
+                horizontal: 1,
+                itemNav: 'centered',
+                smart: 1,
+                activateOn: 'click',
+                mouseDragging: 1,
+                touchDragging: 1,
+                releaseSwing: 1,
+                startAt: 0,
+                scrollBy: 1,
+                activatePageOn: 'click',
+                speed: 300,
+                elasticBounds: 1,
+                easing: 'easeOutExpo',
+                dragHandle: 1,
+                dynamicHandle: 1,
+                clickBar: 1,
+
+                // Buttons
+                prev: $container.find('.prev'),
+                next: $container.find('.next'),
+                prevPage: $container.find('.prevPage'),
+                nextPage: $container.find('.nextPage')
+            });
+
+            $container.parent().find('.page-btn-go').on('click', function () {
+                var item = $(this).parent().parent().children('input').val();
+                $gridNav.sly('activate', item-1);
+                methods.navBtnEvent($(this),false,opt);
+            });
+        },
+        createGridPage : function (ele,opt) {
+            ele.append(htmlElement.footPage);
+            ele.find('.current-page').text(opt.dataSource.page);
+            ele.find('.total-page').text(opt.dataSource.totalPage);
+        },
+        //创建grid的刷新按钮
+        createGridRefresh : function (ele,opt) {
+            ele.append(htmlElement.footRefresh);
+            ele.find('.refresh-grid').on('click',function () {
+                methods.navBtnEvent($(this),false,opt);
+            });
+        },
+        createGridFooter : function (ele,opt) {
+            var footer = methods.createFooterDiv(ele);
+            methods.createFooterSize(footer,opt);
+            methods.createFooterNav(footer,opt);
+            methods.createGridPage(footer,opt);
+            methods.createGridRefresh(footer,opt);
         }
-    }
-    //滚动条
-    e.find('.grid-content').perfectScrollbar();
-    //删除第一个模板
-    contentTable.find('tr:first-child').remove();
-};
-//创建尾部DIV
-var createFooterDiv = function (e) {
-    e.append(footerDiv);
-    return e.find('.grid-footer');
-};
-//创建尾部导航
-var createFooterNav =function (e) {
-    e.append(footerNav);
-    var navUl = e.find('.grid-nav-ul');
-    for(var i = 1;i<dataSource.totalPage;i++){
-        navUl.append('<li>'+(i+1)+'</li>');
-    }
-    navSly(e);
-};
-//添加导航动态样式
-var navSly = function (e) {
-    var $gridNav  = e.find('.grid-nav');
-    var $container  = $gridNav.parent();
-    $gridNav.sly({
-        horizontal: 1,
-        itemNav: 'centered',
-        smart: 1,
-        activateOn: 'click',
-        mouseDragging: 1,
-        touchDragging: 1,
-        releaseSwing: 1,
-        startAt: 0,
-        scrollBy: 1,
-        activatePageOn: 'click',
-        speed: 300,
-        elasticBounds: 1,
-        easing: 'easeOutExpo',
-        dragHandle: 1,
-        dynamicHandle: 1,
-        clickBar: 1,
 
-        // Buttons
-        prev: $container.find('.prev'),
-        next: $container.find('.next'),
-        prevPage: $container.find('.prevPage'),
-        nextPage: $container.find('.nextPage')
-    });
+    };
 
-    $container.parent().find('.page-btn-go').on('click', function () {
-        var item = $(this).parent().parent().children('input').val();
-        $gridNav.sly('activate', item-1);
-    });
-};
-//创建grid的page提示
-var createGridPage = function (e) {
-    e.append(footPage);
-    e.find('.current-page').text(dataSource.page);
-};
-//创建grid的刷新按钮
-var createGridRefresh = function (e) {
-    e.append(footRefresh);
-    e.find('.total-page').text(dataSource.totalPage);
-};
-//创建grid的尾部
-var createGridFooter = function (e) {
-    var footer = createFooterDiv(e);
-    footer.append(footerSize);
-    createFooterNav(footer);
-    createGridPage(footer);
-    createGridRefresh(footer);
-};
-//将dataGrid添加到jQuery的对象库
-$.fn.extend({
-    dataGrid:function(args) {
-        toolBar = args.toolBar;
-        columns = args.columns;
-        dataSource = args.dataSource;
-        data = dataSource.data;
-        editable = args.editable;
-        dataId = args.dataId;
-        var clearDiv = createClearDiv($(this));
-        if(toolBar){
-            createToolBar(clearDiv);
+    var DataGrid = function (ele,opt) {
+        this.$element = ele;
+        this.defaults = {
+            toolBar: true,
+            editable: false,
+            columns: [],
+            dataSource: {},
+            dataId: '',
+            styleMap : {},//样式集合
+            templateMap : {}//模板集合
+        };
+        this.options = opt;
+        this.options = $.extend({}, this.defaults, opt);
+    };
+
+    DataGrid.prototype = {
+        init : function () {
+            var clearDiv = methods.createClearDiv(this.$element);
+            if(this.options.toolBar){
+                methods.createToolBar(clearDiv,this.options);
+            }
+            methods.createGridHeader(clearDiv,this.options);
+            methods.createGridContent(clearDiv,this.options);
+            methods.createGridFooter(clearDiv,this.options);
         }
-        createGridHeader(clearDiv);
-        createGridContent(clearDiv);
-        createGridFooter(clearDiv);
-    }
-});
+    };
 
-$.extend({
-   grid:function () {
-           console.log('洞彻');
+    $.fn.dataGrid = function (options) {
+        //创建DataGrid的实体
+        var dataGrid = new DataGrid(this, options);
+        //调用其方法
+        dataGrid.init();
+    };
 
-   }
-});
-//创建dataSource，用于在后台取数据，保存传输方式的内存中
-var grid = {
-    dataSource:function (args) {
-        transport = args.transport;
-        // if(transport.hasOwnProperty('create')){
-        //     return ajax.create(transport.create);
-        // }
-        // if(transport.hasOwnProperty('destroy')){
-        //     return ajax.create(transport.destroy);
-        // }
-        // if(transport.hasOwnProperty('update')){
-        //     return ajax.create(transport.update);
-        // }
-        if(transport.hasOwnProperty('read')){
-            return ajax.read(transport.read,args.page,args.pageSize);
+    var util = {
+        //时间格式转换
+        dateFormat: function (date) {
+            var dateValue = new Date(date);
+            var year = dateValue.getFullYear();
+            var month = dateValue.getMonth();
+            var day = dateValue.getDate();
+            var hour = dateValue.getHours();
+            var minute = dateValue.getMinutes();
+            var second = dateValue.getSeconds();
+            return  util.changeZero(Number(year))+'-'+
+                util.changeZero(Number(month)+1)+'-'+
+                util.changeZero(Number(day))+' '+
+                util.changeZero(Number(hour))+':'+
+                util.changeZero(Number(minute))+':'+
+                util.changeZero(Number(second));
+        },
+        //给时间中小于10的前面添加一个0
+        changeZero : function (arg) {
+            var result = '';
+            if(arg<10){
+                result = '0' + String(arg);
+                return result;
+            }else {
+                return arg;
+            }
+        },
+        //解析参数
+        parseParam : function (array,param) {
+            for(var item in param){
+                var name = ''+item;
+                array[name] = param[name];
+            }
+            return array;
+        },
+        //有kendo ui Time的编辑初始化
+        initKendoTime : function (lastTd,contentTd,status) {
+            lastTd.find('input').kendoDateTimePicker({
+                value:new Date(),
+                format: "yyyy-MM-dd HH:mm:ss",
+                timeFormat: "HH:mm",
+                interval: 10
+            });
+            var firstSpan = lastTd.find('.k-header');
+            var lastSpan = lastTd.find('.grid-input').children('span:last-child');
+            firstSpan.find('input').show();
+
+            if(status){
+                firstSpan.show();
+                lastSpan.hide();
+            }else{
+                firstSpan.find('input').val(contentTd);
+                firstSpan.hide();
+                lastSpan.show();
+                lastSpan.text(contentTd);
+            }
+            var val = firstSpan.find('input').val();
+            lastSpan.click(function () {
+                lastSpan.hide();
+                firstSpan.show();
+            });
+
+            firstSpan.find('input').bind('blur',function () {
+                var value = $(this).val();
+                firstSpan.hide();
+                lastSpan.show();
+                if(status){
+                    lastSpan.text(value);
+                    firstSpan.closest('td').append(htmlElement.tdNewTag);
+                }else {
+                    if(val!==value){
+                        lastSpan.text(value);
+                        firstSpan.closest('td').append(htmlElement.tdNewTag);
+                    }else{
+                        lastSpan.text(val);
+                        firstSpan.closest('td').children('.grid-new-tag').remove();
+                    }
+                }
+            });
+        },
+        //可编辑事件绑定，失去焦点时判断内容是否更改或添加，如果有，则给TD添加标记
+        inputBlur : function (e1,e2,val) {
+            e1.bind('blur',function () {
+                var value = e1.val();
+                e1.hide();
+                e2.show();
+                if(val!==value){
+                    e2.text(value);
+                    e1.closest('td').append(htmlElement.tdNewTag);
+                }else{
+                    e2.text(val);
+                    e1.closest('td').children('.grid-new-tag').remove();
+                }
+            });
+        },
+        //初始化TD编辑
+        initEdit : function (e,status) {
+            var tdInput = e.find('input');
+            var tdInputVal = tdInput.val();
+            var tdSpan = e.find('span');
+            if(status){
+                tdInput.show();
+                tdSpan.hide();
+            }
+            e.click(function () {
+                $(this).find('input').show();
+                $(this).find('span').hide();
+            });
+            util.inputBlur(tdInput,tdSpan,tdInputVal);
+
+        },
+        createEvent : function (createTr,createTrLength,opt) {
+            if(createTrLength===1){
+                var inputData = {};
+                inputData = util.parseInput(1,createTr,inputData,opt.dataSource.transport.param);
+                ajax.create(opt.dataSource.transport.create,JSON.stringify(inputData),'');
+            }else{
+                var batchTrData = [];
+                for(var index = createTrLength-1;index>=0;index--){
+                    var bInputData = {};
+                    bInputData = util.parseInput(1,createTr.eq(index),bInputData,opt.dataSource.transport.param);
+                    batchTrData.push(bInputData);
+                }
+                ajax.create(opt.dataSource.transport.create,JSON.stringify(batchTrData),'/batch');
+            }
+            createTr.closest('.grid-content').parent().find('.refresh-grid').trigger('click');
+        },
+        updateEvent : function (changeTr,changeTrLength,opt) {
+            if(changeTrLength===1){
+                var inputData = {};
+                var id = changeTr.attr('id');
+                if(id!==undefined){
+                    inputData[id.split('-')[0]] = id.split('-')[1];
+                }
+                inputData = util.parseInput(0,changeTr.find('.grid-new-tag').parent(),inputData,opt.dataSource.transport.param);
+                ajax.update(opt.dataSource.transport.update,JSON.stringify(inputData),'');
+            }else{
+                var batchTrData = [];
+                for(var index = changeTrLength-1;index>=0;index--){
+                    var bChangeTr = changeTr.eq(index);
+                    var bInputData = {};
+                    var bId = bChangeTr.attr('id');
+                    if(bId!==undefined){
+                        bInputData[bId.split('-')[0]] = bId.split('-')[1];
+                    }
+                    bInputData = util.parseInput(0,bChangeTr.find('.grid-new-tag').parent(),bInputData,opt.dataSource.transport.param);
+                    batchTrData.push(bInputData);
+                }
+                ajax.update(opt.dataSource.transport.update,JSON.stringify(batchTrData),'/batch');
+            }
+            changeTr.closest('.grid-content').parent().find('.refresh-grid').trigger('click');
+        },
+        parseInput : function (index,saveTr,inputData,param) {
+            var trInput = saveTr.find('input');
+            inputData = util.parseParam(inputData,param);
+            for(var i = index;i<trInput.length;i++){
+                var input = trInput.eq(i);
+                var name = input.attr('name');
+                var regExp=new RegExp('Time');
+                if(regExp.test(input.attr('name'))){
+                    inputData[name] = new Date(input.val());
+                }else {
+                    inputData[name] = input.val();
+                }
+            }
+            return inputData;
         }
-    }
-};
+
+    };
+
+})(jQuery);
+
+
 //创建ajax请求
 var ajax = {
-    create:function (args,data) {
+    create:function (args,data,batch) {
         $.ajax({
-            url: args.url,
+            url: args.url+batch,
             type:'post',
             dataType:args.dataType,
+            contentType: "application/json;charset=utf-8",
             data:data,
+            async:false,
             success:function (data) {
                 return data;
             },
@@ -434,12 +607,14 @@ var ajax = {
             }
         });
     },
-    destroy:function(args,data){
+    destroy:function(args,data,batch){
         $.ajax({
-            url: args.url,
+            url: args.url+batch,
             type:'post',
             dataType:args.dataType,
+            contentType: "application/json;charset=utf-8",
             data:data,
+            async:false,
             success:function (data) {
                 return data;
             },
@@ -448,12 +623,14 @@ var ajax = {
             }
         });
     },
-    update:function (args,data) {
+    update:function (args,data,batch) {
         $.ajax({
-            url: args.url,
+            url: args.url+batch,
             type:'post',
             dataType:args.dataType,
+            contentType: "application/json;charset=utf-8",
             data:data,
+            async:false,
             success:function (data) {
                 return data;
             },
@@ -462,9 +639,8 @@ var ajax = {
             }
         });
     },
-    read:function (args,page,pageSize) {
+    read:function (args,data,page,pageSize) {
         var result = {};
-        var data = args.data;
         data['page'] = page;
         data['pageSize'] = pageSize;
         $.ajax({
@@ -483,30 +659,11 @@ var ajax = {
         return result;
     }
 };
-//时间格式转换
-var dateFormat = function (date) {
-    var dateValue = new Date(date);
-    var year = dateValue.getFullYear();
-    var month = dateValue.getMonth();
-    var day = dateValue.getDate();
-    var hour = dateValue.getHours();
-    var minute = dateValue.getMinutes();
-    var second = dateValue.getSeconds();
-    return  changeZero(Number(year))+'-'+
-        changeZero(Number(month)+1)+'-'+
-        changeZero(Number(day))+' '+
-        changeZero(Number(hour))+':'+
-        changeZero(Number(minute))+':'+
-        changeZero(Number(second));
-};
-//给时间中小于10的前面添加一个0
-var changeZero = function (arg) {
-    var result = '';
-    if(arg<10){
-        result = '0' + String(arg);
-        return result;
-    }else {
-        return arg;
-    }
 
+var grid = {
+    dataSource:function (args) {
+        if(args.transport.hasOwnProperty('read')){
+            return $.extend({}, ajax.read(args.transport.read,args.transport.param,args.page,args.pageSize), args);
+        }
+    }
 };

@@ -1,6 +1,6 @@
 package com.cvss.controller;
 
-import com.cvss.pojo.CvParts;
+import com.cvss.pojo.CvPartsAdd;
 import com.cvss.service.IPartsService;
 import com.cvss.util.GridUtil;
 import com.github.pagehelper.PageHelper;
@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 /**
- * 配件Controller
- * Created by yufeng.liu on 2017-04-07.
+ * 配件可加装
+ * Created by yufeng.liu on 2017-05-02.
  */
 @Controller
-@RequestMapping(value = "/parts")
-public class PartsController {
+@RequestMapping(value = "parts/add")
+public class PartsAddController {
 
     @Autowired
     private IPartsService iPartsService;
@@ -31,8 +31,8 @@ public class PartsController {
      */
     @RequestMapping(value = "/create")
     @ResponseBody
-    public boolean createParts(@RequestBody CvParts record){
-        return this.iPartsService.insertParts(record);
+    public boolean createParts(@RequestBody CvPartsAdd record){
+        return this.iPartsService.insertPartsAdd(record);
     }
 
     /**
@@ -42,8 +42,8 @@ public class PartsController {
      */
     @RequestMapping(value = "/create/batch")
     @ResponseBody
-    public int createMoreParts(@RequestBody List<CvParts> recordList){
-        return this.iPartsService.batchInsertParts(recordList);
+    public int createMoreParts(@RequestBody List<CvPartsAdd> recordList){
+        return this.iPartsService.batchInsertPartsAdd(recordList);
     }
 
     /**
@@ -54,7 +54,7 @@ public class PartsController {
     @RequestMapping(value = "/destroy")
     @ResponseBody
     public boolean destroyParts(@RequestBody Integer id){
-        return this.iPartsService.deleteParts(id);
+        return this.iPartsService.deletePartsAdd(id);
     }
 
     /**
@@ -65,7 +65,7 @@ public class PartsController {
     @RequestMapping(value = "/destroy/batch")
     @ResponseBody
     public int destroyMoreParts(@RequestBody  List<Integer> idList){
-        return this.iPartsService.batchDeleteParts(idList);
+        return this.iPartsService.batchDeletePartsAdd(idList);
     }
 
     /**
@@ -75,8 +75,8 @@ public class PartsController {
      */
     @RequestMapping(value = "/update")
     @ResponseBody
-    public boolean updateParts(@RequestBody CvParts record){
-        return this.iPartsService.updateParts(record);
+    public boolean updateParts(@RequestBody CvPartsAdd record){
+        return this.iPartsService.updatePartsAdd(record);
     }
 
     /**
@@ -86,8 +86,8 @@ public class PartsController {
      */
     @RequestMapping(value = "/update/batch")
     @ResponseBody
-    public int updateMoreParts(@RequestBody List<CvParts> recordList){
-        return this.iPartsService.batchUpdateParts(recordList);
+    public int updateMoreParts(@RequestBody List<CvPartsAdd> recordList){
+        return this.iPartsService.batchUpdatePartsAdd(recordList);
     }
 
     /**
@@ -99,10 +99,10 @@ public class PartsController {
      */
     @RequestMapping(value = "/read")
     @ResponseBody
-    public GridUtil readParts(CvParts record, int page, int pageSize){
+    public GridUtil readParts(CvPartsAdd record, int page, int pageSize){
         PageHelper.startPage(page,pageSize);
-        List<CvParts> list =  this.iPartsService.selectAllParts(record);
-        PageInfo<CvParts> pageInfo = new PageInfo<>(list);
+        List<CvPartsAdd> list =  this.iPartsService.selectAllPartsAdd(record);
+        PageInfo<CvPartsAdd> pageInfo = new PageInfo<>(list);
         return new GridUtil<>(list,page,pageSize,pageInfo.getPages());
     }
 }
