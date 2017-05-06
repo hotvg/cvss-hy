@@ -4,12 +4,34 @@
 <link rel="stylesheet" href="${base}/resources/css/dataGrid.css">
 <script src="${base}/resources/js/parts.js"></script>
 <script src="${base}/resources/js/dataGrid.js"></script>
+<script src="${base}/resources/js/lov.js"></script>
 <body>
-<input id="datetimepicker" />
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<div class="container">
+    <div class="input-group con-lg-1">
+        <input class="form-control" type="text" placeholder="">
+        <span class="input-group-btn">
+        <button class="btn btn-default testBtn" type="button">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </button>
+    </span>
+    </div>
+</div>
+
+
 <script>
-    $("#datetimepicker").kendoDateTimePicker({
-        format: "yyyy/MM/dd hh:mm tt",
-        parseFormats: ["MMMM yyyy", "HH:mm"] //format also will be added to parseFormats
+
+    $(function () {
+
+            $(".testBtn").lov();
+
     });
+
 </script>
 </body>

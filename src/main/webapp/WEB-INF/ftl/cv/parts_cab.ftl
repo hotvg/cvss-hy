@@ -1,4 +1,4 @@
-<#include "include/header.ftl"/>
+<#include "../include/header.ftl"/>
 <link rel="stylesheet" href="${base}/resources/css/kendoui.css">
 <link rel="stylesheet" href="${base}/resources/css/parts.css">
 <link rel="stylesheet" href="${base}/resources/css/dataGrid.css">
@@ -7,120 +7,11 @@
 <body>
 <div id="tab-cab" class="parts-tab">
     <ul>
-        <li>驾驶室</li>
+        <li>原装</li>
         <li>可加装</li>
         <li>可换装</li>
     </ul>
-    <div id="content-cab">
-        <div style="clear: both">
-
-            <div class="grid-toolbar">
-                <button class="btn btn-default btn-create">新建</button>
-                <button class="btn btn-success btn-save">保存</button>
-                <button class="btn btn-danger btn-delete">删除</button>
-            </div>
-
-            <div class="grid-header grid-header-toolbar">
-                <table class="table table-bordered table-condensed">
-                    <tr class="active">
-                        <th style="width: 20px" class="all-select">
-                            <input title="all-select" type="checkbox">
-                        </th>
-                        <th style="width: 10%" class="text-center">film_id</th>
-                        <th style="width: 20%" class="text-center">title</th>
-                        <th style="width: 40%" class="text-center">description</th>
-                        <th style="width: 10%" class="text-center">language</th>
-                        <th style="width: auto" class="text-center">operation</th>
-                    </tr>
-                </table>
-            </div>
-
-            <div class="grid-content grid-content-toolbar">
-                <table class="table table-bordered table-condensed table-hover">
-                    <tr>
-                        <td style="width: 20px" class="one-select"><input title="one-select" type="checkbox"></td>
-                        <td style="width: 10%">
-                            <div class="input-group grid-input">
-                                <input style="display: none;" type="text" class="form-control" placeholder="" value="test" name="userName">
-                                <span>test</span>
-                            </div>
-                            <div class="grid-new-tag">
-
-                            </div>
-                        </td>
-                        <td style="width: 20%">test</td>
-                        <td style="width: 40%">test</td>
-                        <td style="width: 10%">test</td>
-                        <td style="width: auto">test</td>
-                    </tr>
-                </table>
-            </div>
-
-            <div class="grid-footer">
-                <div class="input-group col-lg-1 page-rows">
-                    <select class="form-control">
-                        <option>10</option>
-                        <option>15</option>
-                        <option>20</option>
-                        <option>25</option>
-                        <option>30</option>
-                        <option>35</option>
-                    </select>
-                </div>
-
-                <input id="page" type="hidden" value="">
-                <div class="btn-group grid-nav-container">
-                    <div class="btn-group btn-grid-left">
-                        <button type="button" class="btn btn-grid-nav prevPage">
-                            <i class="fa fa-angle-double-left" aria-hidden="true"></i>
-                        </button>
-                        <button type="button" class="btn btn-grid-nav btn-grid-angle prev">
-                            <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        </button>
-                    </div>
-                    <div class="btn-group grid-nav">
-                        <ul class="grid-nav-ul">
-                            <li class="active">1</li>
-                            <li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li><li>8</li><li>9</li>
-                            <li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li>
-                            <li>19</li><li>20</li><li>21</li><li>22</li><li>23</li><li>24</li><li>25</li><li>26</li><li>27</li>
-                            <li>28</li><li>29</li>
-                        </ul>
-                    </div>
-                    <div class="btn-group btn-grid-right">
-                        <button type="button" class="btn btn-grid-nav btn-grid-angle next">
-                            <i class="fa fa-angle-right" aria-hidden="true"></i>
-                        </button>
-                        <button type="button" class="btn btn-grid-nav nextPage">
-                            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-                        </button>
-                    </div>
-
-
-                </div>
-
-                <div class="input-group col-lg-1 page-go">
-                    <input title="page-num" type="text" class="form-control page-num">
-                    <span class="input-group-btn">
-				        <button class="btn btn-default page-btn-go" type="button">Go</button>
-                    </span>
-                </div>
-
-                <div class="input-group grid-page">
-                    <span class="current-page">1</span>
-                    /
-                    <span class="total-page">3</span>
-                </div>
-
-                <div class="input-group refresh-grid btn">
-                    <i class="fa fa-refresh" aria-hidden="true"></i>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
+    <div id="content-cab"></div>
     <div id="content-cab-add"></div>
     <div id="content-cab-replace"></div>
 </div>
@@ -140,26 +31,346 @@
     }).data("kendoTabStrip");
     tabCabScript.select(0);
 
+    var cabDataSource = new grid.dataSource({
+        transport: {
+            create: {
+                url: "/parts/create",
+                dataType: "json"
+            },
+            destroy :{
+                url:"/parts/destroy",
+                dataType: "json"
+            },
+            update: {
+                url:"/parts/update",
+                dataType: "json"
+            },
+            read :{
+                url:"/parts/read",
+                dataType: "json"
+            },
+            param:{
+                typeId:1
+            }
+        },
+        page: 1,
+        pageSize: 10
+    });
 
+    var cabAddDataSource = new grid.dataSource({
+        transport: {
+            create: {
+                url: "/parts/add/create",
+                dataType: "json"
+            },
+            destroy :{
+                url:"/parts/add/destroy",
+                dataType: "json"
+            },
+            update: {
+                url:"/parts/add/update",
+                dataType: "json"
+            },
+            read :{
+                url:"/parts/add/read",
+                dataType: "json"
+            },
+            param:{
+                typeId:1
+            }
+        },
+        page: 1,
+        pageSize: 10
+    });
 
-    var args = {
+    var cabReplaceDataSource = new grid.dataSource({
+        transport: {
+            create: {
+                url: "/parts/replace/create",
+                dataType: "json"
+            },
+            destroy :{
+                url:"/parts/replace/destroy",
+                dataType: "json"
+            },
+            update: {
+                url:"/parts/replace/update",
+                dataType: "json"
+            },
+            read :{
+                url:"/parts/replace/read",
+                dataType: "json"
+            },
+            param:{
+                typeId:1
+            }
+        },
+        page: 1,
+        pageSize: 10
+    });
+
+    var cabArgs = {
         toolBar:true,
+        editable:true,
         columns:[
             {
-                field:"",
-                title:"",
-                attributes:"",
-                template:""
-
-            },
-            {field:""}
+                field:'partsName',
+                title:'名称',
+                attributes:{
+                    style:{
+                        'width':'25%',
+                        'text-align': 'center'
+                    }
+                },
+                template:
+                '<div class="input-group grid-input">'+
+                '<input style="display: none;" type="text" class="form-control" placeholder="" value="" name="partsName">'+
+                '<span></span>'+
+                '</div>'
+            },{
+                field:'createTime',
+                title:'创建时间',
+                attributes:{
+                    style:{
+                        'width':'40%',
+                        'text-align': 'center'
+                    }
+                },
+                template:
+                '<div class="input-group grid-input">'+
+                '<input style="display: none;" type="text" placeholder="" value="" name="createTime">'+
+                '<span></span>'+
+                '</div>'
+            },{
+                field:'status',
+                title:'状态',
+                attributes:{
+                    style:{
+                        'width':'auto',
+                        'text-align': 'center'
+                    }
+                },
+                template:
+                '<div class="input-group grid-input">'+
+                '<input style="display: none;" type="text" class="form-control" placeholder="" value="" name="status">'+
+                '<span></span>'+
+                '</div>'
+            }
         ],
-        dataSource:{
-            pageSize:2
-        },
-        editable: true
+        dataSource:cabDataSource,
+        dataId: 'partsId'
     };
-    $('#content-cab-add').dataGrid(args);
+
+    var cabAddArgs = {
+        toolBar:true,
+        editable:true,
+        columns:[
+            {
+                field:'addName',
+                title:'名称',
+                attributes:{
+                    style:{
+                        'width':'15%',
+                        'text-align': 'center'
+                    }
+                },
+                template:
+                '<div class="input-group grid-input">'+
+                '<input style="display: none;" type="text" class="form-control" placeholder="" value="" name="addName">'+
+                '<span></span>'+
+                '</div>'
+            },{
+                field:'unit',
+                title:'单位',
+                attributes:{
+                    style:{
+                        'width':'10%',
+                        'text-align': 'center'
+                    }
+                },
+                template:
+                '<div class="input-group grid-input">'+
+                '<input style="display: none;" type="text" class="form-control" placeholder="" value="" name="unit">'+
+                '<span></span>'+
+                '</div>'
+            },{
+                field:'taxPrice',
+                title:'税前价',
+                attributes:{
+                    style:{
+                        'width':'10%',
+                        'text-align': 'center'
+                    }
+                },
+                template:
+                '<div class="input-group grid-input">'+
+                '<input style="display: none;" type="text" class="form-control" placeholder="" value="" name="taxPrice">'+
+                '<span></span>'+
+                '</div>'
+            },{
+                field:'remarks',
+                title:'备注',
+                attributes:{
+                    style:{
+                        'width':'25%',
+                        'text-align': 'center'
+                    }
+                },
+                template:
+                '<div class="input-group grid-input">'+
+                '<input style="display: none;" type="text" class="form-control" placeholder="" value="" name="remarks">'+
+                '<span></span>'+
+                '</div>'
+            },{
+                field:'createTime',
+                title:'创建时间',
+                attributes:{
+                    style:{
+                        'width':'20%',
+                        'text-align': 'center'
+                    }
+                },
+                template:
+                '<div class="input-group grid-input">'+
+                '<input style="display: none;" type="text" placeholder="" value="" name="createTime">'+
+                '<span></span>'+
+                '</div>'
+            },{
+                field:'status',
+                title:'状态',
+                attributes:{
+                    style:{
+                        'width':'auto',
+                        'text-align': 'center'
+                    }
+                },
+                template:
+                '<div class="input-group grid-input">'+
+                '<input style="display: none;" type="text" class="form-control" placeholder="" value="" name="status">'+
+                '<span></span>'+
+                '</div>'
+            }
+        ],
+        dataSource:cabAddDataSource,
+        dataId: 'addId'
+    };
+
+    var cabReplaceArgs = {
+        toolBar:true,
+        editable:true,
+        columns:[
+            {
+                field:'replaceBefore',
+                title:'更换前',
+                attributes:{
+                    style:{
+                        'width':'15%',
+                        'text-align': 'center'
+                    }
+                },
+                template:
+                '<div class="input-group grid-input">'+
+                '<input style="display: none;" type="text" class="form-control" placeholder="" value="" name="addName">'+
+                '<span></span>'+
+                '</div>'
+            },{
+                field:'replaceAfter',
+                title:'更换后',
+                attributes:{
+                    style:{
+                        'width':'15%',
+                        'text-align': 'center'
+                    }
+                },
+                template:
+                '<div class="input-group grid-input">'+
+                '<input style="display: none;" type="text" class="form-control" placeholder="" value="" name="addName">'+
+                '<span></span>'+
+                '</div>'
+            },{
+                field:'unit',
+                title:'单位',
+                attributes:{
+                    style:{
+                        'width':'10%',
+                        'text-align': 'center'
+                    }
+                },
+                template:
+                '<div class="input-group grid-input">'+
+                '<input style="display: none;" type="text" class="form-control" placeholder="" value="" name="unit">'+
+                '<span></span>'+
+                '</div>'
+            },{
+                field:'taxPrice',
+                title:'税前价',
+                attributes:{
+                    style:{
+                        'width':'10%',
+                        'text-align': 'center'
+                    }
+                },
+                template:
+                '<div class="input-group grid-input">'+
+                '<input style="display: none;" type="text" class="form-control" placeholder="" value="" name="taxPrice">'+
+                '<span></span>'+
+                '</div>'
+            },{
+                field:'remarks',
+                title:'备注',
+                attributes:{
+                    style:{
+                        'width':'20%',
+                        'text-align': 'center'
+                    }
+                },
+                template:
+                '<div class="input-group grid-input">'+
+                '<input style="display: none;" type="text" class="form-control" placeholder="" value="" name="remarks">'+
+                '<span></span>'+
+                '</div>'
+            },{
+                field:'createTime',
+                title:'创建时间',
+                attributes:{
+                    style:{
+                        'width':'20%',
+                        'text-align': 'center'
+                    }
+                },
+                template:
+                '<div class="input-group grid-input">'+
+                '<input style="display: none;" type="text" placeholder="" value="" name="createTime">'+
+                '<span></span>'+
+                '</div>'
+            },{
+                field:'status',
+                title:'状态',
+                attributes:{
+                    style:{
+                        'width':'auto',
+                        'text-align': 'center'
+                    }
+                },
+                template:
+                '<div class="input-group grid-input">'+
+                '<input style="display: none;" type="text" class="form-control" placeholder="" value="" name="status">'+
+                '<span></span>'+
+                '</div>'
+            }
+        ],
+        dataSource:cabReplaceDataSource,
+        dataId: 'addId'
+    };
+
+
+
+    $(function () {
+        $('#content-cab').dataGrid(cabArgs); //调用jQuery对象方法
+        $('#content-cab-add').dataGrid(cabAddArgs);
+        $('#content-cab-replace').dataGrid(cabReplaceArgs);
+
+    });
+
 </script>
 </body>
-</html>
