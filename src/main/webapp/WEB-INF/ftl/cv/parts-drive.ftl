@@ -1,22 +1,19 @@
 <#include "../include/header.ftl"/>
 <link rel="stylesheet" href="${base}/resources/css/kendoui.css">
 <link rel="stylesheet" href="${base}/resources/css/parts.css">
-<link rel="stylesheet" href="${base}/resources/css/dataGrid.css">
-<script src="${base}/resources/js/parts.js"></script>
-<script src="${base}/resources/js/dataGrid.js"></script>
 <body>
-<div id="tab-cab" class="parts-tab">
+<div id="tab-drive" class="parts-tab">
     <ul>
         <li>原装</li>
-        <li>可加装</li>
+        <li>加减装</li>
         <li>可换装</li>
     </ul>
-    <div id="content-cab"></div>
-    <div id="content-cab-add"></div>
-    <div id="content-cab-replace"></div>
+    <div id="content-drive"></div>
+    <div id="content-drive-add"></div>
+    <div id="content-drive-replace"></div>
 </div>
 <script type="text/javascript">
-    var tabCabScript = $('#tab-cab').kendoTabStrip({
+    var tabDriveScript = $('#tab-drive').kendoTabStrip({
         animation: {
             close: {
                 duration: 100,
@@ -29,9 +26,9 @@
 
         }
     }).data("kendoTabStrip");
-    tabCabScript.select(0);
+    tabDriveScript.select(0);
 
-    var cabDataSource = new grid.dataSource({
+    var driveDataSource = new grid.dataSource({
         transport: {
             create: {
                 url: "/parts/create",
@@ -50,14 +47,14 @@
                 dataType: "json"
             },
             param:{
-                typeId:1
+                typeId:6
             }
         },
         page: 1,
         pageSize: 10
     });
 
-    var cabAddDataSource = new grid.dataSource({
+    var driveAddDataSource = new grid.dataSource({
         transport: {
             create: {
                 url: "/parts/add/create",
@@ -76,14 +73,14 @@
                 dataType: "json"
             },
             param:{
-                typeId:1
+                typeId:6
             }
         },
         page: 1,
         pageSize: 10
     });
 
-    var cabReplaceDataSource = new grid.dataSource({
+    var driveReplaceDataSource = new grid.dataSource({
         transport: {
             create: {
                 url: "/parts/replace/create",
@@ -102,14 +99,14 @@
                 dataType: "json"
             },
             param:{
-                typeId:1
+                typeId:6
             }
         },
         page: 1,
         pageSize: 10
     });
 
-    var cabArgs = {
+    var driveArgs = {
         toolBar:true,
         editable:true,
         columns:[
@@ -157,11 +154,11 @@
                 '</div>'
             }
         ],
-        dataSource:cabDataSource,
+        dataSource:driveDataSource,
         dataId: 'partsId'
     };
 
-    var cabAddArgs = {
+    var driveAddArgs = {
         toolBar:true,
         editable:true,
         columns:[
@@ -251,17 +248,28 @@
                 '</div>'
             }
         ],
-        dataSource:cabAddDataSource,
+        dataSource:driveAddDataSource,
         dataId: 'addId'
     };
 
-    var cabReplaceArgs = {
+    var driveReplaceArgs = {
         toolBar:true,
         editable:true,
         columns:[
             {
                 field:'replaceBefore',
                 title:'更换前',
+                type:'lov',
+                lovOptions:{
+                    columns:[
+                        {field:'partsId',name:'配件编号'},
+                        {field:'partsName',name:'配件名称'}
+                    ],
+                    url:'/parts/read',
+                    param:{
+                        typeId:6
+                    }
+                },
                 attributes:{
                     style:{
                         'width':'15%',
@@ -269,13 +277,34 @@
                     }
                 },
                 template:
-                '<div class="input-group grid-input">'+
-                '<input style="display: none;" type="text" class="form-control" placeholder="" value="" name="addName">'+
-                '<span></span>'+
+                '<div class="input-group lov-div">'+
+                    '<input class="form-control" type="hidden" placeholder="" name="replaceBefore">'+
+                    '<div class="form-control" type="text">'+
+                        '<span class="lov-name"></span>'+
+                        '<button class="btn-clear-input" type="button">'+
+                        '<i class="fa fa-times" aria-hidden="true"></i>'+
+                        '</button>'+
+                    '</div>'+
+                    '<div class="input-group-btn">'+
+                        '<button class="btn btn-default lov-btn" type="button">'+
+                        '<i class="fa fa-search" aria-hidden="true"></i>'+
+                        '</button>'+
+                    '</div>'+
                 '</div>'
             },{
                 field:'replaceAfter',
                 title:'更换后',
+                type:'lov',
+                lovOptions:{
+                    columns:[
+                        {field:'partsId',name:'配件编号'},
+                        {field:'partsName',name:'配件名称'}
+                    ],
+                    url:'/parts/read',
+                    param:{
+                        typeId:6
+                    }
+                },
                 attributes:{
                     style:{
                         'width':'15%',
@@ -283,10 +312,20 @@
                     }
                 },
                 template:
-                '<div class="input-group grid-input">'+
-                '<input style="display: none;" type="text" class="form-control" placeholder="" value="" name="addName">'+
-                '<span></span>'+
-                '</div>'
+                    '<div class="input-group lov-div">'+
+                        '<input class="form-control" type="hidden" placeholder="" name="replaceAfter">'+
+                        '<div class="form-control" type="text">'+
+                            '<span class="lov-name"></span>'+
+                            '<button class="btn-clear-input" type="button">'+
+                            '<i class="fa fa-times" aria-hidden="true"></i>'+
+                            '</button>'+
+                        '</div>'+
+                        '<div class="input-group-btn">'+
+                            '<button class="btn btn-default lov-btn" type="button">'+
+                            '<i class="fa fa-search" aria-hidden="true"></i>'+
+                            '</button>'+
+                        '</div>'+
+                    '</div>'
             },{
                 field:'unit',
                 title:'单位',
@@ -359,18 +398,15 @@
                 '</div>'
             }
         ],
-        dataSource:cabReplaceDataSource,
-        dataId: 'addId'
+        dataSource:driveReplaceDataSource,
+        dataId: 'replaceId'
     };
 
+    $('#content-drive').dataGrid(driveArgs); //调用jQuery对象方法
+    $('#content-drive-add').dataGrid(driveAddArgs);
+    $('#content-drive-replace').dataGrid(driveReplaceArgs);
 
 
-    $(function () {
-        $('#content-cab').dataGrid(cabArgs); //调用jQuery对象方法
-        $('#content-cab-add').dataGrid(cabAddArgs);
-        $('#content-cab-replace').dataGrid(cabReplaceArgs);
-
-    });
 
 </script>
 </body>

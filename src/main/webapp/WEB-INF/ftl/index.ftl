@@ -37,13 +37,13 @@
                                 <span class="nav-chevron-right"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
                             </button>
                             <ul class="nav-child-item">
-                                <li><button class="nav-menu-btn-item">驾驶室<input type="hidden" name="page" value="cv/parts_cab"></button></li>
-                                <li><button class="nav-menu-btn-item">变速箱&取力器</button></li>
-                                <li><button class="nav-menu-btn-item">发动机</button></li>
-                                <li><button class="nav-menu-btn-item">轮胎&钢圈</button></li>
-                                <li><button class="nav-menu-btn-item">油箱&气瓶</button></li>
-                                <li><button class="nav-menu-btn-item">驱动桥</button></li>
-                                <li><button class="nav-menu-btn-item">其他配件</button></li>
+                                <li><button class="nav-menu-btn-item">驾驶室<input type="hidden" name="page" value="cv/parts-cab"></button></li>
+                                <li><button class="nav-menu-btn-item">变速箱&取力器<input type="hidden" name="page" value="cv/parts-gearbox"></button></li>
+                                <li><button class="nav-menu-btn-item">发动机<input type="hidden" name="page" value="cv/parts-engine"></button></li>
+                                <li><button class="nav-menu-btn-item">轮胎&钢圈<input type="hidden" name="page" value="cv/parts-tire"></button></li>
+                                <li><button class="nav-menu-btn-item">油箱&气瓶<input type="hidden" name="page" value="cv/parts-bunkers"></button></li>
+                                <li><button class="nav-menu-btn-item">驱动桥<input type="hidden" name="page" value="cv/parts-drive"></button></li>
+                                <li><button class="nav-menu-btn-item">其他配件<input type="hidden" name="page" value="cv/parts-other"></button></li>
                             </ul>
                         </li>
                     </ul>
@@ -87,8 +87,8 @@
                                 <span class="nav-chevron-right"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
                             </button>
                             <ul class="nav-child-item">
-                                <li><button class="nav-menu-btn-item">角色管理</button></li>
-                                <li><button class="nav-menu-btn-item">用户管理</button></li>
+                                <li><button class="nav-menu-btn-item">角色管理<input type="hidden" name="page" value="sys/account/role"></button></li>
+                                <li><button class="nav-menu-btn-item">用户管理<input type="hidden" name="page" value="sys/account/user"></button></li>
                             </ul>
                         </li>
                         <li>
@@ -96,6 +96,17 @@
                                 <span class="nav-icon"><i class="fa fa-wrench" aria-hidden="true"></i></span>
                                 <span class="nav-name">功能分配</span>
                             </button>
+                        </li>
+                        <li>
+                            <button class="nav-menu-btn">
+                                <span class="nav-icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
+                                <span class="nav-name">分类管理</span>
+                                <span class="nav-chevron-right"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
+                            </button>
+                            <ul class="nav-child-item">
+                                <li><button class="nav-menu-btn-item">车辆分类<input type="hidden" name="page" value="sys/sort/cv"></button></li>
+                                <li><button class="nav-menu-btn-item">配件分类<input type="hidden" name="page" value="sys/sort/parts"></button></li>
+                            </ul>
                         </li>
                         <li>
                             <button class="nav-menu-btn">
@@ -172,7 +183,7 @@
                     //利用trim消除空格等
                     var tab_title = $(this).text().trim();
                     //判断标签页是否已经打开，如果打开则不再重新打开。原理，数组tab_array中不存在标签标题
-                    if($.inArray(tab_title,tab_array)==-1){
+                    if($.inArray(tab_title,tab_array)===-1){
                         tabStrip.append(
                                 {
                                     text: tab_title+ '<button class="close-tab-btn"><i class="fa fa-times" aria-hidden="true"></i></button>'+'&nbsp;&nbsp;',

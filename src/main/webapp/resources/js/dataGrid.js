@@ -128,7 +128,14 @@
                         if(regExp.test(field)){
                             util.initKendoTime(lastTd,'',true)
                         }else {
-                            util.initEdit(lastTd,true);
+                            if(opt.columns[j].type!=='lov'){
+                                util.initEdit(lastTd,true);
+                            }else{
+                                lastTd.find('.lov-btn').lov(opt.columns[j].lovOptions);
+                                lastTd.find('span').bind("DOMNodeInserted",function(){
+                                    $(this).closest('td').append(htmlElement.tdNewTag);
+                                });
+                            }
                         }
                     }else {
                         firstTr.append('<td>'+htmlElement.createTrTemplate+'</td>');
@@ -147,7 +154,9 @@
                             data.push(Number(bId));
                         }
                     }
-                    ajax.destroy(opt.dataSource.transport.destroy,JSON.stringify(data),'/batch');
+                    if(data.length>0){
+                        ajax.destroy(opt.dataSource.transport.destroy,JSON.stringify(data),'/batch');
+                    }
                     checkedTr.remove();
                 }else{
                     var id = checkedTr.attr('id');
@@ -208,10 +217,10 @@
         },
         createGridContentDiv : function (ele) {
             ele.append(htmlElement.contentDiv);
+            ele.find('.grid-content').perfectScrollbar();
             return ele.find('.table-hover');
         },
-        createGridContent : function (ele,opt) {
-            var contentTable = methods.createGridContentDiv(ele);
+        createGridContent : function (contentTable,opt,isNew) {
             var data = opt.dataSource.data;
             for(var i=0;i<data.length;i++){
                 contentTable.append('<tr id="'+opt.dataId+'-'+data[i][opt.dataId]+'"><td style="width: 20px" class="one-select"><input title="one-select" type="checkbox"></td></tr>');
@@ -237,10 +246,18 @@
                                 contentTd = util.dateFormat(contentTd);
                                 util.initKendoTime(lastTd,contentTd,false);
                             }else {
-                                lastTd.find('input').val(contentTd);
-                                lastTd.find('span').text(contentTd);
-                                if(opt.editable){
+                                if(opt.editable&&opt.columns[j].type!=='lov'){
+                                    lastTd.find('input').val(contentTd);
+                                    lastTd.find('span').text(contentTd);
                                     util.initEdit(lastTd);
+                                }else if(opt.editable&&opt.columns[j].type==='lov'){
+                                    var lovOptions = opt.columns[j].lovOptions;
+                                    lastTd.find('input').val(contentTd[lovOptions.columns[0].field]);
+                                    lastTd.find('span').text(contentTd[lovOptions.columns[1].field]);
+                                    lastTd.find('.lov-btn').lov(lovOptions);
+                                    lastTd.find('span').bind("DOMNodeInserted",function(){
+                                        $(this).closest('td').append(htmlElement.tdNewTag);
+                                    });
                                 }
                             }
                         }else {
@@ -251,10 +268,14 @@
                     }
                 }
             }
+            if(isNew){
+                //删除第一个模板
+                contentTable.find('tr:first-child').remove();
+            }
+            methods.changeSly(contentTable.closest('.grid-content').parent(),opt);
             //滚动条
-            ele.find('.grid-content').perfectScrollbar();
-            //删除第一个模板
-            contentTable.find('tr:first-child').remove();
+            contentTable.closest('.grid-content').perfectScrollbar('update');
+
         },
         //创建尾部DIV
         createFooterDiv : function (ele) {
@@ -263,25 +284,11 @@
         },
         createFooterSize : function (ele,opt){
             ele.append(htmlElement.footerSize);
-            ele.find('.page-size').children().on('change',function () {
-                var totalPage = $(this).closest('.grid-footer').find('.total-page').text();
-                var $frame = $(this).closest('.grid-footer').find('.grid-nav');
-                var $frameUl = $frame.children('ul').eq(0);
-                //选择后回归第一页面
+            ele.find('.page-size').children().on('change',opt,function (event) {
+                var $navUl = ele.find('.grid-nav-ul');
+                var $frame = $navUl.parent();
                 $frame.sly('activate', 0);
-                methods.navBtnEvent($(this),false,opt);
-                if(Number(totalPage)<Number(opt.dataSource.totalPage)){
-                    // Add item
-                    for(var i = 0; i < Number(opt.dataSource.totalPage)-Number(totalPage) ; i++){
-                        $frame.sly('add', '<li>' + Number($frameUl.children().length +1) + '</li>');
-                    }
-                    $frameUl.children().on('click',function () {
-                        methods.navBtnEvent($(this),true,opt);
-                    });
-                }else if(Number(totalPage)>Number(opt.dataSource.totalPage)){
-                    // Remove item
-                    $frame.sly('remove', Number(opt.dataSource.totalPage)-Number(totalPage));
-                }
+                methods.navBtnEvent($(this),false,event.data);
             });
         },
         //创建尾部导航
@@ -292,6 +299,7 @@
                 navUl.append('<li>'+(i+1)+'</li>');
             }
             methods.navSly(ele,opt);
+            navUl.removeAttr('style');
             var $prev = ele.find('.prev');
             var $next = ele.find('.next');
             $prev.on('click',opt,function (event) {
@@ -304,10 +312,40 @@
                 methods.navBtnEvent($(this),true,event.data);
             });
         },
+        changeSly:function (ele,opt) {
+            var $navUl = ele.find('.grid-nav-ul');
+            var $frame = $navUl.parent();
+            if(opt.dataSource.totalPage>$navUl.children().length){
+                //console.log('total:'+opt.dataSource.totalPage+' nuvUl:'+$navUl.children().length);
+                var number = opt.dataSource.totalPage-$navUl.children().length;
+                //console.log('opt.dataSource.totalPage - $navUl.children().length:'+test);
+                for(var i = 0; i < number; i++){
+                    $frame.sly('add', '<li>' + Number($navUl.children().length +1) + '</li>');
+                }
+                $navUl.children().on('click',function () {
+                    methods.navBtnEvent($(this),true,opt);
+                });
+                $frame.sly('activate', 0);
+            }else if(opt.dataSource.totalPage<$navUl.children().length){
+                if(opt.dataSource.totalPage===0){
+                    for(var j=Number($navUl.children().length)-1;j>=0;j--){
+                        $frame.sly('remove', j);
+                    }
+                }else {
+                    console.log('length : '+$navUl.children().length);
+                    console.log('totalPage : '+opt.dataSource.totalPage);
+                    for(var k=$navUl.children().length-1;k>opt.dataSource.totalPage-1;k--){
+                        console.log(k);
+                        $frame.sly('remove', k);
+                    }
+                    $frame.sly('activate', 0);
+                }
+            }
+        },
         navBtnEvent : function (ele,isLi,opt) {
             var transport = opt.dataSource.transport;
             var clearDiv = ele.closest('.grid-footer').parent();
-            clearDiv.children('.grid-content').remove();
+            clearDiv.children('.grid-content').find('tr').remove();
             var pageSize = clearDiv.find('.page-size').children().val();
             var page;
             if(isLi){
@@ -318,7 +356,7 @@
             }
             opt.dataSource = ajax.read(transport.read,transport.param,page,pageSize);
             opt.dataSource['transport'] = transport;
-            methods.createGridContent(clearDiv,opt);
+            methods.createGridContent(clearDiv.find('.table-hover'),opt,false);
             clearDiv.find('.current-page').text(opt.dataSource.page);
             clearDiv.find('.total-page').text(opt.dataSource.totalPage);
         },
@@ -401,7 +439,8 @@
                 methods.createToolBar(clearDiv,this.options);
             }
             methods.createGridHeader(clearDiv,this.options);
-            methods.createGridContent(clearDiv,this.options);
+            var contentDiv = methods.createGridContentDiv(clearDiv);
+            methods.createGridContent(contentDiv,this.options,true);
             methods.createGridFooter(clearDiv,this.options);
         }
     };

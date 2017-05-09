@@ -1,3 +1,8 @@
+.lov{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+}
 .lov-header table{
     padding: 0;
     margin: 0;
@@ -11,11 +16,62 @@
     margin: 0;
     list-style: none;
 }
+.lov-form{
+    width: 100%;
+    height: 70px;
+    margin-top:5px;
+}
+.lov-form .input-group{
+    float: left;
+    margin-right: 5px;
+}
+.lov-form .input-group .form-control{
+    border-radius:4px;
+}
+.lov-header{
+    width: 100%;
+    height: 32px;
+    margin-top: 25px;
+}
+.lov-content{
+    width: 100%;
+    height: auto;
+    position: absolute;
+    padding: 0 8px 0 8px;
+    top: 140px;
+    bottom: 45px;
+    left: 0;
+    box-sizing: border-box;
+}
+.lov-content table{
+    padding: 0;
+    margin: 0;
+}
+.lov-content table td{
+    width: 50%;
+}
+.lov-footer{
+    width: 100%;
+    height: 40px;
+    position: absolute;
+    bottom: 5px;
+    left: 0;
+    padding: 0 9px 0 8px;
+    background: #ffffff;
+    box-sizing: border-box;
+}
+.lov-footer-border{
+    width: 100%;
+    height: 100%;
+    border: 1px solid #eae8e8;
+    padding: 2px 0 0 2px;
+    box-sizing: border-box;
+}
 .lov-footer-nav li{
     color: #333;
     background-color: #ffffff;
     width: 34px;
-    height: 34px;
+    height: 32px;
     border-right: 1px solid #ddd;
     border-bottom: 1px solid #ddd;
     border-top: 1px solid #ddd;
@@ -32,7 +88,8 @@
     border-color: #337ab7;
 }
 .lov-sly{
-    width: 175px;
+    padding-left: 1px;
+    width: 105px;
     overflow: hidden;
 }
 .lov-btn button{
@@ -46,5 +103,27 @@
     border-color: #adadad;
 }
 .lov-angle-btn{
-    width: 18px;
+    width: 8px;
+}
+.btn-clear-input{
+    color: #2e2e2e;
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    width: 19px;
+    height: 19px;
+    top:6px;
+    right: 2px;
+    z-index: 1000;
+    position: absolute;
+    display: none;
+}
+.lov-div .form-control{
+    overflow-y: auto;
+    text-overflow: ellipsis;
+}
+.lov-div .form-control:not(:first-child):not(:last-child){
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
 }

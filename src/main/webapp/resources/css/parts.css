@@ -18,7 +18,7 @@ ul{
 .parts-tab .k-header{
     background-image: none;
     border: none;
-    height: 40px;
+    /*height: 40px;*/
     font-size: 15px;
 }
 .parts-tab .k-tabstrip-items{

@@ -14,6 +14,9 @@
     <link rel="stylesheet" href="${base}/lib/kendoui/styles/kendo.default.min.css">
     <!--主页css-->
     <link rel="stylesheet" href="${base}/resources/css/index.css">
+    <!--主页css-->
+    <link rel="stylesheet" href="${base}/resources/css/dataGrid.css">
+    <link rel="stylesheet" href="${base}/resources/css/lov.css">
     <!--滚动条插件-->
     <link rel="stylesheet" href="${base}/lib/perfect-scrollbar/css/perfect-scrollbar.min.css">
     <script type="text/javascript" src="${base}/lib/jquery/jquery-3.1.1.min.js"></script>
@@ -32,4 +35,7 @@
     <script type="text/javascript" src="${base}/lib/sly/sly.min.js"></script>
     <!--主页JS-->
     <script type="text/javascript" src="${base}/resources/js/index.js"></script>
+    <script src="${base}/resources/js/dataGrid.js"></script>
+    <!--lov-->
+    <script type="text/javascript" src="${base}/resources/js/lov.js"></script>
 </head>

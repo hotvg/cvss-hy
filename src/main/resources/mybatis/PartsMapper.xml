@@ -32,6 +32,24 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <result column="status" property="status" jdbcType="INTEGER" />
     </resultMap>
+    <!--CvPartsReplacePo-->
+    <resultMap id="CvPartsReplaceCvPartsResultMap" type="com.cvss.pojo.CvPartsReplacePojo" >
+        <id column="replace_id" property="replaceId" jdbcType="INTEGER" />
+        <result column="unit" property="unit" jdbcType="VARCHAR" />
+        <result column="tax_price" property="taxPrice" jdbcType="DECIMAL" />
+        <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+        <result column="type_id" property="typeId" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <association property="replaceBefore" column="replace_before" javaType="com.cvss.pojo.CvParts">
+            <id column="parts_id" property="partsId"/>
+            <result column="parts_name" property="partsName"/>
+        </association>
+        <association property="replaceAfter" column="replace_after" javaType="com.cvss.pojo.CvParts">
+            <id column="parts_id" property="partsId"/>
+            <result column="parts_name" property="partsName"/>
+        </association>
+    </resultMap>
     <!--CvPartsType-->
     <resultMap id="CvPartsTypeResultMap" type="com.cvss.pojo.CvPartsType" >
         <id column="type_id" property="typeId" jdbcType="INTEGER" />
@@ -329,8 +347,11 @@
     <select id="selectAllParts" parameterType="com.cvss.pojo.CvParts" resultMap="CvPartsResultMap">
         SELECT * FROM cv_parts
         <trim prefix="where" prefixOverrides="and|or">
+            <if test="partsId != null">
+                and parts_id = #{partsId}
+            </if>
             <if test="partsName != null">
-                and parts_name = #{partsName}
+                and parts_name like CONCAT('%',#{partsName},'%')
             </if>
             <if test="typeId != null">
                 and type_id = #{typeId}
@@ -369,32 +390,44 @@
             </if>
         </trim>
     </select>
-    <select id="selectAllPartsReplace" parameterType="com.cvss.pojo.CvPartsReplace" resultMap="CvPartsReplaceResultMap">
-        SELECT * FROM cv_parts_replace
-        <trim prefix="where" prefixOverrides="and|or">
+    <select id="selectAllPartsReplace" parameterType="com.cvss.pojo.CvPartsReplace" resultType="com.cvss.pojo.CvPartsReplacePojo">
+        SELECT
+        cpr.replace_id replaceId,
+        cp_1.parts_name "replaceBefore.partsName",
+        cp_1.parts_id "replaceBefore.partsId",
+        cp_2.parts_id "replaceAfter.partsId",
+        cp_2.parts_name "replaceAfter.partsName",
+        cpr.unit unit,
+        cpr.tax_price taxPrice,
+        cpr.remarks remarks,
+        cpr.create_time createTime,
+        cpr.status status
+        FROM cv_parts_replace cpr,cv_parts cp_1,cv_parts cp_2
+        WHERE cpr.replace_before = cp_1.parts_id AND cpr.replace_after = cp_2.parts_id AND
+        <trim prefix="" prefixOverrides="and|or">
             <if test="replaceBefore != null">
-                and replace_before = #{replaceBefore}
+                and cpr.replace_before = #{replaceBefore}
             </if>
             <if test="replaceAfter != null">
-                and replace_after = #{replaceAfter}
+                and cpr.replace_after = #{replaceAfter}
             </if>
             <if test="unit != null">
-                and unit = #{unit}
+                and cpr.unit = #{unit}
             </if>
             <if test="taxPrice">
-                and tax_price = #{taxPrice}
+                and cpr.tax_price = #{taxPrice}
             </if>
             <if test="remarks">
-                and remarks = #{remarks}
+                and cpr.remarks = #{remarks}
             </if>
             <if test="typeId != null">
-                and type_id = #{typeId}
+                and cpr.type_id = #{typeId}
             </if>
             <if test="createTime != null">
-                and create_time = #{createTime}
+                and cpr.create_time = #{createTime}
             </if>
             <if test="status != null">
-                and status = #{status}
+                and cpr.status = #{status}
             </if>
         </trim>
     </select>

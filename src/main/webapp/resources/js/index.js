@@ -1,4 +1,5 @@
 /**
+ * 主页js
  * Created by yufeng.liu on 2017-03-30.
  */
 $(function () {
@@ -47,7 +48,7 @@ $(function () {
         }
 
        //判断是否有子菜单，无菜单的不做处理
-       if($(this).parent().children('ul').text()!=''){
+       if($(this).parent().children('ul').text()!==''){
            var is_parent = $(this).parent().parent();
            //如果是父级，则获得当前父级下面的二级菜单nav-child
            var nav_child = $(this).parent().children('ul');
