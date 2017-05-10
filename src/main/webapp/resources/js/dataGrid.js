@@ -14,7 +14,7 @@
         '</div>',
         //grid头部DIV模板
         headerDiv:
-        '<div class="grid-header grid-header-toolbar">' +
+        '<div class="grid-header">' +
             '<table class="table table-bordered table-condensed">' +
                 '<tr class="active">' +
                     '<th style="width: 20px" class="all-select">' +
@@ -25,7 +25,7 @@
         '</div>',
         //grid头部DIV模板，TR中是为了建立bootstrap的样式模板，后会删除该TR
         contentDiv:
-        '<div class="grid-content grid-content-toolbar">' +
+        '<div class="grid-content">' +
             '<table class="table table-bordered table-condensed table-hover">' +
                 '<tr>' +
                     '<td style="width: 20px" class="one-select">' +

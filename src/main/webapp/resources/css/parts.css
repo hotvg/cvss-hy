@@ -14,6 +14,7 @@ ul{
 /*kendoui更改后的样式*/
 .parts-tab {
     background-color: #ffffff;
+
 }
 .parts-tab .k-header{
     background-image: none;
@@ -26,11 +27,14 @@ ul{
     padding-right: 20px;
 }
 .parts-tab .k-content{
-    width: calc(100% - 22px);
-    height: calc(100% - 150px);
-    position: fixed;
-    margin-left: 10px;
-    margin-right:10px;
+    width: 100%;
+    height: auto;
+    position: absolute;
+    top: 41px;
+    left: 0;
+    bottom: 0;
+    box-sizing: border-box;
+    padding: 5px 10px;
 }
 /*.k-tabstrip-items .k-link{*/
 /*padding-right: 0;*/
@@ -60,4 +64,10 @@ ul{
 
 .parts-tab .k-tabstrip-items .k-state-default .k-link{
     color: #2e2e2e;
+}
+
+#tab-strip .k-tabstrip-wrapper{
+    position: fixed;
+    padding: 0 10px 5px 10px;
+    box-sizing: border-box;
 }

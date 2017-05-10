@@ -12,8 +12,11 @@
 }
 .left{
     width: 260px;
-    height: 100%;
-    position:absolute;
+    height: auto;
+    top: 60px;
+    bottom: 0;
+    left: 0;
+    position: absolute;
 }
 .logo{
     width: 80px;
@@ -141,8 +144,12 @@
 
 .right{
     width: auto;
-    height: 100%;
-    margin-left: 260px;
+    height: auto;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    top: 60px;
+    left: 260px;
     -moz-transform: translate(0,0);
     -webkit-transform: translate(0,0);
     -o-transform: translate(0,0);

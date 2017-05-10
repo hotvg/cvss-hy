@@ -119,7 +119,7 @@ $(function () {
             'width': width
         }, 500);
         $(".right").animate({
-            'margin-left': width
+            'left': width
         }, 500);
         $(".nav-icon").animate({
             'padding-left': padding1
