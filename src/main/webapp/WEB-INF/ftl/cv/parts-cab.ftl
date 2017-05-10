@@ -401,13 +401,18 @@
         dataSource:cabReplaceDataSource,
         dataId: 'replaceId'
     };
-
+    $('#content-cab').dataGrid(cabArgs); //调用jQuery对象方法
+    $('#content-cab-add').dataGrid(cabAddArgs);
+    $('#content-cab-replace').dataGrid(cabReplaceArgs);
 
 
     $(function () {
-        $('#content-cab').dataGrid(cabArgs); //调用jQuery对象方法
-        $('#content-cab-add').dataGrid(cabAddArgs);
-        $('#content-cab-replace').dataGrid(cabReplaceArgs);
+
+
+        //绑定beforeunload事件
+        $(window).bind('beforeunload',function(){
+            console.log('----------------------------.');
+        });
 
     });
 

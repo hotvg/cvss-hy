@@ -317,6 +317,7 @@
             var $lov = methods.initLov($lovDiv,this.options);
             methods.openLov(this.$element,$lovDiv,$lov);
             methods.clearInput($lov);
+            return $lov;
         }
     };
 
@@ -324,6 +325,6 @@
         //创建DataGrid的实体
         var lov = new Lov(this, options);
         //调用其方法
-        lov.init();
+        return lov.init();
     }
 })(jQuery);

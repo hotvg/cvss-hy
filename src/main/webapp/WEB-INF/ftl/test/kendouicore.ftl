@@ -67,8 +67,9 @@
         ],
         url:'/parts/read'
     };
-    $(".testBtn1").lov(lovOptions);
+    var lov = $(".testBtn1").lov(lovOptions);
     $(".testBtn2").lov(lovOptions2);
-
+    lov.destroy();
+    console.log(lov)
 </script>
 </body>

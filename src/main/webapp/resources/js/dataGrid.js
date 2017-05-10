@@ -1,4 +1,5 @@
 /**
+ * dataGrid插件
  * Created by yufeng.liu on 2017-04-21.
  */
 (function ($) {
@@ -126,12 +127,13 @@
                         var lastTd = firstTr.children('td:last-child');
                         var regExp=new RegExp('Time');
                         if(regExp.test(field)){
-                            util.initKendoTime(lastTd,'',true)
+                            util.initKendoTime(lastTd,'',true,opt);
                         }else {
                             if(opt.columns[j].type!=='lov'){
                                 util.initEdit(lastTd,true);
                             }else{
-                                lastTd.find('.lov-btn').lov(opt.columns[j].lovOptions);
+                                var $lov = lastTd.find('.lov-btn').lov(opt.columns[j].lovOptions);
+                                opt.lovMap.push($lov);
                                 lastTd.find('span').bind("DOMNodeInserted",function(){
                                     $(this).closest('td').append(htmlElement.tdNewTag);
                                 });
@@ -244,7 +246,7 @@
                             var regExp=new RegExp('Time');
                             if(regExp.test(field)){
                                 contentTd = util.dateFormat(contentTd);
-                                util.initKendoTime(lastTd,contentTd,false);
+                                util.initKendoTime(lastTd,contentTd,false,opt);
                             }else {
                                 if(opt.editable&&opt.columns[j].type!=='lov'){
                                     lastTd.find('input').val(contentTd);
@@ -254,7 +256,8 @@
                                     var lovOptions = opt.columns[j].lovOptions;
                                     lastTd.find('input').val(contentTd[lovOptions.columns[0].field]);
                                     lastTd.find('span').text(contentTd[lovOptions.columns[1].field]);
-                                    lastTd.find('.lov-btn').lov(lovOptions);
+                                    var $lov = lastTd.find('.lov-btn').lov(lovOptions);
+                                    opt.lovMap.push($lov);
                                     lastTd.find('span').bind("DOMNodeInserted",function(){
                                         $(this).closest('td').append(htmlElement.tdNewTag);
                                     });
@@ -354,11 +357,31 @@
                 var activeLi = clearDiv.find('.grid-nav-ul').find('.active');
                 page = Number(activeLi.text());
             }
+            opt = methods.clearKendo(opt);
+
             opt.dataSource = ajax.read(transport.read,transport.param,page,pageSize);
             opt.dataSource['transport'] = transport;
             methods.createGridContent(clearDiv.find('.table-hover'),opt,false);
             clearDiv.find('.current-page').text(opt.dataSource.page);
             clearDiv.find('.total-page').text(opt.dataSource.totalPage);
+        },
+        clearKendo: function (opt) {
+            var timeMapLength = opt.kendoTimeMap.length;
+            var lovMapLength = opt.lovMap.length;
+            console.log(lovMapLength);
+            if(timeMapLength>0){
+                for(var i = 0;i<opt.kendoTimeMap.length;i++){
+                    opt.kendoTimeMap[i].destroy();
+                }
+                opt.kendoTimeMap.length = 0;
+            }
+            if(lovMapLength>0){
+                for(var j = 0;j<opt.lovMap.length;j++){
+                    opt.lovMap[j].destroy();
+                }
+                opt.lovMap.length = 0;
+            }
+            return opt;
         },
         //添加导航动态样式
         navSly : function (ele,opt) {
@@ -426,7 +449,9 @@
             dataSource: {},
             dataId: '',
             styleMap : {},//样式集合
-            templateMap : {}//模板集合
+            templateMap : {},//模板集合
+            kendoTimeMap :[],//kendo ui时间数组
+            lovMap :[]//lov数组
         };
         this.options = opt;
         this.options = $.extend({}, this.defaults, opt);
@@ -488,13 +513,14 @@
             return array;
         },
         //有kendo ui Time的编辑初始化
-        initKendoTime : function (lastTd,contentTd,status) {
-            lastTd.find('input').kendoDateTimePicker({
+        initKendoTime : function (lastTd,contentTd,status,opt) {
+            var kendoTime = lastTd.find('input').kendoDateTimePicker({
                 value:new Date(),
                 format: "yyyy-MM-dd HH:mm:ss",
                 timeFormat: "HH:mm",
                 interval: 10
-            });
+            }).data("kendoDateTimePicker");
+            opt.kendoTimeMap.push(kendoTime);
             var firstSpan = lastTd.find('.k-header');
             var lastSpan = lastTd.find('.grid-input').children('span:last-child');
             firstSpan.find('input').show();
