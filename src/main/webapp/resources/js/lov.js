@@ -77,6 +77,7 @@
         },
         createForm:function (ele,$lov) {
             ele.append(htmlElement.lovForm);
+            $lov.options.searchBtn = ele.find('.lov-btn-search');
             var label = ele.children('.lov-form').find('label');
             var input = ele.children('.lov-form').find('input');
             label.eq(0).text($lov.options.columns[0].name);
@@ -181,6 +182,13 @@
                 var input = event.data.options.input;
                 var lovName = event.data.options.lovName;
                 var td = $(this).children('td');
+
+                var linkage = event.data.options.linkage;
+                if(linkage!==undefined){
+                    linkage.options.param[event.data.options.columns[0].field] = td.eq(0).text();
+                    linkage.options.searchBtn.trigger('click');
+                }
+
                 input.val(td.eq(0).text());
                 lovName.text(td.eq(1).text());
                 event.data.close();
@@ -305,7 +313,8 @@
             pageSize:10,
             input:$lovDiv.children('input'),
             lovName:$lovDiv.find('.lov-name'),
-            clearBtn:$lovDiv.find('.btn-clear-input')
+            clearBtn:$lovDiv.find('.btn-clear-input'),
+            searchBtn:undefined
         };
         this.options = opt;
         this.options = $.extend({}, this.defaults, opt);

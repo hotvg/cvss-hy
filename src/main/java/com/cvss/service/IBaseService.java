@@ -3,6 +3,7 @@ package com.cvss.service;
 import java.util.List;
 
 /**
+ * 基础业务层
  * Created by yufeng.liu on 2017-03-23.
  */
 public interface IBaseService<T> {

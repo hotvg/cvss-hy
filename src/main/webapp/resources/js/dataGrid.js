@@ -467,6 +467,7 @@
             var contentDiv = methods.createGridContentDiv(clearDiv);
             methods.createGridContent(contentDiv,this.options,true);
             methods.createGridFooter(clearDiv,this.options);
+            return this.options;
         }
     };
 
@@ -474,7 +475,7 @@
         //创建DataGrid的实体
         var dataGrid = new DataGrid(this, options);
         //调用其方法
-        dataGrid.init();
+        return dataGrid.init();
     };
 
     var util = {

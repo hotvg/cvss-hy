@@ -3,6 +3,7 @@ package com.cvss.mapper;
 import java.util.List;
 
 /**
+ * 基础映射文件
  * Created by yufeng.liu on 2017-03-29.
  */
 public interface BaseMapper<T> {

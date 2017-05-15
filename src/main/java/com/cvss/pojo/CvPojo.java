@@ -2,34 +2,34 @@ package com.cvss.pojo;
 
 import java.math.BigDecimal;
 
-public class Cv extends BasePojo{
+public class CvPojo extends BasePojo{
     private Integer cvId;
 
     private String internalModels;
 
     private String externalModels;
 
-    private Integer seriesId;
+    private CvTypeSeries cvTypeSeries;
 
     private BigDecimal retailPrice;
 
-    private Integer cab;
+    private CvParts cab;
 
-    private Integer gearbox;
+    private CvParts gearbox;
 
-    private Integer drive;
+    private CvParts drive;
 
     private String wheelBase;
 
-    private Integer tire;
+    private CvParts tire;
 
-    private Integer engine;
+    private CvParts engine;
 
-    private Integer flip;
+    private CvParts flip;
 
-    private Integer mount;
+    private CvParts mount;
 
-    private Integer bunkers;
+    private CvParts bunkers;
 
     private String otherDescription;
 
@@ -37,11 +37,19 @@ public class Cv extends BasePojo{
 
     private String carSize;
 
-    public Integer getBunkers() {
+    public CvTypeSeries getCvTypeSeries() {
+        return cvTypeSeries;
+    }
+
+    public void setCvTypeSeries(CvTypeSeries cvTypeSeries) {
+        this.cvTypeSeries = cvTypeSeries;
+    }
+
+    public CvParts getBunkers() {
         return bunkers;
     }
 
-    public void setBunkers(Integer bunkers) {
+    public void setBunkers(CvParts bunkers) {
         this.bunkers = bunkers;
     }
 
@@ -69,12 +77,12 @@ public class Cv extends BasePojo{
         this.externalModels = externalModels;
     }
 
-    public Integer getSeriesId() {
-        return seriesId;
+    public CvTypeSeries getSeriesId() {
+        return cvTypeSeries;
     }
 
-    public void setSeriesId(Integer seriesId) {
-        this.seriesId = seriesId;
+    public void setSeriesId(CvTypeSeries cvTypeSeries) {
+        this.cvTypeSeries = cvTypeSeries;
     }
 
     public BigDecimal getRetailPrice() {
@@ -85,27 +93,27 @@ public class Cv extends BasePojo{
         this.retailPrice = retailPrice;
     }
 
-    public Integer getCab() {
+    public CvParts getCab() {
         return cab;
     }
 
-    public void setCab(Integer cab) {
+    public void setCab(CvParts cab) {
         this.cab = cab;
     }
 
-    public Integer getGearbox() {
+    public CvParts getGearbox() {
         return gearbox;
     }
 
-    public void setGearbox(Integer gearbox) {
+    public void setGearbox(CvParts gearbox) {
         this.gearbox = gearbox;
     }
 
-    public Integer getDrive() {
+    public CvParts getDrive() {
         return drive;
     }
 
-    public void setDrive(Integer drive) {
+    public void setDrive(CvParts drive) {
         this.drive = drive;
     }
 
@@ -117,35 +125,35 @@ public class Cv extends BasePojo{
         this.wheelBase = wheelBase;
     }
 
-    public Integer getTire() {
+    public CvParts getTire() {
         return tire;
     }
 
-    public void setTire(Integer tire) {
+    public void setTire(CvParts tire) {
         this.tire = tire;
     }
 
-    public Integer getEngine() {
+    public CvParts getEngine() {
         return engine;
     }
 
-    public void setEngine(Integer engine) {
+    public void setEngine(CvParts engine) {
         this.engine = engine;
     }
 
-    public Integer getFlip() {
+    public CvParts getFlip() {
         return flip;
     }
 
-    public void setFlip(Integer flip) {
+    public void setFlip(CvParts flip) {
         this.flip = flip;
     }
 
-    public Integer getMount() {
+    public CvParts getMount() {
         return mount;
     }
 
-    public void setMount(Integer mount) {
+    public void setMount(CvParts mount) {
         this.mount = mount;
     }
 
@@ -171,5 +179,27 @@ public class Cv extends BasePojo{
 
     public void setCarSize(String carSize) {
         this.carSize = carSize;
+    }
+
+    @Override
+    public String toString() {
+        return "CvPojo{" +
+                "cvId=" + cvId +
+                ", internalModels='" + internalModels + '\'' +
+                ", externalModels='" + externalModels + '\'' +
+                ", cvTypeSeries=" + cvTypeSeries +
+                ", retailPrice=" + retailPrice +
+                ", cab=" + cab +
+                ", gearbox=" + gearbox +
+                ", drive=" + drive +
+                ", wheelBase='" + wheelBase + '\'' +
+                ", tire=" + tire +
+                ", engine=" + engine +
+                ", flip=" + flip +
+                ", mount=" + mount +
+                ", otherDescription='" + otherDescription + '\'' +
+                ", tractiveTonnage=" + tractiveTonnage +
+                ", carSize='" + carSize + '\'' +
+                '}';
     }
 }

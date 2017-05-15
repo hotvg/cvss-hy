@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cvss.mapper.CvMapper" >
+    <insert id="insertCv" parameterType="com.cvss.pojo.Cv">
+        INSERT INTO
+        cv (
+          internal_models,
+          external_models,
+          series_id,
+          retail_price,
+          cab,
+          gearbox,
+          drive,
+          wheel_base,
+          tire,
+          bunkers,
+          engine,
+          flip,
+          mount,
+          other_description,
+          tractive_tonnage,
+          car_size,
+          create_time,
+          status)
+        VALUES (
+        #{internalModels},
+        #{externalModels},
+        #{seriesId},
+        #{retailPrice},
+        #{cab},
+        #{gearbox},
+        #{drive},
+        #{wheelBase},
+        #{tire},
+        #{bunkers},
+        #{engine},
+        #{flip},
+        #{mount},
+        #{otherDescription},
+        #{tractiveTonnage},
+        #{carSize},
+        #{createTime},
+        #{status}
+        );
+    </insert>
+    <insert id="batchInsertCv" parameterType="List">
+        INSERT INTO
+        cv (
+        internal_models,
+        external_models,
+        series_id,
+        retail_price,
+        cab,
+        gearbox,
+        drive,
+        wheel_base,
+        tire,
+        bunkers,
+        engine,
+        flip,
+        mount,
+        other_description,
+        tractive_tonnage,
+        car_size,
+        create_time,
+        status)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.internalModels},
+            #{item.externalModels},
+            #{item.seriesId},
+            #{item.retailPrice},
+            #{item.cab},
+            #{item.gearbox},
+            #{item.drive},
+            #{item.wheelBase},
+            #{item.tire},
+            #{item.engine},
+            #{item.bunkers},
+            #{item.flip},
+            #{item.mount},
+            #{item.otherDescription},
+            #{item.tractiveTonnage},
+            #{item.carSize},
+            #{item.createTime},
+            #{item.status}
+            )
+        </foreach>
+    </insert>
+
+    <sql id="deleteForeach">
+        <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </sql>
+
+    <delete id="deleteCv" parameterType="Integer">
+        DELETE FROM cv WHERE cv_id = #{id};
+    </delete>
+    <delete id="batchDeleteCv" parameterType="List">
+        DELETE FROM cv WHERE cv_id IN
+        <include refid="deleteForeach" />
+    </delete>
+
+    <!--update-->
+    <update id="updateCv" parameterType="com.cvss.pojo.Cv">
+        UPDATE cv
+        <trim prefix="set" prefixOverrides=",">
+            <if test="internalModels != null">
+                ,internal_models = #{internalModels}
+            </if>
+            <if test="externalModels != null">
+                ,external_models = #{externalModels}
+            </if>
+            <if test="seriesId != null">
+                ,series_id = #{seriesId}
+            </if>
+            <if test="retailPrice != null">
+                ,retail_price = #{retailPrice}
+            </if>
+            <if test="cab != null">
+                ,cab = #{cab}
+            </if>
+            <if test="gearbox != null">
+                ,gearbox = #{gearbox}
+            </if>
+            <if test="drive != null">
+                ,drive = #{drive}
+            </if>
+            <if test="wheelBase != null">
+                ,wheel_base = #{wheelBase}
+            </if>
+            <if test="tire != null">
+                ,tire = #{tire}
+            </if>
+            <if test="engine != null">
+                ,engine = #{engine}
+            </if>
+            <if test="flip != null">
+                ,flip = #{flip}
+            </if>
+            <if test="mount != null">
+                ,mount = #{mount}
+            </if>
+            <if test="otherDescription != null">
+                ,other_description = #{otherDescription}
+            </if>
+            <if test="tractiveTonnage != null">
+                ,tractive_tonnage = #{tractiveTonnage}
+            </if>
+            <if test="carSize != null">
+                ,car_size = #{carSize}
+            </if>
+            <if test="createTime != null">
+                ,create_time = #{createTime}
+            </if>
+            <if test="status != null">
+                ,status = #{status}
+            </if>
+        </trim>
+        WHERE cv_id = #{cvId}
+    </update>
+    <update id="batchUpdateCv" parameterType="List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            UPDATE cv
+            <trim prefix="set" prefixOverrides=",">
+                <if test="item.internalModels != null">
+                    ,internal_models = #{item.internalModels}
+                </if>
+                <if test="item.externalModels != null">
+                    ,external_models = #{item.externalModels}
+                </if>
+                <if test="item.seriesId != null">
+                    ,series_id = #{item.seriesId}
+                </if>
+                <if test="item.retailPrice != null">
+                    ,retail_price = #{item.retailPrice}
+                </if>
+                <if test="item.cab != null">
+                    ,cab = #{item.cab}
+                </if>
+                <if test="item.gearbox != null">
+                    ,gearbox = #{item.gearbox}
+                </if>
+                <if test="item.drive != null">
+                    ,drive = #{item.drive}
+                </if>
+                <if test="item.wheelBase != null">
+                    ,wheel_base = #{item.wheelBase}
+                </if>
+                <if test="item.tire != null">
+                    ,tire = #{item.tire}
+                </if>
+                <if test="item.engine != null">
+                    ,engine = #{item.engine}
+                </if>
+                <if test="item.flip != null">
+                    ,flip = #{item.flip}
+                </if>
+                <if test="item.mount != null">
+                    ,mount = #{item.mount}
+                </if>
+                <if test="item.otherDescription != null">
+                    ,other_description = #{item.otherDescription}
+                </if>
+                <if test="item.tractiveTonnage != null">
+                    ,tractive_tonnage = #{item.tractiveTonnage}
+                </if>
+                <if test="item.carSize != null">
+                    ,car_size = #{item.carSize}
+                </if>
+                <if test="item.createTime != null">
+                    ,create_time = #{item.createTime}
+                </if>
+                <if test="item.status != null">
+                    ,status = #{item.status}
+                </if>
+            </trim>
+            WHERE cv_id = #{item.cvId}
+        </foreach>
+    </update>
+
+    <!--select-->
+    <select id="selectAll" parameterType="com.cvss.pojo.CvConditionPojo" resultType="com.cvss.pojo.CvPojo">
+        SELECT
+        cv.cv_id cvId,
+        cv.internal_models internalModels,
+        cv.external_models externalModels,
+        cts.series_id "cvTypeSeries.seriesId",
+        cts.series_name "cvTypeSeries.seriesName",
+        cv.retail_price retailPrice,
+        cp_1.parts_id "cab.partsId",
+        cp_1.parts_name "cab.partsName",
+
+        cp_2.parts_id "gearbox.partsId",
+        cp_2.parts_name "gearbox.partsName",
+
+        cp_3.parts_id "drive.partsId",
+        cp_3.parts_name "drive.partsName",
+
+        cv.wheel_base wheelBase,
+
+        cp_4.parts_id "tire.partsId",
+        cp_4.parts_name "tire.partsName",
+
+        cp_5.parts_id "engine.partsId",
+        cp_5.parts_name "engine.partsName",
+
+        cp_6.parts_id "flip.partsId",
+        cp_6.parts_name "flip.partsName",
+
+        cp_7.parts_id "mount.partsId",
+        cp_7.parts_name "mount.partsName",
+
+        cp_8.parts_id "bunkers.partsId",
+        cp_8.parts_name "bunkers.partsName",
+
+        cv.other_description otherDescription,
+        cv.tractive_tonnage tractiveTonnage,
+        cv.car_size carSize,
+        cv.create_time createTime,
+        cv.status status
+        FROM
+        cv cv,cv_type_series cts,cv_parts cp_1,
+        cv_parts cp_2,cv_parts cp_3,cv_parts cp_4,
+        cv_parts cp_5,cv_parts cp_6,cv_parts cp_7,
+        cv_parts cp_8
+
+        WHERE
+        cv.series_id = cts.series_id AND
+        cv.cab = cp_1.parts_id AND
+        cv.gearbox = cp_2.parts_id AND
+        cv.drive = cp_3.parts_id AND
+        cv.tire = cp_4.parts_id AND
+        cv.engine = cp_5.parts_id AND
+        cv.flip = cp_6.parts_id AND
+        cv.mount = cp_7.parts_id AND
+        cv.bunkers = cp_8.parts_id
+
+        <trim prefix="" prefixOverrides="and|or">
+            <if test="internalModels != null and internalModels != '' ">
+                and cv.internal_models = #{internalModels}
+            </if>
+            <if test="externalModels != null and externalModels != '' ">
+                and cv.external_models = #{externalModels}
+            </if>
+            <if test="seriesId != null and seriesId != '' ">
+                and cv.series_id = #{seriesId}
+            </if>
+            <if test="(typeId != null and typeId != '') and (seriesId == null or seriesId == '') ">
+                and cv.series_id in (SELECT cts_2.series_id FROM cv_type_series cts_2 WHERE cts_2.type_id = #{typeId})
+            </if>
+            <if test="retailPrice != null and retailPrice != '' ">
+                and cv.retail_price = #{retailPrice}
+            </if>
+            <if test="(retailPriceSmall != null and retailPriceSmall != '') and (retailPriceLarge != null and retailPriceLarge != '') ">
+                and cv.retail_price BETWEEN #{retailPriceSmall} AND #{retailPriceLarge}
+            </if>
+            <if test="(retailPriceSmall != null and retailPriceSmall != '') and (retailPriceLarge == null or retailPriceLarge == '') ">
+                and cv.retail_price >= #{retailPriceSmall}
+            </if>
+            <if test="(retailPriceSmall == null or retailPriceSmall == '') and (retailPriceLarge != null or retailPriceLarge != '') ">
+                and cv.retail_price <= #{retailPriceLarge}
+            </if>
+            <if test="cab != null and cab != '' ">
+                and cv.cab = #{cab}
+            </if>
+            <if test="gearbox != null and gearbox != '' ">
+                and cv.gearbox = #{gearbox}
+            </if>
+            <if test="drive != null and drive != '' ">
+                and cv.drive = #{drive}
+            </if>
+            <if test="wheelBase != null and wheelBase != '' ">
+                and cv.wheel_base = #{wheelBase}
+            </if>
+            <if test="tire != null and tire != '' ">
+                and cv.tire = #{tire}
+            </if>
+            <if test="engine != null and engine != '' ">
+                and cv.engine = #{engine}
+            </if>
+            <if test="flip != null and flip != '' ">
+                and cv.flip = #{flip}
+            </if>
+            <if test="mount != null and mount != '' ">
+                and cv.mount = #{mount}
+            </if>
+            <if test="otherDescription != null and otherDescription != '' ">
+                and cv.other_description = #{otherDescription}
+            </if>
+            <if test="tractiveTonnage != null and tractiveTonnage != '' ">
+                and cv.tractive_tonnage = #{tractiveTonnage}
+            </if>
+            <if test="carSize != null and carSize != '' ">
+                and cv.car_size = #{carSize}
+            </if>
+            <if test="createTime != null and createTime != '' ">
+                and cv.create_time = #{createTime}
+            </if>
+            <if test="status != null and status != '' ">
+                and cv.status = #{status}
+            </if>
+        </trim>
+    </select>
+
+
+</mapper>

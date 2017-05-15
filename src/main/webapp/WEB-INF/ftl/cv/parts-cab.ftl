@@ -1,4 +1,4 @@
-<#include "../include/header.ftl"/>
+<#assign base=request.contextPath />
 <link rel="stylesheet" href="${base}/resources/css/kendoui.css">
 <link rel="stylesheet" href="${base}/resources/css/parts.css">
 <body>

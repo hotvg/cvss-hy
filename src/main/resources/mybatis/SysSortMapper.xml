@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cvss.mapper.SysSortMapper" >
+    <!--CvType-->
+    <resultMap id="CvTypeResultMap" type="com.cvss.pojo.CvType" >
+        <id column="type_id" property="typeId" jdbcType="INTEGER" />
+        <result column="type_name" property="typeName" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+    </resultMap>
+    <!--CvTypeSeries-->
+    <resultMap id="CvTypeSeriesResultMap" type="com.cvss.pojo.CvTypeSeriesPojo" >
+        <id column="series_id" property="seriesId" jdbcType="INTEGER" />
+        <result column="series_name" property="seriesName" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <association property="typeId" column="type_id" javaType="com.cvss.pojo.CvType">
+            <id column="type_id" property="typeId" jdbcType="INTEGER" />
+            <result column="type_name" property="typeName" jdbcType="VARCHAR" />
+        </association>
+    </resultMap>
+
+    <!--insert-->
+    <insert id="insertCvType" parameterType="com.cvss.pojo.CvType">
+        INSERT INTO
+        cv_type (type_name,create_time,status)
+        VALUES (#{typeName},#{createTime},#{status});
+    </insert>
+    <insert id="batchInsertCvType" parameterType="List">
+        INSERT INTO cv_type (type_name,create_time,status) VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.typeName},#{item.createTime},#{item.status})
+        </foreach>
+    </insert>
+
+    <insert id="insertCvTypeSeries" parameterType="com.cvss.pojo.CvTypeSeries">
+        INSERT INTO
+        cv_type_series (series_name,type_id,create_time,status)
+        VALUES (#{seriesName},#{typeId},#{createTime},#{status});
+    </insert>
+    <insert id="batchInsertCvTypeSeries" parameterType="List">
+        INSERT INTO cv_type_series (series_name,type_id,create_time,status) VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.seriesName},#{item.typeId},#{item.createTime},#{item.status})
+        </foreach>
+    </insert>
+
+    <!--delete-->
+    <sql id="deleteForeach">
+        <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </sql>
+
+    <delete id="deleteCvType" parameterType="Integer">
+        DELETE FROM cv_type WHERE type_id = #{id};
+    </delete>
+    <delete id="batchDeleteParts" parameterType="List">
+        DELETE FROM cv_type WHERE type_id IN
+        <include refid="deleteForeach" />
+    </delete>
+
+    <delete id="deleteCvTypeSeries" parameterType="Integer">
+        DELETE FROM cv_type_series WHERE series_id = #{id};
+    </delete>
+    <delete id="batchDeleteCvTypeSeries" parameterType="List">
+        DELETE FROM cv_type_series WHERE series_id IN
+        <include refid="deleteForeach" />
+    </delete>
+
+    <!--update-->
+    <update id="updateCvType" parameterType="com.cvss.pojo.CvType">
+        UPDATE cv_type
+        <trim prefix="set" prefixOverrides=",">
+            <if test="typeName != null">
+                ,type_name = #{typeName}
+            </if>
+            <if test="createTime != null">
+                ,create_time = #{createTime}
+            </if>
+            <if test="status != null">
+                ,status = #{status}
+            </if>
+        </trim>
+        WHERE type_id = #{typeId}
+    </update>
+    <update id="batchUpdateCvType" parameterType="List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            UPDATE cv_type
+            <trim prefix="set" prefixOverrides=",">
+                <if test="item.typeName != null">
+                    ,type_name = #{item.typeName}
+                </if>
+                <if test="item.createTime != null">
+                    ,create_time = #{item.createTime}
+                </if>
+                <if test="item.status != null">
+                    ,status = #{item.status}
+                </if>
+            </trim>
+            WHERE type_id = #{item.typeId}
+        </foreach>
+    </update>
+
+    <update id="updateCvTypeSeries" parameterType="com.cvss.pojo.CvTypeSeries">
+        UPDATE cv_type_series
+        <trim prefix="set" prefixOverrides=",">
+            <if test="seriesName != null">
+                ,series_name = #{seriesName}
+            </if>
+            <if test="typeId != null">
+                ,type_id = #{typeId}
+            </if>
+            <if test="createTime != null">
+                ,create_time = #{createTime}
+            </if>
+            <if test="status != null">
+                ,status = #{status}
+            </if>
+        </trim>
+        WHERE series_id = #{seriesId}
+    </update>
+    <update id="batchUpdateCvTypeSeries" parameterType="List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            UPDATE cv_type_series
+            <trim prefix="set" prefixOverrides=",">
+                <if test="seriesName != null">
+                    ,series_name = #{seriesName}
+                </if>
+                <if test="typeId != null">
+                    ,type_id = #{typeId}
+                </if>
+                <if test="createTime != null">
+                    ,create_time = #{createTime}
+                </if>
+                <if test="status != null">
+                    ,status = #{status}
+                </if>
+            </trim>
+            WHERE series_id = #{seriesId}
+        </foreach>
+    </update>
+
+    <!--select-->
+    <select id="selectAllCvType" parameterType="com.cvss.pojo.CvType" resultMap="CvTypeResultMap">
+        SELECT * FROM cv_type
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="typeId != null">
+                and type_id = #{typeId}
+            </if>
+            <if test="typeName != null">
+                and type_name like CONCAT('%',#{typeName},'%')
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </trim>
+    </select>
+    <select id="selectAllCvTypeSeries" parameterType="com.cvss.pojo.CvTypeSeries" resultMap="CvTypeSeriesResultMap">
+        SELECT * FROM cv_type_series cts,cv_type ct
+        WHERE cts.type_id = ct.type_id
+        <trim prefix="and" prefixOverrides="and|or">
+            <if test="seriesName != null and seriesName != '' ">
+                and cts.series_name = #{seriesName}
+            </if>
+            <if test="typeId != null and typeId != '' ">
+                and cts.type_id = #{typeId}
+            </if>
+            <if test="createTime != null and createTime != '' ">
+                and cts.create_time = #{createTime}
+            </if>
+            <if test="status != null and status != '' ">
+                and cts.status = #{status}
+            </if>
+        </trim>
+    </select>
+
+</mapper>
