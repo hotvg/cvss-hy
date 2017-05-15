@@ -76,8 +76,8 @@
             #{item.drive},
             #{item.wheelBase},
             #{item.tire},
-            #{item.engine},
             #{item.bunkers},
+            #{item.engine},
             #{item.flip},
             #{item.mount},
             #{item.otherDescription},
@@ -143,6 +143,9 @@
             <if test="mount != null">
                 ,mount = #{mount}
             </if>
+            <if test="bunkers != null">
+                ,bunkers = #{bunkers}
+            </if>
             <if test="otherDescription != null">
                 ,other_description = #{otherDescription}
             </if>
@@ -200,6 +203,9 @@
                 </if>
                 <if test="item.mount != null">
                     ,mount = #{item.mount}
+                </if>
+                <if test="item.bunkers != null">
+                    ,bunkers = #{item.bunkers}
                 </if>
                 <if test="item.otherDescription != null">
                     ,other_description = #{item.otherDescription}
@@ -278,7 +284,7 @@
         cv.mount = cp_7.parts_id AND
         cv.bunkers = cp_8.parts_id
 
-        <trim prefix="" prefixOverrides="and|or">
+        <trim prefix="and" prefixOverrides="and|or">
             <if test="internalModels != null and internalModels != '' ">
                 and cv.internal_models = #{internalModels}
             </if>
@@ -288,20 +294,20 @@
             <if test="seriesId != null and seriesId != '' ">
                 and cv.series_id = #{seriesId}
             </if>
-            <if test="(typeId != null and typeId != '') and (seriesId == null or seriesId == '') ">
+            <if test="typeId != null and seriesId == null">
                 and cv.series_id in (SELECT cts_2.series_id FROM cv_type_series cts_2 WHERE cts_2.type_id = #{typeId})
             </if>
             <if test="retailPrice != null and retailPrice != '' ">
                 and cv.retail_price = #{retailPrice}
             </if>
-            <if test="(retailPriceSmall != null and retailPriceSmall != '') and (retailPriceLarge != null and retailPriceLarge != '') ">
+            <if test="retailPriceSmall != null and retailPriceLarge != null ">
                 and cv.retail_price BETWEEN #{retailPriceSmall} AND #{retailPriceLarge}
             </if>
-            <if test="(retailPriceSmall != null and retailPriceSmall != '') and (retailPriceLarge == null or retailPriceLarge == '') ">
+            <if test="retailPriceSmall != null and retailPriceLarge == null ">
                 and cv.retail_price >= #{retailPriceSmall}
             </if>
-            <if test="(retailPriceSmall == null or retailPriceSmall == '') and (retailPriceLarge != null or retailPriceLarge != '') ">
-                and cv.retail_price <= #{retailPriceLarge}
+            <if test="retailPriceSmall == null and retailPriceLarge != null ">
+                and  cv.retail_price  BETWEEN 0 AND #{retailPriceLarge}
             </if>
             <if test="cab != null and cab != '' ">
                 and cv.cab = #{cab}

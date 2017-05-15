@@ -220,39 +220,6 @@
 
         $('.lov-drive').lov(lovDriveOptions);
 
-
-        $(function () {
-
-            function getFormMap(form) {
-                var formMap = {};
-                var formArray = $(form).serializeArray();
-                for(var i = 0;i<formArray.length;i++){
-                    var name = formArray[i].name;
-                    var value = formArray[i].value;
-                    if(value!=='' && value!==null){
-                        formMap[name] = value;
-                    }
-                }
-                return formMap;
-            }
-
-            $('.btn-search').click(function () {
-                var param = getFormMap('.all-condition');
-                console.log(param);
-            });
-
-            $('.btn-reset').click(function () {
-                var $allCondition = $('.all-condition');
-                $allCondition.find('input').val('');
-                $allCondition.find('span').text('');
-            });
-
-        });
-
-
-
-
-
         var cvDataSource = new grid.dataSource({
             transport: {
                 create: {
@@ -729,7 +696,41 @@
             dataSource:cvDataSource,
             dataId: 'cvId'
         };
-        $('#cv-all').dataGrid(cvArgs)
+        var cvDataGrid = $('#cv-all').dataGrid(cvArgs);
+
+        $(function () {
+
+            function getFormMap(form) {
+                var formMap = {};
+                var formArray = $(form).serializeArray();
+                for(var i = 0;i<formArray.length;i++){
+                    var name = formArray[i].name;
+                    var value = formArray[i].value;
+                    if(value!=='' && value!==null){
+                        formMap[name] = value;
+                    }
+                }
+                return formMap;
+            }
+
+            $('.btn-search').click(function () {
+                var param = getFormMap('.all-condition');
+                param['page'] = 1;
+                param['pageSize'] = 10;
+                console.log(param);
+                cvDataGrid.dataSource.transport.param = param;
+                console.log(cvDataGrid.dataSource.transport.param);
+                cvDataGrid.refreshBtn.trigger('click');
+            });
+
+            $('.btn-reset').click(function () {
+                var $allCondition = $('.all-condition');
+                $allCondition.find('input').val('');
+                $allCondition.find('span').text('');
+            });
+
+        });
+
     </script>
 
 </div>

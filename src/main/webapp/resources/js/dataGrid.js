@@ -207,7 +207,7 @@
                     //用javascript的for/in循环遍历对象的属性
                     var style = '';
                     for(var item in attributes.style){
-                        style = style + item+':'+attributes.style[item] + ';';
+                        style = style + item+':'+attributes.style[''+item] + ';';
                     }
                     opt.styleMap[field] = style;
                     headerTr.append('<th style="'+style+'" class="text-center">'+title+'</th>');
@@ -359,6 +359,10 @@
             }
             opt = methods.clearKendo(opt);
 
+            if(page===0){
+                page=1;
+            }
+
             opt.dataSource = ajax.read(transport.read,transport.param,page,pageSize);
             opt.dataSource['transport'] = transport;
             methods.createGridContent(clearDiv.find('.table-hover'),opt,false);
@@ -426,7 +430,8 @@
         //创建grid的刷新按钮
         createGridRefresh : function (ele,opt) {
             ele.append(htmlElement.footRefresh);
-            ele.find('.refresh-grid').on('click',function () {
+            opt.refreshBtn = ele.find('.refresh-grid');
+            opt.refreshBtn.on('click',function () {
                 methods.navBtnEvent($(this),false,opt);
             });
         },
@@ -448,10 +453,11 @@
             columns: [],
             dataSource: {},
             dataId: '',
+            refreshBtn:null,
             styleMap : {},//样式集合
             templateMap : {},//模板集合
             kendoTimeMap :[],//kendo ui时间数组
-            lovMap :[]//lov数组
+            lovMap :[]//lov数组,
         };
         this.options = opt;
         this.options = $.extend({}, this.defaults, opt);

@@ -14,4 +14,36 @@ public class CvConditionPojo extends Cv{
 
     private Integer typeId;
 
+    public BigDecimal getRetailPriceLarge() {
+        return retailPriceLarge;
+    }
+
+    public void setRetailPriceLarge(BigDecimal retailPriceLarge) {
+        this.retailPriceLarge = retailPriceLarge;
+    }
+
+    public BigDecimal getRetailPriceSmall() {
+        return retailPriceSmall;
+    }
+
+    public void setRetailPriceSmall(BigDecimal retailPriceSmall) {
+        this.retailPriceSmall = retailPriceSmall;
+    }
+
+    public Integer getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(Integer typeId) {
+        this.typeId = typeId;
+    }
+
+    @Override
+    public String toString() {
+        return "CvConditionPojo{" +
+                "retailPriceLarge=" + retailPriceLarge +
+                ", retailPriceSmall=" + retailPriceSmall +
+                ", typeId=" + typeId +
+                '}';
+    }
 }

@@ -198,6 +198,7 @@
             var clearBtn = $lov.options.clearBtn;
             var input = $lov.options.input;
             var lovName = $lov.options.lovName;
+            var linkage = $lov.options.linkage;
             lovName.parent().hover(function () {
                 clearBtn.fadeIn(300);
             },function () {
@@ -207,6 +208,11 @@
                 click:function(){
                     input.val('');
                     lovName.text('');
+
+                    if(linkage!==undefined){
+                        linkage.options.param[$lov.options.columns[0].field] = null;
+                        linkage.options.searchBtn.trigger('click');
+                    }
                 },
                 mouseover:function(){
                     $(this).children().rotate({
