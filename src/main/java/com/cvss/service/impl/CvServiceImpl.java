@@ -4,6 +4,7 @@ import com.cvss.mapper.CvMapper;
 import com.cvss.pojo.Cv;
 import com.cvss.pojo.CvConditionPojo;
 import com.cvss.pojo.CvPojo;
+import com.cvss.pojo.CvSearchPojo;
 import com.cvss.service.ICvService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,5 +55,10 @@ public class CvServiceImpl implements ICvService{
     @Override
     public List<CvPojo> selectAll(CvConditionPojo record) {
         return this.cvMapper.selectAll(record);
+    }
+
+    @Override
+    public List<CvSearchPojo> selectAllInternalModels() {
+        return this.cvMapper.selectAllInternalModels();
     }
 }

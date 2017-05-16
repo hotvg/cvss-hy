@@ -719,7 +719,7 @@
                 param['pageSize'] = 10;
                 console.log(param);
                 cvDataGrid.dataSource.transport.param = param;
-                console.log(cvDataGrid.dataSource.transport.param);
+                console.log('dataSource'+cvDataGrid.dataSource.transport.param);
                 cvDataGrid.refreshBtn.trigger('click');
             });
 

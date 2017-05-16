@@ -5,7 +5,7 @@ import java.util.Date;
 public class SearchHistory {
     private Integer searchId;
 
-    private Integer cvId;
+    private String internalModels;
 
     private Integer userId;
 
@@ -19,12 +19,12 @@ public class SearchHistory {
         this.searchId = searchId;
     }
 
-    public Integer getCvId() {
-        return cvId;
+    public String getInternalModels() {
+        return internalModels;
     }
 
-    public void setCvId(Integer cvId) {
-        this.cvId = cvId;
+    public void setInternalModels(String internalModels) {
+        this.internalModels = internalModels;
     }
 
     public Integer getUserId() {

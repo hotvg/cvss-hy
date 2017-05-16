@@ -368,7 +368,7 @@
         SELECT * FROM cv_parts_add
         <trim prefix="where" prefixOverrides="and|or">
             <if test="addName != null">
-                and add_name = #{addName}
+                and add_name like CONCAT('%',#{addName},'%')
             </if>
             <if test="typeId != null">
                 and type_id = #{typeId}

@@ -181,6 +181,7 @@
             ele.on('dblclick',$lov,function (event) {
                 var input = event.data.options.input;
                 var lovName = event.data.options.lovName;
+                var updateItem = event.data.options.updateItem;
                 var td = $(this).children('td');
 
                 var linkage = event.data.options.linkage;
@@ -189,8 +190,28 @@
                     linkage.options.searchBtn.trigger('click');
                 }
 
-                input.val(td.eq(0).text());
-                lovName.text(td.eq(1).text());
+                if(updateItem){
+                    var name = td.eq(0).text();
+                    var price = Number(td.eq(1).text());
+                    var firstLov = input.parent().parent().children('.add-div-lov');
+                    var updatePriceSpan = input.parent().parent().find('.update-add-price span');
+
+                    if(price<0){
+                        firstLov.before('<div class="update-item">'+
+                            '<span class="update-add-content">'+name+'</span>'+
+                            '<span class="update-remove-price">'+price+'</span>'+
+                            '</div>');
+                    }else {
+                        firstLov.before('<div class="update-item">'+
+                            '<span class="update-add-content">'+name+'</span>'+
+                            '<span class="update-add-price">'+price+'</span>'+
+                            '</div>');
+                    }
+                    updatePriceSpan.text(Number(updatePriceSpan.text())+price);
+                }else {
+                    input.val(td.eq(0).text());
+                    lovName.text(td.eq(1).text());
+                }
                 event.data.close();
             });
         },
@@ -320,7 +341,8 @@
             input:$lovDiv.children('input'),
             lovName:$lovDiv.find('.lov-name'),
             clearBtn:$lovDiv.find('.btn-clear-input'),
-            searchBtn:undefined
+            searchBtn:undefined,
+            updateItem:false
         };
         this.options = opt;
         this.options = $.extend({}, this.defaults, opt);

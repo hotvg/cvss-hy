@@ -351,5 +351,9 @@
         </trim>
     </select>
 
+    <select id="selectAllInternalModels" resultType="com.cvss.pojo.CvSearchPojo">
+        select cv_id "cvId",internal_models "internalModels" from cv;
+    </select>
+
 
 </mapper>

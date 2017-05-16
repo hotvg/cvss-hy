@@ -55,6 +55,22 @@
                         <span class="nav-name">搜索管理</span>
                         <span class="nav-chevron-right"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
                     </button>
+                    <ul class="nav-child">
+                        <li>
+                            <button class="nav-menu-btn">
+                                <span class="nav-icon"><i class="fa fa-search-plus" aria-hidden="true"></i></span>
+                                <span class="nav-name">多条件搜索</span>
+                                <input type="hidden" name="page" value="search/condition-search">
+                            </button>
+                        </li>
+                        <li>
+                            <button class="nav-menu-btn">
+                                <span class="nav-icon"><i class="fa fa-history" aria-hidden="true"></i></span>
+                                <span class="nav-name">历史搜索</span>
+                                <input type="hidden" name="page" value="search/history-search">
+                            </button>
+                        </li>
+                    </ul>
                 </li>
 
                 <li>

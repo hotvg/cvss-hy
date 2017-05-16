@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cvss.mapper.SearchMapper" >
+    <insert id="inertSearch" parameterType="com.cvss.pojo.SearchHistory">
+        INSERT INTO search_history (internal_models,create_time,user_id)
+        VALUES (#{internalModels},#{createTime},#{userId});
+    </insert>
+
+    <delete id="deleteSearch" parameterType="Integer">
+        DELETE FROM search_history WHERE search_id = #{id};
+    </delete>
+
+    <select id="selectAllByUserId" parameterType="Integer" resultType="com.cvss.pojo.SearchHistory">
+        SELECT * FROM search_history WHERE user_id = #{userId}
+    </select>
+
+    <select id="selectAll" resultType="com.cvss.pojo.SearchHistory">
+        SELECT * FROM search_history
+    </select>
+
+    <select id="selectHotSearch" resultType="com.cvss.pojo.SearchHistory">
+        SELECT internal_models,count(internal_models) num FROM search_history
+        GROUP BY internal_models
+        ORDER BY num;
+    </select>
+
+    <select id="selectLatelySearch" resultType="com.cvss.pojo.SearchHistory">
+        SELECT * FROM search_history
+        ORDER BY create_time;
+    </select>
+
+</mapper>

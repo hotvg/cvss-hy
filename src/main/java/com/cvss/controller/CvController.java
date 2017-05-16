@@ -3,6 +3,7 @@ package com.cvss.controller;
 import com.cvss.pojo.Cv;
 import com.cvss.pojo.CvConditionPojo;
 import com.cvss.pojo.CvPojo;
+import com.cvss.pojo.CvSearchPojo;
 import com.cvss.service.ICvService;
 import com.cvss.util.GridUtil;
 import com.github.pagehelper.PageHelper;
@@ -117,5 +118,15 @@ public class CvController {
         List<CvPojo> list =  this.iCvService.selectAll(record);
         PageInfo<CvPojo> pageInfo = new PageInfo<>(list);
         return new GridUtil<>(list,page,pageSize,pageInfo.getPages());
+    }
+
+    /**
+     * 记取商用车内部型号
+     * @return 返回grid数据
+     */
+    @RequestMapping(value = "/all/read/internal-models")
+    @ResponseBody
+    public List<CvSearchPojo> readCv(){
+        return this.iCvService.selectAllInternalModels();
     }
 }

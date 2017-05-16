@@ -3,6 +3,7 @@ package com.cvss.service;
 import com.cvss.pojo.Cv;
 import com.cvss.pojo.CvConditionPojo;
 import com.cvss.pojo.CvPojo;
+import com.cvss.pojo.CvSearchPojo;
 
 import java.util.List;
 
@@ -21,4 +22,6 @@ public interface ICvService {
     int batchUpdateCv(List<Cv> listRecord);
 
     List<CvPojo> selectAll(CvConditionPojo record);
+
+    List<CvSearchPojo> selectAllInternalModels();
 }

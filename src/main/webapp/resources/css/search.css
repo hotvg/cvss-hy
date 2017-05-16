@@ -1,0 +1,223 @@
+#condition-search{
+    width: 100%;
+    height: 100%;
+    padding: 15px 15px;
+    box-sizing: border-box;
+}
+#auto-input{
+    width: 400px;
+    height: 125px;
+    box-shadow: 0 1px 2px 1px rgba(0,0,0,.1), 0 3px 6px rgba(0,0,0,.1);
+    padding: 20px 25px;
+}
+#auto-input h4{
+    font-weight: bold;
+}
+#auto-input .k-autocomplete{
+    width: 100%;
+    height: 32px;
+    border: 1px solid #ccc;
+    margin-left: auto;
+    margin-right: auto;
+}
+#internal-models{
+    height: 25px;
+}
+#condition-search-btn{
+    padding-bottom: 5px;
+    padding-top: 5px;
+    margin-top: 20px;
+    float: right;
+}
+#more-condition{
+    position: absolute;
+    width: auto;
+    height: auto;
+    left: 475px;
+    right:15px;
+    top: 15px;
+    bottom: 15px;
+    padding-right: 30px;
+    padding-top: 5px;
+    box-shadow: 0 1px 2px 1px rgba(0,0,0,.1), 0 3px 6px rgba(0,0,0,.1);
+    box-sizing: border-box;
+}
+.condition-form{
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+.condition-form .control-label{
+    float: left;
+    height: 34px;
+    text-align: center;
+    line-height: 32px;
+    margin-right: 8px;
+}
+
+#form-large,#form-small{
+    width: 47%;
+    float: left;
+}
+
+#form-small{
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+#form-large{
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+#form-status{
+     border-radius:4px;
+ }
+.retailPrice-span{
+    height: 34px;
+    text-align: center;
+    line-height: 32px;
+    font-weight: bold;
+    float: left;
+    margin: 0 5px;
+}
+.condition-div{
+    margin-top: 5px;
+}
+.condition-btn{
+    position: absolute;
+    bottom: 10px;
+    right: -15px;
+}
+#search-history{
+    position: absolute;
+    width: 400px;
+    height: auto;
+    top:190px;
+    bottom: 15px;
+    left: 15px;
+    box-shadow: 0 1px 2px 1px rgba(0,0,0,.1), 0 3px 6px rgba(0,0,0,.1);
+    padding: 20px 25px;
+}
+
+.container-div{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.result-container{
+    font-size: 15px;
+    width: 40%;
+    height: 100%;
+    float: left;
+}
+#cv-info{
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 1px 2px 1px rgba(0,0,0,.1), 0 3px 6px rgba(0,0,0,.1);
+    padding: 1px 10px 5px 10px;
+    position: relative;
+}
+#cv-info h4{
+    font-weight: bold;
+}
+#cv-info-container{
+    width: 100%;
+    height:auto;
+    position: absolute;
+    top:38px;
+    bottom: 45px;
+    left: 0;
+    padding: 0 10px 0 20px;
+}
+#cv-info-all,#add-content-all{
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+#cv-info-footer{
+    width: 100%;
+    height: 40px;
+    bottom: 3px;
+    position: absolute;
+}
+#cv-info-footer button{
+    margin-right: 20px;
+    float: right;
+}
+#add-remove-container{
+    width: 59%;
+    height: 100%;
+    float: left;
+    margin-left: 1%;
+    font-size: 15px;
+}
+#add-container-list{
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 1px 2px 1px rgba(0,0,0,.1), 0 3px 6px rgba(0,0,0,.1);
+    padding: 1px 10px 5px 10px;
+    position: relative;
+}
+#add-container-list h4{
+    font-weight: bold;
+}
+#add-list-footer{
+    position: absolute;
+    height: 40px;
+    width: 100%;
+    bottom: 3px;
+    left: 0;
+    padding: 0 30px;
+}
+#add-list-footer button{
+    width: 100%;
+    float: right;
+}
+#add-list-content{
+    position: absolute;
+    height: auto;
+    width: 100%;
+    top: 38px;
+    left: 0;
+    bottom: 45px;
+    padding: 0 7px;
+}
+.add-content-div{
+    width: 49%;
+    height: auto;
+    float: left;
+    border: 1px solid #ccc;
+    padding: 0 10px 10px 10px;
+    margin: 0 0.5% 8px 0.5%;
+}
+.add-div-span{
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    display: block;
+}
+.update-item{
+    width: 100%;
+    height: 25px;
+    line-height: 25px;
+    border-bottom: 1px dashed #ececec;
+    padding: 0 5px;
+}
+.update-add-price,.update-remove-price{
+    float: right;
+}
+.update-remove-price{
+    color: red;
+}
+.add-div-lov,.remove-div-lov,.replace-div-lov{
+    margin-top: 5px;
+}
+.add-div-total{
+    margin-top: 10px;
+    padding: 0 5px;
+}
+
+.add-div-item .lov-div{
+    display: none;
+}
