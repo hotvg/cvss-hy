@@ -25,7 +25,7 @@ public class SearchController {
     }
 
     @RequestMapping(value = "/result")
-    public String showPage(CvConditionPojo record, Model model){
+    public String returnResult(CvConditionPojo record, Model model){
         model.addAttribute("cvPojo",iCvService.selectAll(record).get(0));
         return "search/search-result";
     }
