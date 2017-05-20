@@ -6,14 +6,13 @@ import com.cvss.pojo.CvPartsAdd;
 import com.cvss.pojo.CvPartsReplace;
 import com.cvss.pojo.CvPartsType;
 import com.cvss.service.IPartsService;
-import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
+ * 配件信息service接口实现类
  * Created by yufeng.liu on 2017-04-07.
  */
 @Service("partsService")
@@ -58,6 +57,11 @@ public class PartsServiceImpl implements IPartsService {
     }
 
     @Override
+    public int batchInsertPartsType(List<CvPartsType> partsTypeList) {
+        return this.partsMapper.batchInsertPartsType(partsTypeList);
+    }
+
+    @Override
     public boolean deleteParts(Integer id) {
         return this.partsMapper.deleteParts(id)>0;
     }
@@ -93,6 +97,11 @@ public class PartsServiceImpl implements IPartsService {
     }
 
     @Override
+    public int batchDeletePartsType(List<Integer> idList) {
+        return this.partsMapper.batchDeletePartsType(idList);
+    }
+
+    @Override
     public boolean updateParts(CvParts record) {
         return this.partsMapper.updateParts(record)>0;
     }
@@ -125,6 +134,11 @@ public class PartsServiceImpl implements IPartsService {
     @Override
     public boolean updatePartsType(CvPartsType record) {
         return this.partsMapper.updatePartsType(record)>0;
+    }
+
+    @Override
+    public int batchUpdatePartsType(List<CvPartsType> partsTypeList) {
+        return this.partsMapper.batchUpdatePartsType(partsTypeList);
     }
 
     @Override

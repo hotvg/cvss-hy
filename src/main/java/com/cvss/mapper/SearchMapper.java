@@ -11,9 +11,11 @@ import java.util.List;
 public interface SearchMapper {
     int inertSearch(SearchHistory record);
     int deleteSearch(Integer id);
+    int batchDeleteSearch(List<Integer> idList);
 
     List<SearchHistory> selectAllByUserId(Integer userId);
     List<SearchHistory> selectAll();
     List<SearchHistory> selectHotSearch();
     List<SearchHistory> selectLatelySearch();
+    List<SearchHistory> selectLatelySearchByUserId(Integer userId);
 }

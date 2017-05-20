@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cvss.mapper.SysRoleMapper" >
+  <resultMap id="BaseResultMap" type="SysRole" >
+    <id column="role_id" property="roleId" jdbcType="INTEGER" />
+    <result column="role_code" property="roleCode" jdbcType="VARCHAR" />
+    <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+    <result column="role_describe" property="roleDescribe" jdbcType="VARCHAR" />
+    <result column="valid_time" property="validTime" jdbcType="TIMESTAMP" />
+    <result column="dead_time" property="deadTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    role_id, role_code, role_name, role_describe, valid_time, dead_time, status
+  </sql>
+
+  <insert id="insert" parameterType="SysRole" >
+    insert into sys_role (role_code, role_name, role_describe, valid_time, dead_time, status)
+    values (#{roleCode,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR}, 
+      #{roleDescribe,jdbcType=VARCHAR}, #{validTime,jdbcType=TIMESTAMP}, 
+      #{deadTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER})
+  </insert>
+
+  <delete id="deleteById" parameterType="java.lang.Integer" >
+    delete from sys_role
+    where role_id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <delete id="deleteByRecord" parameterType="SysRole" >
+    delete from sys_role
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="roleId != null" >
+        and role_id = #{roleId,jdbcType=INTEGER}
+      </if>
+      <if test="roleName != null" >
+        and role_name = #{roleName,jdbcType=VARCHAR}
+      </if>
+      <if test="roleCode != null" >
+        and role_code = #{roleCode,jdbcType=VARCHAR}
+      </if>
+      <if test="roleDescribe != null" >
+        and role_describe = #{roleDescribe,jdbcType=VARCHAR}
+      </if>
+      <if test="validTime != null" >
+        and vlid_time = #{validTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="deadTime != null" >
+        and dead_time = #{deadTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="status != null" >
+        and status = #{status,jdbcType=INTEGER}
+      </if>
+    </trim>
+  </delete>
+
+  <update id="update" parameterType="SysRole" >
+    update sys_role
+    <trim prefix="set" prefixOverrides=",">
+      <if test="roleCode != null">
+        ,role_code = #{roleCode,jdbcType=VARCHAR}
+      </if>
+      <if test="roleName != null">
+        ,role_name = #{roleName,jdbcType=VARCHAR}
+      </if>
+      <if test="roleDescribe != null">
+        ,role_describe = #{roleDescribe,jdbcType=VARCHAR}
+      </if>
+      <if test="validTime != null">
+        ,valid_time = #{validTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="deadTime != null">
+        ,dead_time = #{deadTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="status != null">
+        ,status = #{status,jdbcType=TIMESTAMP}
+      </if>
+    </trim>
+    where role_id = #{roleId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectOne" resultMap="BaseResultMap" parameterType="SysRole" >
+    select
+    <include refid="Base_Column_List" />
+    from sys_role
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="roleId != null" >
+        and role_id = #{roleId,jdbcType=INTEGER}
+      </if>
+      <if test="roleCode != null" >
+        and role_code = #{roleCode,jdbcType=VARCHAR}
+      </if>
+      <if test="role_name != null" >
+        and roleName = #{roleName,jdbcType=VARCHAR}
+      </if>
+      <if test="roleDescribe != null" >
+        and role_describe = #{roleDescribe,jdbcType=VARCHAR}
+      </if>
+      <if test="validTime != null" >
+        and vlid_time = #{validTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="deadTime != null" >
+        and dead_time = #{deadTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="status != null" >
+        and status = #{status,jdbcType=INTEGER}
+      </if>
+    </trim>
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from sys_role
+  </select>
+
+  <select id="selectAllO" resultMap="BaseResultMap" parameterType="SysRole" >
+    select
+    <include refid="Base_Column_List" />
+    from sys_role
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="roleId != null" >
+        and role_id = #{roleId,jdbcType=INTEGER}
+      </if>
+      <if test="roleCode != null" >
+        and role_code = #{roleCode,jdbcType=VARCHAR}
+      </if>
+      <if test="roleName != null" >
+        and role_name = #{roleName,jdbcType=VARCHAR}
+      </if>
+      <if test="roleDescribe != null" >
+        and role_describe = #{roleDescribe,jdbcType=VARCHAR}
+      </if>
+      <if test="validTime != null" >
+        and vlid_time = #{validTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="deadTime != null" >
+        and dead_time = #{deadTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="status != null" >
+        and status = #{status,jdbcType=INTEGER}
+      </if>
+    </trim>
+  </select>
+
+
+  <insert id="batchInsertRole" parameterType="List">
+    insert into sys_role (role_code, role_name, role_describe, valid_time, dead_time, status)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{roleCode,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR},
+      #{roleDescribe,jdbcType=VARCHAR}, #{validTime,jdbcType=TIMESTAMP},
+      #{deadTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER})
+    </foreach>
+  </insert>
+
+  <delete id="batchDeleteRole" parameterType="List">
+    DELETE FROM sys_role WHERE role_id IN
+    <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
+  </delete>
+
+  <update id="batchUpdateRole" parameterType="List">
+    <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+      update sys_role
+      <trim prefix="set" prefixOverrides=",">
+        <if test="roleCode != null">
+          ,role_code = #{roleCode,jdbcType=VARCHAR}
+        </if>
+        <if test="roleName != null">
+          ,role_name = #{roleName,jdbcType=VARCHAR}
+        </if>
+        <if test="roleDescribe != null">
+          ,role_describe = #{roleDescribe,jdbcType=VARCHAR}
+        </if>
+        <if test="validTime != null">
+          ,valid_time = #{validTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="deadTime != null">
+          ,dead_time = #{deadTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="status != null">
+          ,status = #{status,jdbcType=TIMESTAMP}
+        </if>
+      </trim>
+      where role_id = #{roleId,jdbcType=INTEGER}
+    </foreach>
+  </update>
+
+</mapper>

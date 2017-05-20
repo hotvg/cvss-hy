@@ -2,14 +2,14 @@ package com.cvss.pojo;
 
 import java.util.Date;
 
-public class CvSettlement {
+public class CvSettlementUserPojo {
     private Integer settlementId;
 
     private String internalModels;
 
     private String partsJson;
 
-    private Integer userId;
+    private SysUser sysUser;
 
     private Long totalPrice;
 
@@ -39,12 +39,12 @@ public class CvSettlement {
         this.partsJson = partsJson;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public SysUser getSysUser() {
+        return sysUser;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setSysUser(SysUser sysUser) {
+        this.sysUser = sysUser;
     }
 
     public Long getTotalPrice() {

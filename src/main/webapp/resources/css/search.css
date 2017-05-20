@@ -221,3 +221,13 @@
 .add-div-item .lov-div{
     display: none;
 }
+.search-grid{
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.search-grid .grid-content{
+    top:83px;
+}

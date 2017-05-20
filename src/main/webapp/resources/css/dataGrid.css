@@ -23,6 +23,7 @@
 
 .grid-header table, .grid-content table {
     margin: 0;
+    table-layout: fixed;
 }
 
 .all-select input, .one-select input {
@@ -166,6 +167,9 @@
 
 .grid-input{
     height: 100%;
+    word-wrap: break-word;
+    white-space: normal;
+    display: block;
 }
 
 .grid-input .k-header{

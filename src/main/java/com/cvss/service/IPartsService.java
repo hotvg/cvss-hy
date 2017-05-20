@@ -21,6 +21,7 @@ public interface IPartsService {
     boolean insertPartsReplace(CvPartsReplace record);
     int batchInsertPartsReplace(List<CvPartsReplace> partsReplaceList);
     boolean insertPartsType(CvPartsType record);
+    int batchInsertPartsType(List<CvPartsType> partsTypeList);
 
     //删
     boolean deleteParts(Integer id);
@@ -30,6 +31,7 @@ public interface IPartsService {
     boolean deletePartsReplace(Integer id);
     int batchDeletePartsReplace(List<Integer> idList);
     boolean deletePartsType(Integer id);
+    int batchDeletePartsType(List<Integer> idList);
 
     //改
     boolean updateParts(CvParts record);
@@ -39,6 +41,7 @@ public interface IPartsService {
     boolean updatePartsReplace(CvPartsReplace record);
     int batchUpdatePartsReplace(List<CvPartsReplace> partsReplaceList);
     boolean updatePartsType(CvPartsType record);
+    int batchUpdatePartsType(List<CvPartsType> partsTypeList);
 
     //查
     List<CvParts> selectAllParts(CvParts record);

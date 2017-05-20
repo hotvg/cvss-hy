@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cvss.mapper.SysRoleMapper" >
+    <insert id="insertSysSet" parameterType="com.cvss.pojo.SysSet">
+        INSERT INTO sys_set (sys_logo, sys_title, sys_mc, sys_oc, company_name) VALUES
+            (#{sysLogo},#{sysTitle},#{sysMc},#{sysOc},#{companyName});
+    </insert>
+
+    <update id="updateSysSet" parameterType="com.cvss.pojo.SysSet">
+        UPDATE sys_set
+        <trim prefix="set" prefixOverrides=",">
+            <if test="sysLogo != null">
+                ,sys_logo = #{sysLogo}
+            </if>
+            <if test="sysTitle != null">
+                ,sys_title = #{sysTitle}
+            </if>
+            <if test="sysMc != null">
+                ,sys_mc = #{sysMc}
+            </if>
+            <if test="sysOc != null">
+                ,sys_oc = #{sysOc}
+            </if>
+            <if test="companyName != null">
+                ,company_name = #{companyName}
+            </if>
+        </trim>
+    </update>
+
+    <select id="selectSysSet" resultType="com.cvss.pojo.SysSet">
+        SELECT * FROM sys_set;
+    </select>
+</mapper>

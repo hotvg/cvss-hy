@@ -19,5 +19,5 @@ public interface IBaseService<T> {
 
     List<T> selectAll();
 
-    List<T> selectAll(T record);
+    List<T> selectAllO(T record);
 }

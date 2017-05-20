@@ -1,13 +1,13 @@
 package com.cvss.pojo;
 
-public class SysMenu extends BasePojo{
+public class SysMenuPojo extends BasePojo{
     private Integer menuId;
 
-    private String menuName = null;
+    private String menuName;
 
     private String menuDescribe;
 
-    private Integer menuParent;
+    private SysMenu sysMenu;
 
     private String menuUrl;
 
@@ -35,12 +35,13 @@ public class SysMenu extends BasePojo{
         this.menuName = menuName == null ? null : menuName.trim();
     }
 
-    public Integer getMenuParent() {
-        return menuParent;
+
+    public SysMenu getSysMenu() {
+        return sysMenu;
     }
 
-    public void setMenuParent(Integer menuParent) {
-        this.menuParent = menuParent;
+    public void setSysMenu(SysMenu sysMenu) {
+        this.sysMenu = sysMenu;
     }
 
     public String getMenuDescribe() {

@@ -3,6 +3,16 @@ package com.cvss.pojo;
 import java.util.Date;
 
 public class SysRole {
+    private Integer roleId;
+
+    public Integer getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
+    }
+
     private String roleCode;
 
     private String roleName;

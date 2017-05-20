@@ -254,8 +254,10 @@
                                     util.initEdit(lastTd);
                                 }else if(opt.editable&&opt.columns[j].type==='lov'){
                                     var lovOptions = opt.columns[j].lovOptions;
-                                    lastTd.find('input').val(contentTd[lovOptions.columns[0].field]);
-                                    lastTd.find('span').text(contentTd[lovOptions.columns[1].field]);
+                                    if(contentTd!==null){
+                                        lastTd.find('input').val(contentTd[lovOptions.columns[0].field]);
+                                        lastTd.find('span').text(contentTd[lovOptions.columns[1].field]);
+                                    }
                                     var $lov = lastTd.find('.lov-btn').lov(lovOptions);
                                     opt.lovMap.push($lov);
                                     lastTd.find('span').bind("DOMNodeInserted",function(){

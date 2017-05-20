@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cvss.mapper.SysMenuMapper" >
+    <!--insert-->
+    <insert id="insertSysMenu" parameterType="com.cvss.pojo.SysMenu">
+        INSERT INTO
+        sys_menu (menu_name,menu_describe,menu_parent,menu_url,create_time,status)
+        VALUES (#{menuName},#{menuDescribe},#{menuParent},#{menuUrl},#{createTime},#{status});
+    </insert>
+    <insert id="batchInsertSysMenu" parameterType="List">
+        INSERT INTO sys_menu (menu_name,menu_describe,menu_parent,menu_url,create_time,status) VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.menuName},#{item.menuDescribe},#{item.menuParent},#{item.menuUrl},#{item.createTime},#{item.status})
+        </foreach>
+    </insert>
+
+    <!--delete-->
+    <sql id="deleteForeach">
+        <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </sql>
+
+    <delete id="deleteSysMenu" parameterType="Integer">
+        DELETE FROM sys_menu WHERE menu_id = #{id};
+    </delete>
+    <delete id="batchDeleteParts" parameterType="List">
+        DELETE FROM sys_menu WHERE menu_id IN
+        <include refid="deleteForeach" />
+    </delete>
+
+
+    <!--update-->
+    <update id="updateSysMenu" parameterType="com.cvss.pojo.SysMenu">
+        UPDATE sys_menu
+        <trim prefix="set" prefixOverrides=",">
+            <if test="menuName != null">
+                ,menu_name = #{menuName}
+            </if>
+            <if test="menuDescribe != null">
+                ,menu_describe = #{menuDescribe}
+            </if>
+            <if test="menuParent != null">
+                ,menu_parent = #{menuParent}
+            </if>
+            <if test="menuUrl != null">
+                ,menu_url = #{menuUrl}
+            </if>
+            <if test="createTime != null">
+                ,create_time = #{createTime}
+            </if>
+            <if test="status != null">
+                ,status = #{status}
+            </if>
+        </trim>
+        WHERE menu_id = #{menuId}
+    </update>
+    <update id="batchUpdateSysMenu" parameterType="List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            UPDATE sys_menu
+            <trim prefix="set" prefixOverrides=",">
+                <if test="menuName != null">
+                    ,menu_name = #{menuName}
+                </if>
+                <if test="menuDescribe != null">
+                    ,menu_describe = #{menuDescribe}
+                </if>
+                <if test="menuParent != null">
+                    ,menu_parent = #{menuParent}
+                </if>
+                <if test="menuUrl != null">
+                    ,menu_url = #{menuUrl}
+                </if>
+                <if test="createTime != null">
+                    ,create_time = #{createTime}
+                </if>
+                <if test="status != null">
+                    ,status = #{status}
+                </if>
+            </trim>
+            WHERE menu_id = #{menuId}
+        </foreach>
+    </update>
+
+    <!--select-->
+    <select id="selectAllSysMenu" parameterType="com.cvss.pojo.SysMenu" resultType="com.cvss.pojo.SysMenuPojo">
+        SELECT sm_1.menu_id menuId,sm_1.menu_name menuName,sm_1.menu_describe menuDescribe,
+        sm_2.menu_id "sysMenu.menuId",sm_2.menu_name "sysMenu.menuName",sm_1.menu_url menuUrl,
+        sm_1.create_time createTime,sm_1.status "status"
+        FROM sys_menu sm_1 LEFT JOIN sys_menu sm_2 ON sm_1.menu_parent = sm_2.menu_id
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="menuId != null">
+                and sm_1.menu_id = #{menuId}
+            </if>
+            <if test="menuName != null">
+                and sm_1.menu_name like CONCAT('%',#{menuName},'%')
+            </if>
+            <if test="menuDescribe != null">
+                and sm_1.menu_describe = #{menuDescribe}
+            </if>
+            <if test="menuParent != null">
+                and sm_1.menu_parent like CONCAT('%',#{menuParent},'%')
+            </if>
+            <if test="menuUrl != null">
+                and sm_1.menu_Url like CONCAT('%',#{menuUrl},'%')
+            </if>
+            <if test="createTime != null">
+                and sm_1.create_time = #{createTime}
+            </if>
+            <if test="status != null">
+                and sm_1.status = #{status}
+            </if>
+        </trim>
+        ORDER BY menuId
+    </select>
+
+</mapper>

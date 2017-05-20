@@ -19,11 +19,11 @@
   </sql>
 
   <insert id="insert" parameterType="SysUser" >
-    insert into sys_user (user_id, user_name, password, 
+    insert into sys_user (user_name, password,
       user_email, user_tel, role_code, 
       valid_time, dead_time, status
       )
-    values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+    values (#{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
       #{userEmail,jdbcType=VARCHAR}, #{userTel,jdbcType=CHAR}, #{roleCode,jdbcType=VARCHAR}, 
       #{validTime,jdbcType=TIMESTAMP}, #{deadTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}
       )
@@ -69,14 +69,32 @@
 
   <update id="update" parameterType="SysUser" >
     update sys_user
-    set user_name = #{userName,jdbcType=VARCHAR},
-      password = #{password,jdbcType=VARCHAR},
-      user_email = #{userEmail,jdbcType=VARCHAR},
-      user_tel = #{userTel,jdbcType=CHAR},
-      role_code = #{roleCode,jdbcType=VARCHAR},
-      valid_time = #{validTime,jdbcType=TIMESTAMP},
-      dead_time = #{deadTime,jdbcType=TIMESTAMP},
-      status = #{status,jdbcType=INTEGER}
+    <trim prefix="set" prefixOverrides=",">
+      <if test="userName != null" >
+        , user_name = #{userName,jdbcType=VARCHAR}
+      </if>
+      <if test="password != null" >
+        , password = #{password,jdbcType=VARCHAR}
+      </if>
+      <if test="userEmail != null" >
+        , user_email = #{userEmail,jdbcType=VARCHAR}
+      </if>
+      <if test="userTel != null" >
+        , user_tel = #{userTel,jdbcType=CHAR}
+      </if>
+      <if test="roleCode != null" >
+        ,  role_code = #{roleCode,jdbcType=VARCHAR}
+      </if>
+      <if test="validTime != null" >
+        , vlid_time = #{validTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="deadTime != null" >
+        , dead_time = #{deadTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="status != null" >
+        , status = #{status,jdbcType=INTEGER}
+      </if>
+    </trim>
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
 
@@ -115,45 +133,106 @@
     </trim>
   </select>
 
-  <select id="selectAll" resultMap="BaseResultMap" >
+  <select id="selectAll" resultType="com.cvss.pojo.SysUserPojo" >
     select
-    <include refid="Base_Column_List" />
-    from sys_user
+      su.user_id userId, su.user_name userName, su.password "password", su.user_email userEmail,
+      su.user_tel userTel, sr.role_code "sysRole.roleCode",sr.role_name "sysRole.roleName",
+      su.valid_time validTime, su.dead_time deadTime,su.status "status"
+    from sys_user su,sys_role sr
+    WHERE su.role_code = sr.role_code;
   </select>
 
-  <select id="selectAllO" resultMap="BaseResultMap" parameterType="SysUser" >
+  <select id="selectAllO" resultType="com.cvss.pojo.SysUserPojo" parameterType="SysUser" >
     select
-    <include refid="Base_Column_List" />
-    from sys_user
+    su.user_id userId, su.user_name userName, su.password "password", su.user_email userEmail,
+    su.user_tel userTel, sr.role_code "sysRole.roleCode",sr.role_name "sysRole.roleName",
+    su.valid_time validTime, su.dead_time deadTime,su.status "status"
+    from sys_user su,sys_role sr
     <trim prefix="where" prefixOverrides="and|or">
+      <if test="1==1">
+        and su.role_code = sr.role_code
+      </if>
       <if test="userId != null" >
-        and user_id = #{userId,jdbcType=INTEGER}
+        and su.user_id = #{userId,jdbcType=INTEGER}
       </if>
       <if test="userName != null" >
-        and user_name = #{userName,jdbcType=VARCHAR}
+        and su.user_name = #{userName,jdbcType=VARCHAR}
       </if>
       <if test="password != null" >
-        and password = #{password,jdbcType=VARCHAR}
+        and su.password = #{password,jdbcType=VARCHAR}
       </if>
       <if test="userEmail != null" >
-        and user_email = #{userEmail,jdbcType=VARCHAR}
+        and su.user_email = #{userEmail,jdbcType=VARCHAR}
       </if>
       <if test="userTel != null" >
-        and user_tel = #{userTel,jdbcType=CHAR}
+        and su.user_tel = #{userTel,jdbcType=CHAR}
       </if>
       <if test="roleCode != null" >
-        and  role_code = #{roleCode,jdbcType=VARCHAR}
+        and su.role_code = #{roleCode,jdbcType=VARCHAR}
       </if>
       <if test="validTime != null" >
-        and vlid_time = #{validTime,jdbcType=TIMESTAMP}
+        and su.vlid_time = #{validTime,jdbcType=TIMESTAMP}
       </if>
       <if test="deadTime != null" >
-        and dead_time = #{deadTime,jdbcType=TIMESTAMP}
+        and su.dead_time = #{deadTime,jdbcType=TIMESTAMP}
       </if>
       <if test="status != null" >
-        and status = #{status,jdbcType=INTEGER}
+        and su.status = #{status,jdbcType=INTEGER}
       </if>
     </trim>
   </select>
+
+
+  <insert id="batchInsertUser" parameterType="List">
+    insert into sys_user (user_name, password,
+    user_email, user_tel, role_code,
+    valid_time, dead_time, status
+    ) values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+      #{userEmail,jdbcType=VARCHAR}, #{userTel,jdbcType=CHAR}, #{roleCode,jdbcType=VARCHAR},
+      #{validTime,jdbcType=TIMESTAMP}, #{deadTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER})
+    </foreach>
+  </insert>
+
+  <delete id="batchDeleteUser" parameterType="List">
+    DELETE FROM sys_user WHERE user_id IN
+    <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
+  </delete>
+
+  <update id="batchUpdateUser" parameterType="List">
+    <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+      update sys_user
+      <trim prefix="set" prefixOverrides=",">
+        <if test="userName != null" >
+          , user_name = #{userName,jdbcType=VARCHAR}
+        </if>
+        <if test="password != null" >
+          , password = #{password,jdbcType=VARCHAR}
+        </if>
+        <if test="userEmail != null" >
+          , user_email = #{userEmail,jdbcType=VARCHAR}
+        </if>
+        <if test="userTel != null" >
+          , user_tel = #{userTel,jdbcType=CHAR}
+        </if>
+        <if test="roleCode != null" >
+          ,  role_code = #{roleCode,jdbcType=VARCHAR}
+        </if>
+        <if test="validTime != null" >
+          , vlid_time = #{validTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="deadTime != null" >
+          , dead_time = #{deadTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="status != null" >
+          , status = #{status,jdbcType=INTEGER}
+        </if>
+      </trim>
+      where user_id = #{userId,jdbcType=INTEGER}
+    </foreach>
+  </update>
 
 </mapper>

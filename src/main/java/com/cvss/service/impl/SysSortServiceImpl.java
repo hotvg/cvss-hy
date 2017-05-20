@@ -15,7 +15,7 @@ import java.util.List;
  * Created by yufeng.liu on 2017-05-11.
  */
 @Service
-public class SysSortService implements ISysSortService {
+public class SysSortServiceImpl implements ISysSortService {
 
     @Autowired
     private SysSortMapper sysSortMapper;

@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
+ * 用户service接口实现类
  * Created by yufeng.liu on 2017-03-29.
  */
 @Service("userService")
@@ -54,7 +55,22 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public List<SysUser> selectAll(SysUser record) {
+    public List<SysUser> selectAllO(SysUser record) {
         return this.sysUserMapper.selectAllO(record);
+    }
+
+    @Override
+    public int batchInsertUser(List<SysUser> recordList) {
+        return this.sysUserMapper.batchInsertUser(recordList);
+    }
+
+    @Override
+    public int batchDeleteUser(List<Integer> idList) {
+        return this.sysUserMapper.batchDeleteUser(idList);
+    }
+
+    @Override
+    public int batchUpdateUser(List<SysUser> recordList) {
+        return this.sysUserMapper.batchUpdateUser(recordList);
     }
 }

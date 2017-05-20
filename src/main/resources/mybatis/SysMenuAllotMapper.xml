@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cvss.mapper.SysMenuAllotMapper" >
+    <insert id="insertAllot" parameterType="com.cvss.pojo.SysMenuAllot">
+        INSERT INTO sys_menu_allot (menu_json, role_code) VALUES (#{menuJson},#{sysRole.roleName});
+    </insert>
+
+    <update id="updateAllot" parameterType="com.cvss.pojo.SysMenuAllot">
+        UPDATE sys_menu_allot
+        <trim prefix="set" prefixOverrides=",">
+            <if test="menuJson != null">
+                ,menu_json = #{menuJson}
+            </if>
+            <if test="sysRole.roleName != null">
+                ,role_code = #{sysRole.roleCode}
+            </if>
+        </trim>
+        WHERE role_code = #{sysRole.roleCode}
+    </update>
+
+    <select id="selectAllot" resultType="com.cvss.pojo.SysMenuAllot" parameterType="String">
+        SELECT sma.menu_json menuJson,sma.role_code "sysRole.code",sr.role_name "sysRole.roleName"
+        FROM sys_menu_allot sma,sys_role sr
+        WHERE sma.role_code = sr.role_code
+        AND sma.role_code = #{sysRole.roleCode}
+    </select>
+</mapper>

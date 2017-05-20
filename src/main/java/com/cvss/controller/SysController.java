@@ -31,4 +31,9 @@ public class SysController {
     public String showSortPage(@PathVariable String page){
         return "sys/sort/" + page;
     }
+
+    @RequestMapping(value = "/function/{page}")
+    public String showFunctionPage(@PathVariable String page){
+        return "sys/function/" + page;
+    }
 }

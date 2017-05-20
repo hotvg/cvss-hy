@@ -110,8 +110,13 @@
                         <li>
                             <button class="nav-menu-btn">
                                 <span class="nav-icon"><i class="fa fa-wrench" aria-hidden="true"></i></span>
-                                <span class="nav-name">功能分配</span>
+                                <span class="nav-name">功能管理</span>
+                                <span class="nav-chevron-right"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
                             </button>
+                            <ul class="nav-child-item">
+                                <li><button class="nav-menu-btn-item">功能维护<input type="hidden" name="page" value="sys/function/menu"></button></li>
+                                <li><button class="nav-menu-btn-item">功能分配<input type="hidden" name="page" value="sys/function/allot"></button></li>
+                            </ul>
                         </li>
                         <li>
                             <button class="nav-menu-btn">

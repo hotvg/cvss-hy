@@ -1,53 +1,28 @@
 package com.cvss.controller;
 
-import com.cvss.pojo.SysUser;
-import com.cvss.service.IUserService;
+import com.cvss.pojo.*;
+import com.cvss.service.IRoleService;
 import com.cvss.util.GridUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- * 系统用户Controller类
- * Created by yufeng.liu on 2017-03-27.
+ * 系统角色
+ * Created by yufeng.liu on 2017-05-09.
  */
 @Controller
-@RequestMapping("/user")
-public class UserController {
-
-    private IUserService userService;
-
+@RequestMapping(value = "/role")
+public class SysRoleController {
+    
     @Autowired
-    @Qualifier("userService")
-    public void setUserService(IUserService userService) {
-        this.userService = userService;
-    }
-
-    /**
-     * 登录
-     * @param sysUser 用户
-     * @param request HttpServletRequest
-     * @return 返回是否成功
-     */
-    @RequestMapping("/login")
-    @ResponseBody
-    public String login(SysUser sysUser, HttpServletRequest request){
-        sysUser = this.userService.selectOne(sysUser);
-        if(sysUser!=null){
-            request.getSession().setAttribute("sysUser",sysUser);
-            return "success";
-        }else{
-            return "failure";
-        }
-    }
+    private IRoleService iRoleService;
 
     /**
      * 新增角色
@@ -56,8 +31,8 @@ public class UserController {
      */
     @RequestMapping(value = "/create")
     @ResponseBody
-    public int createUser(@RequestBody SysUser record){
-        return this.userService.insert(record);
+    public int createRole(@RequestBody SysRole record){
+        return this.iRoleService.insert(record);
     }
 
     /**
@@ -67,8 +42,8 @@ public class UserController {
      */
     @RequestMapping(value = "/create/batch")
     @ResponseBody
-    public int createMoreUser(@RequestBody List<SysUser> recordList){
-        return this.userService.batchInsertUser(recordList);
+    public int createMoreRole(@RequestBody List<SysRole> recordList){
+        return this.iRoleService.batchInsertRole(recordList);
     }
 
     /**
@@ -78,8 +53,8 @@ public class UserController {
      */
     @RequestMapping(value = "/destroy")
     @ResponseBody
-    public int destroyUser(@RequestBody Integer id){
-        return this.userService.deleteById(id);
+    public int destroyRole(@RequestBody Integer id){
+        return this.iRoleService.deleteById(id);
     }
 
     /**
@@ -89,8 +64,8 @@ public class UserController {
      */
     @RequestMapping(value = "/destroy/batch")
     @ResponseBody
-    public int destroyMoreUser(@RequestBody  List<Integer> idList){
-        return this.userService.batchDeleteUser(idList);
+    public int destroyMoreRole(@RequestBody  List<Integer> idList){
+        return this.iRoleService.batchDeleteRole(idList);
     }
 
     /**
@@ -100,8 +75,8 @@ public class UserController {
      */
     @RequestMapping(value = "/update")
     @ResponseBody
-    public int updateUser(@RequestBody SysUser record){
-        return this.userService.update(record);
+    public int updateRole(@RequestBody SysRole record){
+        return this.iRoleService.update(record);
     }
 
     /**
@@ -111,8 +86,8 @@ public class UserController {
      */
     @RequestMapping(value = "/update/batch")
     @ResponseBody
-    public int updateMoreUser(@RequestBody List<SysUser> recordList){
-        return this.userService.batchUpdateUser(recordList);
+    public int updateMoreRole(@RequestBody List<SysRole> recordList){
+        return this.iRoleService.batchUpdateRole(recordList);
     }
 
     /**
@@ -124,11 +99,12 @@ public class UserController {
      */
     @RequestMapping(value = "/read")
     @ResponseBody
-    public GridUtil readUser(SysUser record, int page, int pageSize){
+    public GridUtil readRole(SysRole record, int page, int pageSize){
         PageHelper.startPage(page,pageSize);
-        List<SysUser> list =  this.userService.selectAllO(record);
-        PageInfo<SysUser> pageInfo = new PageInfo<>(list);
+        List<SysRole> list =  this.iRoleService.selectAllO(record);
+        PageInfo<SysRole> pageInfo = new PageInfo<>(list);
         return new GridUtil<>(list,page,pageSize,pageInfo.getPages());
     }
+
 
 }

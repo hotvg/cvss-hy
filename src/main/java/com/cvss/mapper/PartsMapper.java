@@ -21,6 +21,7 @@ public interface PartsMapper{
     int insertPartsReplace(CvPartsReplace record);
     int batchInsertPartsReplace(List<CvPartsReplace> partsReplaceList);
     int insertPartsType(CvPartsType record);
+    int batchInsertPartsType(List<CvPartsType> partsTypeList);
 
     //删
     int deleteParts(Integer id);
@@ -30,6 +31,7 @@ public interface PartsMapper{
     int deletePartsReplace(Integer id);
     int batchDeletePartsReplace(List<Integer> idList);
     int deletePartsType(Integer id);
+    int batchDeletePartsType(List<Integer> idList);
 
     //改
     int updateParts(CvParts record);
@@ -39,6 +41,7 @@ public interface PartsMapper{
     int updatePartsReplace(CvPartsReplace record);
     int batchUpdatePartsReplace(List<CvPartsReplace> partsReplaceList);
     int updatePartsType(CvPartsType record);
+    int batchUpdatePartsType(List<CvPartsType> partsTypeList);
 
     //查
     List<CvParts> selectAllParts(CvParts record);
