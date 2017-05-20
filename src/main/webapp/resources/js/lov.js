@@ -191,22 +191,39 @@
                 }
 
                 if(updateItem){
+
+                    var type = input.parent().attr('class').split(' ')[2];
                     var name = td.eq(0).text();
                     var price = Number(td.eq(1).text());
                     var firstLov = input.parent().parent().children('.add-div-lov');
                     var updatePriceSpan = input.parent().parent().find('.update-add-price span');
 
-                    if(price<0){
-                        firstLov.before('<div class="update-item">'+
-                            '<span class="update-add-content">'+name+'</span>'+
-                            '<span class="update-remove-price">'+price+'</span>'+
-                            '</div>');
-                    }else {
+
+                    if(type==='add-div-lov'){
                         firstLov.before('<div class="update-item">'+
                             '<span class="update-add-content">'+name+'</span>'+
                             '<span class="update-add-price">'+price+'</span>'+
                             '</div>');
+                    }else if(type==='remove-div-lov'){
+                        firstLov.before('<div class="update-item">'+
+                            '<span class="update-add-content">'+name+'</span>'+
+                            '<span class="update-remove-price">'+price+'</span>'+
+                            '</div>');
+                    }else if(type==='replace-div-lov'){
+                        if(price<0){
+                            firstLov.before('<div class="update-item">'+
+                                '<span class="update-add-content">'+name+'</span>'+
+                                '<span class="update-replace-price urp-red">'+price+'</span>'+
+                                '</div>');
+                        }else {
+                            firstLov.before('<div class="update-item">'+
+                                '<span class="update-add-content">'+name+'</span>'+
+                                '<span class="update-replace-price">'+price+'</span>'+
+                                '</div>');
+                        }
                     }
+
+
                     updatePriceSpan.text(Number(updatePriceSpan.text())+price);
                 }else {
                     input.val(td.eq(0).text());

@@ -11,6 +11,7 @@
                 <#if cvPojo.internalModels!=''>
                     <div>
                         &emsp;内部型号：${cvPojo.internalModels}
+                        <input type="hidden" id="cv-internal-models" value="${cvPojo.internalModels}">
                     </div>
                 </#if>
 
@@ -118,7 +119,7 @@
             <div id="add-list-content">
                 <div id="add-content-all">
                     <div class="add-content-div">
-                        <span class="add-div-span"><strong>驾驶室：</strong>${cvPojo.cab.partsName}</span>
+                        <span class="add-div-span"><strong>驾驶室：</strong><span>${cvPojo.cab.partsName}</span></span>
                         <div class="btn-group">
                             <button class="btn btn-default add-btn" type="button">加</button>
                             <button class="btn btn-default remove-btn" type="button">减</button>
@@ -178,7 +179,7 @@
                     </div>
 
                     <div class="add-content-div">
-                        <span class="add-div-span"><strong>发动机：</strong>${cvPojo.engine.partsName}</span>
+                        <span class="add-div-span"><strong>发动机：</strong><span>${cvPojo.engine.partsName}</span></span>
                         <div class="btn-group">
                             <button class="btn btn-default add-btn" type="button">加</button>
                             <button class="btn btn-default remove-btn" type="button">减</button>
@@ -237,7 +238,7 @@
                         </div>
                     </div>
                     <div class="add-content-div">
-                        <span class="add-div-span"><strong>变速箱：</strong>${cvPojo.gearbox.partsName}</span>
+                        <span class="add-div-span"><strong>变速箱：</strong><span>${cvPojo.gearbox.partsName}</span></span>
                         <div class="btn-group">
                             <button class="btn btn-default add-btn" type="button">加</button>
                             <button class="btn btn-default remove-btn" type="button">减</button>
@@ -296,7 +297,7 @@
                         </div>
                     </div>
                     <div class="add-content-div">
-                        <span class="add-div-span"><strong>驱动桥：</strong>${cvPojo.drive.partsName}</span>
+                        <span class="add-div-span"><strong>驱动桥：</strong><span>${cvPojo.drive.partsName}</span></span>
                         <div class="btn-group">
                             <button class="btn btn-default add-btn" type="button">加</button>
                             <button class="btn btn-default remove-btn" type="button">减</button>
@@ -355,7 +356,7 @@
                         </div>
                     </div>
                     <div class="add-content-div">
-                        <span class="add-div-span"><strong>轮胎：</strong>${cvPojo.tire.partsName}</span>
+                        <span class="add-div-span"><strong>轮胎：</strong><span>${cvPojo.tire.partsName}</span></span>
                         <div class="btn-group">
                             <button class="btn btn-default add-btn" type="button">加</button>
                             <button class="btn btn-default remove-btn" type="button">减</button>
@@ -414,7 +415,7 @@
                         </div>
                     </div>
                     <div class="add-content-div">
-                        <span class="add-div-span"><strong>油箱：</strong>${cvPojo.bunkers.partsName}</span>
+                        <span class="add-div-span"><strong>油箱：</strong><span>${cvPojo.bunkers.partsName}</span></span>
                         <div class="btn-group">
                             <button class="btn btn-default add-btn" type="button">加</button>
                             <button class="btn btn-default remove-btn" type="button">减</button>
@@ -534,7 +535,7 @@
                 </div>
             </div>
             <div id="add-list-footer">
-                <button class="btn btn-default btn-success" type="button">结算</button>
+                <button class="btn btn-default btn-success settlement-btn" type="button">结算</button>
             </div>
 
         </div>
@@ -809,6 +810,77 @@
 
     $('#cv-info-all').perfectScrollbar();
     $('#add-content-all').perfectScrollbar();
+
+    $(function () {
+       $('.settlement-btn').click(function () {
+           var settlement = {};
+           var partsArray = [];
+           var totalPrice = 0;
+           var $contentArray = $('.add-content-div');
+           for(var i=0;i<$contentArray.length;i++){
+               var parts = {};
+               var $content = $contentArray.eq(i);
+               var partsName = $content.children('.add-div-span').children('strong').text();
+               var originalParts = $content.children('.add-div-span').children('span').text();
+               var price = $content.find('.update-add-price').children('span').text();
+               totalPrice = totalPrice + Number(price);
+               parts['partsName'] = partsName;
+               parts['originalParts'] = originalParts;
+
+               var addArray = [];
+               var removeArray = [];
+               var replaceArray = [];
+               var $changeItemArray = $content.find('.update-item');
+               for(var j = 0;j<$changeItemArray.length;j++){
+                   var changeItem = $changeItemArray.eq(j);
+                   var itemContent = changeItem.children('.update-add-content').text();
+                   var $itemPrice = changeItem.children('span').eq(1);
+                   var type = $itemPrice.attr('class');
+                   //判断是否是时间，如果是时间就进行转换
+                   var addReg = new RegExp('add');
+                   var removeReg = new RegExp('remove');
+                   var replaceReg = new RegExp('replace');
+                   var change = {};
+                   change['partsName'] = itemContent;
+                   change['taxPrice'] = $itemPrice.text();
+                   if(addReg.test(type)){
+                       addArray.push(change);
+                   }
+                   if(removeReg.test(type)){
+                       removeArray.push(change);
+                   }
+                   if(replaceReg.test(type)){
+                       replaceArray.push(change);
+                   }
+               }
+               parts['addArray'] = addArray;
+               parts['removeArray'] = removeArray;
+               parts['replaceArray'] = replaceArray;
+               parts['price'] = price;
+               partsArray.push(parts);
+           }
+           settlement['internalModels'] = $('#cv-internal-models').val();
+           settlement['partsJson'] = JSON.stringify(partsArray);
+           settlement['totalPrice'] = totalPrice;
+           settlement['createTime'] = new Date();
+           console.log(settlement);
+
+           $.ajax({
+               url: '/settlement/create',
+               type:'post',
+               dataType:'json',
+               contentType: "application/json;charset=utf-8",
+               data:JSON.stringify(settlement),
+               async:false,
+               success:function (data) {
+                   return data;
+               },
+               error:function () {
+                   alert('发生未知错误，请稍后再试');
+               }
+           });
+       });
+    });
 </script>
 
 </body>

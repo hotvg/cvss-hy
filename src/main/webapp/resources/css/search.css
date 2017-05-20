@@ -204,8 +204,11 @@
     border-bottom: 1px dashed #ececec;
     padding: 0 5px;
 }
-.update-add-price,.update-remove-price{
+.update-add-price,.update-remove-price,.update-replace-price{
     float: right;
+}
+.urp-red{
+    color: red;
 }
 .update-remove-price{
     color: red;

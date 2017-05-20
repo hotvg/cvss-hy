@@ -48,4 +48,13 @@
         ORDER BY cs.create_time;
     </select>
 
+    <select id="selectLatelySettlement" parameterType="Integer" resultType="com.cvss.pojo.CvSettlementUserPojo">
+        SELECT cs.settlement_id settlementId,cs.internal_models internalModels,su.user_id "sysUser.userId",
+        su.user_name "sysUser.userName",cs.total_price totalPrice,cs.create_time createTime
+        FROM cv_settlement cs ,sys_user su
+        WHERE cs.user_id = su.user_id
+        AND cs.user_id = #{userId}
+        ORDER BY cs.create_time;
+    </select>
+
 </mapper>

@@ -51,16 +51,19 @@ public class SearchController {
     }
 
     @RequestMapping(value = "/create")
+    @ResponseBody
     public int createSearch(SearchHistory searchHistory){
         return this.iSearchService.inertSearch(searchHistory);
     }
 
     @RequestMapping(value = "/destroy")
+    @ResponseBody
     public int destroySearch(@RequestBody Integer id){
         return this.iSearchService.deleteSearch(id);
     }
 
     @RequestMapping(value = "/destroy/batch")
+    @ResponseBody
     public int destroySearch(@RequestBody List<Integer> idList){
         return this.iSearchService.batchDeleteSearch(idList);
     }

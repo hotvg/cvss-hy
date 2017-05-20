@@ -19,5 +19,7 @@ public interface SettlementMapper {
     List<CvSettlementUserPojo> selectAll();
     List<CvSettlementUserPojo> selectHotSettlement();
     List<CvSettlementUserPojo> selectLatelySettlement();
+    List<CvSettlementUserPojo> selectLatelySettlementByUserId(Integer userId);
+
     CvSettlementPojo selectInfo(Integer settlementId);
 }

@@ -57,6 +57,11 @@ public class SettlementServiceImpl implements ISettlementService {
     }
 
     @Override
+    public List<CvSettlementUserPojo> selectLatelySettlementByUserId(Integer userId) {
+        return this.settlementMapper.selectLatelySettlementByUserId(userId);
+    }
+
+    @Override
     public CvSettlementPojo selectInfo(Integer settlementId) {
         CvSettlementPojo cvSettlementPojo = this.settlementMapper.selectInfo(settlementId);
         CvPojo cvPojo = cvSettlementPojo.getCvPojo();
