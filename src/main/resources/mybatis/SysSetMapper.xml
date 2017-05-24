@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.cvss.mapper.SysRoleMapper" >
+<mapper namespace="com.cvss.mapper.SysSetMapper" >
     <insert id="insertSysSet" parameterType="com.cvss.pojo.SysSet">
         INSERT INTO sys_set (sys_logo, sys_title, sys_mc, sys_oc, company_name) VALUES
             (#{sysLogo},#{sysTitle},#{sysMc},#{sysOc},#{companyName});
@@ -28,6 +28,6 @@
     </update>
 
     <select id="selectSysSet" resultType="com.cvss.pojo.SysSet">
-        SELECT * FROM sys_set;
+        SELECT sys_logo sysLogo,sys_mc sysMc,sys_oc sysOc,sys_title sysTitle,company_name companyName FROM sys_set;
     </select>
 </mapper>

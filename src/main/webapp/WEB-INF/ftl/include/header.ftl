@@ -2,7 +2,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>商用车结算系统</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!--bootstrap-->
     <link rel="stylesheet" href="${base}/lib/bootstrap/css/bootstrap.min.css">

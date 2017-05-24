@@ -1,6 +1,7 @@
 package com.cvss.mapper;
 
 import com.cvss.pojo.SysMenu;
+import com.cvss.pojo.SysMenuPojo;
 
 import java.util.List;
 
@@ -19,5 +20,5 @@ public interface SysMenuMapper {
     int updateSysMenu(SysMenu record);
     int batchUpdateSysMenu(List<SysMenu> listRecord);
 
-    List<SysMenu> selectAllSysMenu(SysMenu record);
+    List<SysMenuPojo> selectAllSysMenu(SysMenu record);
 }

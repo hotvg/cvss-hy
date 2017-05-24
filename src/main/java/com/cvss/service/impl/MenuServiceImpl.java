@@ -4,11 +4,12 @@ import com.cvss.mapper.SysMenuAllotMapper;
 import com.cvss.mapper.SysMenuMapper;
 import com.cvss.pojo.SysMenu;
 import com.cvss.pojo.SysMenuAllot;
+import com.cvss.pojo.SysMenuPojo;
 import com.cvss.service.IMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * 菜单service接口实现类
@@ -54,7 +55,7 @@ public class MenuServiceImpl implements IMenuService{
     }
 
     @Override
-    public List<SysMenu> selectAllSysMenu(SysMenu record) {
+    public List<SysMenuPojo> selectAllSysMenu(SysMenu record) {
         return this.sysMenuMapper.selectAllSysMenu(record);
     }
 
@@ -71,5 +72,44 @@ public class MenuServiceImpl implements IMenuService{
     @Override
     public SysMenuAllot selectAllotByRoleName(String roleName) {
         return this.sysMenuAllotMapper.selectAllotByRoleName(roleName);
+    }
+
+    @Override
+    public Map<String, Object> selectMenu() {
+        Map<String, Object> menuMap = new HashMap<>();
+        Map<Integer,Object> childMap = new HashMap<>();
+        List<SysMenuPojo> list = this.sysMenuMapper.selectAllSysMenu(null);
+        //父菜单
+        List<SysMenuPojo> parentSysMenuList = new ArrayList<>();
+        //全部子菜，包括二级和三级
+        List<SysMenuPojo> allChildSysMenuList = new ArrayList<>();
+        //只有二级
+        List<SysMenuPojo> childSysMenuList = new ArrayList<>();
+        Collection<SysMenuPojo> removeChildList = new ArrayList<>();
+        for (SysMenuPojo sysMenu:list){
+            if(sysMenu.getSysMenu()==null){
+                parentSysMenuList.add(sysMenu);
+            }else{
+                allChildSysMenuList.add(sysMenu);
+            }
+        }
+
+        for (SysMenuPojo parentSysMenu:parentSysMenuList){
+            for(SysMenuPojo childSysMenu:allChildSysMenuList){
+                if(parentSysMenu.getMenuId().equals(childSysMenu.getSysMenu().getMenuId())){
+                    childMap.put(parentSysMenu.getMenuId(),childSysMenu);
+                    childSysMenuList.add(childSysMenu);
+                    removeChildList.add(childSysMenu);
+                }
+            }
+        }
+
+        allChildSysMenuList.removeAll(removeChildList);
+
+//        for(SysMenuPojo child:childSysMenuList){
+//            for()
+//        }
+
+        return menuMap;
     }
 }

@@ -1,9 +1,10 @@
 <#include "include/header.ftl"/>
+<title>商用车结算系统</title>
 <body>
 <div class="index-div">
     <div class="header">
-        <div class="logo"></div>
-        <div class="sys-name">商用车结算系统</div>
+        <div class="logo" style="background: url(${sysSet.sysLogo}) no-repeat center;background-size:80%;"></div>
+        <div class="sys-name">${sysSet.sysTitle}</div>
         <div class="user-name">
             <span>${username}</span>
             <span>|</span>
@@ -133,7 +134,7 @@
                             <button class="nav-menu-btn">
                                 <span class="nav-icon"><i class="fa fa-cog" aria-hidden="true"></i></span>
                                 <span class="nav-name">系统设置</span>
-                                <span class="nav-chevron-right"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
+                                <input type="hidden" name="page" value="sys/set">
                             </button>
                         </li>
                     </ul>

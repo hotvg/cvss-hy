@@ -102,8 +102,8 @@ public class SysFunctionController {
     @ResponseBody
     public GridUtil readSysMenu(SysMenu record, int page, int pageSize){
         PageHelper.startPage(page,pageSize);
-        List<SysMenu> list =  this.iMenuService.selectAllSysMenu(record);
-        PageInfo<SysMenu> pageInfo = new PageInfo<>(list);
+        List<SysMenuPojo> list =  this.iMenuService.selectAllSysMenu(record);
+        PageInfo<SysMenuPojo> pageInfo = new PageInfo<>(list);
         return new GridUtil<>(list,page,pageSize,pageInfo.getPages());
     }
 

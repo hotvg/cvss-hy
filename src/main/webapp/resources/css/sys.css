@@ -8,3 +8,78 @@
 .sys-grid .grid-content{
     top:83px;
 }
+.set-container{
+    width: 350px;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 30px;
+    box-sizing: border-box;
+}
+.set-container label{
+    width: 100%;
+}
+.set-logo{
+    width: 80px;
+    height: 60px;
+}
+.set-container .input-group{
+    width: 100%;
+}
+.set-container .input-group .form-control:last-child{
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+.set-container .input-group{
+    margin-bottom: 10px;
+}
+#up-logo{
+    margin-top: 10px;
+}
+.set-btn{
+    float: right;
+}
+.set-btn button{
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+.set-btn-up{
+    padding-top: 3px;
+    padding-bottom: 3px;
+    float: right;
+}
+.hide-btn{
+    width:0;
+    height:0;
+    border-top:6px solid #337ab7;     /*设置并显示上边框*/
+    border-bottom:none;             /*不设置下边框*/
+    border-left:5px solid transparent;     /*设置但隐藏左边框*/
+    border-right:5px solid transparent;    /*设置但隐藏右边框*/
+    padding: 0;
+    background: none;
+    margin-right: 5px;
+    /*注意：四条边框的宽度必须相同！*/
+}
+.menu-container{
+    padding: 20px 50px;
+    box-sizing: border-box;
+}
+.menu-container ul{
+    list-style: none;
+}
+.menu-container li{
+    border-top: 1px dotted #cccccc;
+}
+.menu-child-item li{
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+}
+.menu-child-item li input,.menu-child-title input,.menu-not-child input,.menu-parent-title input{
+    margin-right: 5px;
+}
+.menu-child-title,.menu-not-child,.menu-parent-title{
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+}

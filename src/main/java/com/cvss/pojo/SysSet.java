@@ -50,4 +50,15 @@ public class SysSet {
     public void setCompanyName(String companyName) {
         this.companyName = companyName == null ? null : companyName.trim();
     }
+
+    @Override
+    public String toString() {
+        return "SysSet{" +
+                "sysLogo='" + sysLogo + '\'' +
+                ", sysTitle='" + sysTitle + '\'' +
+                ", sysMc='" + sysMc + '\'' +
+                ", sysOc='" + sysOc + '\'' +
+                ", companyName='" + companyName + '\'' +
+                '}';
+    }
 }

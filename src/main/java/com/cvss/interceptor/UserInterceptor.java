@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * 用户登录拦截器
  * Created by yufeng.liu on 2017-04-18.
  */
 public class UserInterceptor extends HandlerInterceptorAdapter {

@@ -1,10 +1,8 @@
 package com.cvss.controller;
 
-import com.cvss.pojo.CvSettlementUserPojo;
-import com.cvss.pojo.HotSearch;
-import com.cvss.pojo.SearchHistory;
-import com.cvss.pojo.SysUser;
+import com.cvss.pojo.*;
 import com.cvss.service.ISearchService;
+import com.cvss.service.ISetService;
 import com.cvss.service.ISettlementService;
 import com.cvss.util.VerifyCodeUtil;
 import com.github.pagehelper.PageHelper;
@@ -17,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
@@ -35,6 +34,8 @@ public class PageController {
     private ISearchService iSearchService;
     @Autowired
     private ISettlementService iSettlementService;
+    @Autowired
+    private ISetService iSetService;
 
     /**
      * 展示首页
@@ -45,6 +46,13 @@ public class PageController {
         SysUser sysUser = (SysUser)request.getSession().getAttribute("sysUser");
         model.addAttribute("username",sysUser.getUserName());
         return "index";
+    }
+
+    @RequestMapping(value = "/login")
+    public String showLogin(HttpSession session){
+        SysSet sysSet = this.iSetService.selectSysSet();
+        session.setAttribute("sysSet",sysSet);
+        return "login";
     }
 
     /**

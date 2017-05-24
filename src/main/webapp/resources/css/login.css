@@ -41,13 +41,12 @@ background-attachment属性设置背景图像是否固定或者随着页面的�
     /* IE 10 */
     background: -ms-linear-gradient(top, rgba(100%,100%,100%,0.6), #f5f7f8);
     /* IE < 10 */
-    FILTER: progid:DXImageTransform.Microsoft.Gradient(startColorStr=rgba(100%,100%,100%,0.6), endColorStr=#f5f7f8);
+    filter: progid:DXImageTransform.Microsoft.Gradient(startColorStr=rgba(100%,100%,100%,0.6), endColorStr=#f5f7f8);
 }
 .logo{
     width: 80px;
     height: 60px;
     top: -5px;
-    background: url("../images/logo.png") no-repeat;
 
 }
 .login-btn{
@@ -62,4 +61,10 @@ background-attachment属性设置背景图像是否固定或者随着页面的�
 }
 .verify-code-div{
     width: 48%;
+}
+#sys-info{
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+    color: #ffffff;
 }
