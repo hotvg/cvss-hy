@@ -1,5 +1,6 @@
 package com.cvss.service;
 
+import com.cvss.pojo.HotSearch;
 import com.cvss.pojo.SearchHistory;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ public interface ISearchService {
 
     List<SearchHistory> selectAllByUserId(Integer userId);
     List<SearchHistory> selectAll();
-    List<SearchHistory> selectHotSearch();
+    List<HotSearch> selectHotSearch();
     List<SearchHistory> selectLatelySearch();
     List<SearchHistory> selectLatelySearchByUserId(Integer userId);
 }

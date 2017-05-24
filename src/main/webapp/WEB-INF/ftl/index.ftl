@@ -7,7 +7,7 @@
         <div class="user-name">
             <span>${username}</span>
             <span>|</span>
-            <button class="btn btn-default"><i class="fa fa-sign-out" aria-hidden="true"></i></button>
+            <button class="btn btn-default btn-sign-out"><i class="fa fa-sign-out" aria-hidden="true"></i></button>
         </div>
     </div>
     <div class="left">
@@ -60,7 +60,7 @@
                             <button class="nav-menu-btn">
                                 <span class="nav-icon"><i class="fa fa-search-plus" aria-hidden="true"></i></span>
                                 <span class="nav-name">多条件搜索</span>
-                                <input type="hidden" name="page" value="search/condition-search">
+                                <input type="hidden" name="page" value="search/index">
                             </button>
                         </li>
                         <li>
@@ -77,7 +77,7 @@
                     <button class="nav-menu-btn">
                         <span class="nav-icon"><i class="fa fa-calculator" aria-hidden="true"></i></span>
                         <span class="nav-name">结算管理</span>
-                        <span class="nav-chevron-right"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
+                        <input type="hidden" name="page" value="settlement/history">
                     </button>
                 </li>
 
@@ -163,7 +163,7 @@
                 },
                 //数据源
                 dataSource: [
-                    { Name: "首页", ContentUrl: "/home" }
+                    { Name: "首页", ContentUrl: "/home-ftl" }
                 ]
             }).data("kendoTabStrip");
 
@@ -217,6 +217,24 @@
                         bind_close_btn();
                         tab_array.push(tab_title);
                     }
+                }
+            });
+
+            $('.btn-sign-out').click(function () {
+                var result = confirm("确定注销登录吗？");
+                if(result){
+                    $.ajax({
+                        url: '/user/sign-out',
+                        dataType:'json',
+                        success:function (data) {
+                            if(data){
+                                window.location = "/login";
+                            }
+                        },
+                        error:function () {
+                            alert('发生未知错误，请稍后再试');
+                        }
+                    });
                 }
             });
         </script>

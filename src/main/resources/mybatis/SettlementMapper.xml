@@ -18,43 +18,43 @@
     </delete>
 
     <select id="selectAllByUserId" parameterType="Integer" resultType="com.cvss.pojo.CvSettlementUserPojo">
-        SELECT cs.settlement_id settlementId,cs.internal_models internalModels,su.user_id "sysUser.userId",
-            su.user_name "sysUser.userName",cs.total_price totalPrice,cs.create_time createTime
+        SELECT cs.settlement_id settlementId,cs.internal_models internalModels,su.user_id userId,
+               su.user_name userName,cs.total_price totalPrice,cs.create_time createTime
         FROM cv_settlement cs ,sys_user su
         WHERE cs.user_id = #{userId}
-        AND cs.user_id = su.user_id;
+        AND cs.user_id = su.user_id
     </select>
 
     <select id="selectAll" resultType="com.cvss.pojo.CvSettlementUserPojo">
-        SELECT cs.settlement_id settlementId,cs.internal_models internalModels,su.user_id "sysUser.userId",
-               su.user_name "sysUser.userName",cs.total_price totalPrice,cs.create_time createTime
+        SELECT cs.settlement_id settlementId,cs.internal_models internalModels,su.user_id userId,
+               su.user_name userName,cs.total_price totalPrice,cs.create_time createTime
         FROM cv_settlement cs ,sys_user su
-        WHERE cs.user_id = su.user_id;
+        WHERE cs.user_id = su.user_id
     </select>
 
     <select id="selectInfo" resultType="com.cvss.pojo.CvSettlementPojo" parameterType="Integer">
-        SELECT cs.settlement_id settlementId,su.user_id "sysUser.userId",internal_models "cvPojo.internalModels",
-            su.user_name "sysUser.userName",cs.total_price totalPrice,cs.create_time createTime
+        SELECT cs.settlement_id settlementId,su.user_id "sysUser.userId",cs.internal_models "cvPojo.internalModels",
+            su.user_name "sysUser.userName",cs.total_price totalPrice,cs.create_time createTime,cs.parts_json partsJson
         FROM cv_settlement cs ,sys_user su
         WHERE cs.user_id = su.user_id
         AND cs.settlement_id = #{settlementId}
     </select>
 
     <select id="selectLatelySettlement" resultType="com.cvss.pojo.CvSettlementUserPojo">
-        SELECT cs.settlement_id settlementId,cs.internal_models internalModels,su.user_id "sysUser.userId",
-               su.user_name "sysUser.userName",cs.total_price totalPrice,cs.create_time createTime
+        SELECT cs.settlement_id settlementId,cs.internal_models internalModels,su.user_id userId,
+               su.user_name userName,cs.total_price totalPrice,cs.create_time createTime
         FROM cv_settlement cs ,sys_user su
         WHERE cs.user_id = su.user_id
-        ORDER BY cs.create_time;
+        ORDER BY cs.create_time
     </select>
 
-    <select id="selectLatelySettlement" parameterType="Integer" resultType="com.cvss.pojo.CvSettlementUserPojo">
-        SELECT cs.settlement_id settlementId,cs.internal_models internalModels,su.user_id "sysUser.userId",
-        su.user_name "sysUser.userName",cs.total_price totalPrice,cs.create_time createTime
+    <select id="selectLatelySettlementByUserId" parameterType="Integer" resultType="com.cvss.pojo.CvSettlementUserPojo">
+        SELECT cs.settlement_id settlementId,cs.internal_models internalModels,su.user_id userId,
+               su.user_name userName,cs.total_price totalPrice,cs.create_time createTime
         FROM cv_settlement cs ,sys_user su
         WHERE cs.user_id = su.user_id
         AND cs.user_id = #{userId}
-        ORDER BY cs.create_time;
+        ORDER BY cs.create_time DESC
     </select>
 
 </mapper>

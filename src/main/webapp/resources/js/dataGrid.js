@@ -246,7 +246,14 @@
                             var regExp=new RegExp('Time');
                             if(regExp.test(field)){
                                 contentTd = util.dateFormat(contentTd);
-                                util.initKendoTime(lastTd,contentTd,false,opt);
+                                if(opt.editable){
+                                    util.initKendoTime(lastTd,contentTd,false,opt);
+                                }else {
+                                    lastTd.find('input').val(contentTd);
+                                    lastTd.find('input').show();
+                                    lastTd.find('input').css({'border':'none','background': 'none'});
+                                    lastTd.find('input').attr('readonly','true');
+                                }
                             }else {
                                 if(opt.editable&&opt.columns[j].type!=='lov'){
                                     lastTd.find('input').val(contentTd);
@@ -263,6 +270,9 @@
                                     lastTd.find('span').bind("DOMNodeInserted",function(){
                                         $(this).closest('td').append(htmlElement.tdNewTag);
                                     });
+                                }else if(!opt.editable&&opt.columns[j].type!=='lov'){
+                                    lastTd.find('input').val(contentTd);
+                                    lastTd.find('span').text(contentTd);
                                 }
                             }
                         }else {

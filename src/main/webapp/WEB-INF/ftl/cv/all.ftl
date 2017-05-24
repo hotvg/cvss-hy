@@ -41,7 +41,7 @@
             <label class="control-label">零售价</label>
             <div class="input-group">
                 <input id="retailPrice-small" class="form-control" type="number" placeholder="" name="retailPriceSmall">
-                <span class="retailPrice-span">~</span>
+                <div class="retailPrice-span">~</div>
                 <input id="retailPrice-large" class="form-control" type="number" placeholder="" name="retailPriceLarge">
             </div>
         </div>
@@ -142,6 +142,8 @@
 
     <script>
 
+        var $allCondition = $('.all-condition');
+
         var lovSeriesOptions = {
             columns:[
                 {field:'seriesId',name:'系列编号'},
@@ -149,11 +151,11 @@
             ],
             url:'/sort/series/read',
             param:{
-                typeId:$('.condition-typeId').val()
+                typeId:$('#condition-typeId').val()
             }
         };
 
-        var $seriesLov = $('.lov-series').lov(lovSeriesOptions);
+        var $seriesLov = $allCondition.find('.lov-series').lov(lovSeriesOptions);
 
         var lovTypeOptions = {
             columns:[
@@ -165,7 +167,7 @@
         };
 
 
-        $('.lov-type').lov(lovTypeOptions);
+        $allCondition.find('.lov-type').lov(lovTypeOptions);
 
 
         var lovCabOptions = {
@@ -179,7 +181,7 @@
             }
         };
 
-        $('.lov-cab').lov(lovCabOptions);
+        $allCondition.find('.lov-cab').lov(lovCabOptions);
 
         var lovEngineOptions = {
             columns:[
@@ -192,7 +194,7 @@
             }
         };
 
-        $('.lov-engine').lov(lovEngineOptions);
+        $allCondition.find('.lov-engine').lov(lovEngineOptions);
 
         var lovGearboxOptions = {
             columns:[
@@ -205,7 +207,7 @@
             }
         };
 
-        $('.lov-gearbox').lov(lovGearboxOptions);
+        $allCondition.find('.lov-gearbox').lov(lovGearboxOptions);
 
         var lovDriveOptions = {
             columns:[
@@ -218,7 +220,7 @@
             }
         };
 
-        $('.lov-drive').lov(lovDriveOptions);
+        $allCondition.find('.lov-drive').lov(lovDriveOptions);
 
         var cvDataSource = new grid.dataSource({
             transport: {

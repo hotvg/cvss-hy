@@ -1,5 +1,6 @@
 package com.cvss.mapper;
 
+import com.cvss.pojo.HotSearch;
 import com.cvss.pojo.SearchHistory;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public interface SearchMapper {
 
     List<SearchHistory> selectAllByUserId(Integer userId);
     List<SearchHistory> selectAll();
-    List<SearchHistory> selectHotSearch();
+    List<HotSearch> selectHotSearch();
     List<SearchHistory> selectLatelySearch();
     List<SearchHistory> selectLatelySearchByUserId(Integer userId);
 }

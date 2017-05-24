@@ -35,7 +35,7 @@
 
     var searchArgs = {
         toolBar:true,
-        editable:true,
+        editable:false,
         columns:[
             {
                 field:'internalModels',

@@ -1,0 +1,111 @@
+#info-container{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+#info-original-data{
+    width: 40%;
+
+}
+#info-container h4{
+    font-weight: bold;
+}
+#info-original-data,#info-settlement-parts{
+    height: 100%;
+    float: left;
+    padding:0 10px ;
+    box-shadow: 0 1px 2px 1px rgba(0,0,0,.1), 0 3px 6px rgba(0,0,0,.1);
+    position: relative;
+    font-size: 15px;
+}
+#info-settlement-parts{
+    width: 59%;
+    margin-left: 1%;
+}
+.info-parts{
+    width: 100%;
+    height: auto;
+    float: left;
+    border-bottom: 1px solid #8ac007;
+    margin-bottom: 10px;
+}
+.info-parts-original{
+    font-size: 16px;
+    width: 100%;
+    float: left;
+}
+.info-parts-name{
+    font-weight: bold;
+}
+.info-change-parts{
+    width: 100%;
+    list-style: none;
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+.info-change-parts span{
+    margin-top: 5px;
+    display: block;
+}
+.info-change-parts li{
+    width: 100%;
+    height: 30px;
+    border-bottom: 1px dotted #cccccc;
+}
+.info-change-parts li:last-child{
+    border-bottom: none;
+}
+.info-change-name{
+    width: 80%;
+    float: left;
+    padding-left: 20px;
+}
+.info-change-price,.info-tp-price{
+    width: 20%;
+    float: right;
+    text-align: right;
+    padding-right: 40px;
+}
+.price-negative{
+    color: #d9534f;
+}
+.info-total-price{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
+    line-height: 38px;
+    font-weight: bold;
+    font-size: 18px;
+    border-top: 1px solid #cccccc;
+    left: 0;
+}
+.info-tp-name{
+    width: 80%;
+    float: left;
+    padding-left: 20px;
+    text-align: right;
+}
+.info-parts-price{
+    border-top: 1px solid #cccccc;
+    width: 100%;
+    height: 35px;
+    font-weight: bold;
+    font-size: 16px;
+    float: left;
+}
+.info-parts-price span{
+    margin-top: 7px;
+}
+#info-parts-all{
+    position: absolute;
+    bottom: 40px;
+    width: 100%;
+    height: auto;
+    left: 0;
+    top: 40px;
+    padding: 0 10px;
+}

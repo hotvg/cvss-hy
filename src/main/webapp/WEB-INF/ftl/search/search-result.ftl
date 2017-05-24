@@ -24,6 +24,7 @@
                 <#if cvPojo.retailPrice!=''>
                     <div>
                         &emsp;&emsp;零售价：${cvPojo.retailPrice}
+                        <input type="hidden" id="retail-price" value="${cvPojo.retailPrice}" />
                     </div>
                 </#if>
 
@@ -815,7 +816,7 @@
        $('.settlement-btn').click(function () {
            var settlement = {};
            var partsArray = [];
-           var totalPrice = 0;
+           var totalPrice = Number($('#retail-price').val())*10000;
            var $contentArray = $('.add-content-div');
            for(var i=0;i<$contentArray.length;i++){
                var parts = {};

@@ -1,6 +1,7 @@
 package com.cvss.service.impl;
 
 import com.cvss.mapper.SearchMapper;
+import com.cvss.pojo.HotSearch;
 import com.cvss.pojo.SearchHistory;
 import com.cvss.service.ISearchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ public class SearchServiceImpl implements ISearchService {
     }
 
     @Override
-    public List<SearchHistory> selectHotSearch() {
+    public List<HotSearch> selectHotSearch() {
         return this.searchMapper.selectHotSearch();
     }
 

@@ -33,10 +33,10 @@
         WHERE sh.user_id = su.user_id
     </select>
 
-    <select id="selectHotSearch" resultType="com.cvss.pojo.SearchHistoryPojo">
-        SELECT internal_models,count(internal_models) num FROM search_history
+    <select id="selectHotSearch" resultType="com.cvss.pojo.HotSearch">
+        SELECT internal_models internalModels,count(internal_models) num FROM search_history
         GROUP BY internal_models
-        ORDER BY num;
+        ORDER BY num desc
     </select>
 
     <select id="selectLatelySearch" resultType="com.cvss.pojo.SearchHistoryPojo">
@@ -44,7 +44,7 @@
                su.user_id userId,su.user_name userName,sh.create_time createTime
         FROM search_history sh,sys_user su
         WHERE sh.user_id = su.user_id
-        ORDER BY create_time;
+        ORDER BY create_time DESC
     </select>
 
     <select id="selectLatelySearchByUserId" parameterType="Integer" resultType="com.cvss.pojo.SearchHistoryPojo">
@@ -53,7 +53,7 @@
         FROM search_history sh,sys_user su
         WHERE sh.user_id = su.user_id
         AND sh.user_id = #{userId}
-        ORDER BY create_time
+        ORDER BY create_time DESC
     </select>
 
 </mapper>

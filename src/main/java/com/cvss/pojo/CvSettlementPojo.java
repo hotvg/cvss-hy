@@ -62,4 +62,16 @@ public class CvSettlementPojo {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
+    @Override
+    public String toString() {
+        return "CvSettlementPojo{" +
+                "settlementId=" + settlementId +
+                ", cvPojo=" + cvPojo +
+                ", partsJson='" + partsJson + '\'' +
+                ", sysUser=" + sysUser +
+                ", totalPrice=" + totalPrice +
+                ", createTime=" + createTime +
+                '}';
+    }
 }

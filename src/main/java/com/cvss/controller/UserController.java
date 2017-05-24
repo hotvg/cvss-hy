@@ -1,6 +1,7 @@
 package com.cvss.controller;
 
 import com.cvss.pojo.SysUser;
+import com.cvss.service.IMenuService;
 import com.cvss.service.IUserService;
 import com.cvss.util.GridUtil;
 import com.github.pagehelper.PageHelper;
@@ -8,6 +9,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,6 +26,8 @@ import java.util.List;
 public class UserController {
 
     private IUserService userService;
+    @Autowired
+    private IMenuService iMenuService;
 
     @Autowired
     @Qualifier("userService")
@@ -39,10 +43,11 @@ public class UserController {
      */
     @RequestMapping("/login")
     @ResponseBody
-    public String login(SysUser sysUser, HttpServletRequest request){
+    public String login(SysUser sysUser, HttpServletRequest request, Model model){
         sysUser = this.userService.selectOne(sysUser);
         if(sysUser!=null){
             request.getSession().setAttribute("sysUser",sysUser);
+//            model.addAttribute('menuList',this.iMenuService.selectAllotByRoleName());
             return "success";
         }else{
             return "failure";
@@ -129,6 +134,13 @@ public class UserController {
         List<SysUser> list =  this.userService.selectAllO(record);
         PageInfo<SysUser> pageInfo = new PageInfo<>(list);
         return new GridUtil<>(list,page,pageSize,pageInfo.getPages());
+    }
+
+    @RequestMapping(value = "/sign-out")
+    @ResponseBody
+    public boolean signOut(HttpServletRequest request){
+        request.getSession().setAttribute("sysUser",null);
+        return true;
     }
 
 }

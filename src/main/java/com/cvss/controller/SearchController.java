@@ -1,22 +1,19 @@
 package com.cvss.controller;
 
-import com.cvss.pojo.CvConditionPojo;
-import com.cvss.pojo.SearchHistory;
-import com.cvss.pojo.SysUser;
+import com.cvss.pojo.*;
 import com.cvss.service.ICvService;
 import com.cvss.service.ISearchService;
 import com.cvss.util.GridUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.List;
 
@@ -48,6 +45,24 @@ public class SearchController {
         searchHistory.setUserId(sysUser.getUserId());
         this.iSearchService.inertSearch(searchHistory);
         return "search/search-result";
+    }
+
+    @RequestMapping(value = "/condition")
+    public String returnResult(@RequestBody CvConditionPojo record, Model model){
+        model.addAttribute("cvPojoList",this.iCvService.selectAll(record));
+        return "search/condition-result";
+    }
+
+    @RequestMapping(value = "/index")
+    public String returnHistory(Model model,HttpServletRequest request){
+        PageHelper.startPage(1,10);
+        List<HotSearch> hotList = this.iSearchService.selectHotSearch();
+        SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
+        PageHelper.startPage(1,10);
+        List<SearchHistory> latelyList = this.iSearchService.selectLatelySearchByUserId(sysUser.getUserId());
+        model.addAttribute("hotList",hotList);
+        model.addAttribute("latelyList",latelyList);
+        return "search/condition-search";
     }
 
     @RequestMapping(value = "/create")
@@ -87,8 +102,8 @@ public class SearchController {
     @ResponseBody
     public GridUtil readHotSearchAll(int page, int pageSize){
         PageHelper.startPage(page,pageSize);
-        List<SearchHistory> list = this.iSearchService.selectHotSearch();
-        PageInfo<SearchHistory> pageInfo = new PageInfo<>(list);
+        List<HotSearch> list = this.iSearchService.selectHotSearch();
+        PageInfo<HotSearch> pageInfo = new PageInfo<>(list);
         return new GridUtil<>(list,page,pageSize,pageInfo.getPages());
     }
 

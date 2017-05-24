@@ -82,20 +82,20 @@
 .condition-div{
     margin-top: 5px;
 }
-.condition-btn{
+.condition-btn-search{
     position: absolute;
     bottom: 10px;
     right: -15px;
 }
 #search-history{
     position: absolute;
-    width: 400px;
+    width: 435px;
     height: auto;
     top:190px;
     bottom: 15px;
     left: 15px;
     box-shadow: 0 1px 2px 1px rgba(0,0,0,.1), 0 3px 6px rgba(0,0,0,.1);
-    padding: 20px 25px;
+    padding: 6px 8px;
 }
 
 .container-div{
@@ -233,4 +233,31 @@
 
 .search-grid .grid-content{
     top:83px;
+}
+#search-history ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    float: left;
+}
+#search-history div{
+    float: left;
+}
+#search-history h5{
+    font-weight: bold;
+    margin-left: 5px;
+}
+#search-history ul .badge{
+    background-color: #d9534f;
+    margin-left: 8px;
+    margin-top: 2px;
+}
+#search-history ul li{
+    float: left;
+    margin-right: 5px;
+    margin-bottom: 3px;
+}
+#search-history ul li button{
+    background: none;
+    padding: 2px 5px;
 }

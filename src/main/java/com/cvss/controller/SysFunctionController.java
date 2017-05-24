@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -91,7 +92,7 @@ public class SysFunctionController {
     }
 
     /**
-     * 记取菜单记录
+     * 记录菜单记录
      * @param record 可传参数
      * @param page 第几页
      * @param pageSize 每页大小
@@ -106,4 +107,23 @@ public class SysFunctionController {
         return new GridUtil<>(list,page,pageSize,pageInfo.getPages());
     }
 
+
+    @RequestMapping(value = "/allot/create")
+    @ResponseBody
+    public int createAllot(@RequestBody SysMenuAllot sysMenuAllot){
+        return this.iMenuService.insertAllot(sysMenuAllot);
+    }
+
+    @RequestMapping(value = "/allot/update")
+    @ResponseBody
+    public int updateAllot(@RequestBody SysMenuAllot sysMenuAllot){
+        return this.iMenuService.updateAllot(sysMenuAllot);
+    }
+
+    @RequestMapping(value = "/allot/read")
+    @ResponseBody
+    public SysMenuAllot readAllot(HttpSession session){
+        SysUser sysUser = (SysUser)session.getAttribute("sysUser");
+        return this.iMenuService.selectAllotByRoleName(sysUser.getRoleCode());
+    }
 }
