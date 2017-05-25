@@ -82,13 +82,13 @@
                     </button>
                 </li>
 
-                <li>
-                    <button class="nav-menu-btn">
-                        <span class="nav-icon"><i class="fa fa-database" aria-hidden="true"></i></span>
-                        <span class="nav-name">数据统计</span>
-                        <span class="nav-chevron-right"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
-                    </button>
-                </li>
+                <#--<li>-->
+                    <#--<button class="nav-menu-btn">-->
+                        <#--<span class="nav-icon"><i class="fa fa-database" aria-hidden="true"></i></span>-->
+                        <#--<span class="nav-name">数据统计</span>-->
+                        <#--<span class="nav-chevron-right"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>-->
+                    <#--</button>-->
+                <#--</li>-->
 
                 <li>
                     <button class="nav-menu-btn">

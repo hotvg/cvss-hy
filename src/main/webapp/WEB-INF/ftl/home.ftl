@@ -122,7 +122,7 @@
         $homeSettlementResult.center();
 
         $('#auto-search-btn').click(function () {
-            var internalModels = $('#auto-input').val();
+            var internalModels = $('#auto-div-input').val();
             if (internalModels !== '') {
                 $homeSearchResult.refresh({
                     url: "/search/result?internalModels=" + internalModels

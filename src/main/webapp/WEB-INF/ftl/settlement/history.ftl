@@ -102,6 +102,7 @@
                 iframe: true
             }
         }).data("kendoWindow");
+        $settlementInfo.center();
 
         $('.settlement-info').click(function () {
             var settlementId =  $(this).closest('tr').attr('id').split('-')[1];
