@@ -99,7 +99,6 @@
 }
 
 .container-div{
-    position: fixed;
     width: 100%;
     height: 100%;
     padding: 10px;
@@ -117,6 +116,7 @@
     box-shadow: 0 1px 2px 1px rgba(0,0,0,.1), 0 3px 6px rgba(0,0,0,.1);
     padding: 1px 10px 5px 10px;
     position: relative;
+    box-sizing: border-box;
 }
 #cv-info h4{
     font-weight: bold;
@@ -129,6 +129,7 @@
     bottom: 45px;
     left: 0;
     padding: 0 10px 0 20px;
+    box-sizing: border-box;
 }
 #cv-info-all,#add-content-all{
     width: 100%;
@@ -158,6 +159,7 @@
     box-shadow: 0 1px 2px 1px rgba(0,0,0,.1), 0 3px 6px rgba(0,0,0,.1);
     padding: 1px 10px 5px 10px;
     position: relative;
+    box-sizing: border-box;
 }
 #add-container-list h4{
     font-weight: bold;
@@ -168,7 +170,8 @@
     width: 100%;
     bottom: 3px;
     left: 0;
-    padding: 0 30px;
+    padding: 0 30px 0 60px;
+    box-sizing: border-box;
 }
 #add-list-footer button{
     width: 100%;
@@ -182,6 +185,7 @@
     left: 0;
     bottom: 45px;
     padding: 0 7px;
+    box-sizing: border-box;
 }
 .add-content-div{
     width: 49%;
@@ -190,6 +194,7 @@
     border: 1px solid #ccc;
     padding: 0 10px 10px 10px;
     margin: 0 0.5% 8px 0.5%;
+    box-sizing: border-box;
 }
 .add-div-span{
     width: 100%;
@@ -199,7 +204,7 @@
 }
 .update-item{
     width: 100%;
-    height: 25px;
+    float: left;
     line-height: 25px;
     border-bottom: 1px dashed #ececec;
     padding: 0 5px;

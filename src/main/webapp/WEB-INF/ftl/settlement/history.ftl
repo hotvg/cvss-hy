@@ -96,18 +96,26 @@
             title:'<strong>结算详情</strong>',
             pinned: true,
             visible: false,
-            scrollable: false,
-            content: {
-                dataType: "json",
-                iframe: true
-            }
+            scrollable: false
         }).data("kendoWindow");
         $settlementInfo.center();
 
-        $('.settlement-info').click(function () {
+        //通过这个方式给ajax生成的html元素绑定事件
+        $('#settlement-grid').on('click','.settlement-info',function () {
             var settlementId =  $(this).closest('tr').attr('id').split('-')[1];
-            $settlementInfo.refresh({
-                url: "/settlement/read/info?settlementId="+settlementId
+            $.ajax({
+                url: '/settlement/read/info',
+                type:'post',
+                dataType:'html',
+                data:{settlementId:settlementId},
+                async:false,
+                success:function (data) {
+                    $settlementInfo.content(data);
+                    $settlementInfo.open();
+                },
+                error:function () {
+                    alert('发生未知错误，请稍后再试');
+                }
             });
             $settlementInfo.open();
         });

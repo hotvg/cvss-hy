@@ -1,7 +1,7 @@
-<#include "include/header.ftl"/>
 <link rel="stylesheet" href="${base}/resources/css/search.css">
 <script type="text/javascript" src="${base}/resources/js/search.js"></script>
 <body>
+<div id="settlement-result-by-btn"></div>
 <div class="container-div">
     <div class="result-container">
         <div id="cv-info">
@@ -812,6 +812,19 @@
     $('#cv-info-all').perfectScrollbar();
     $('#add-content-all').perfectScrollbar();
 
+    var $settlementByBtnInfo =  $('#settlement-result-by-btn').kendoWindow({
+        width: '81%',
+        height: '79%',
+        modal: true,//最上面不能点其他地方
+        draggable: false,//不能拖动
+        resizable: false,
+        title:'<strong>结算详情</strong>',
+        pinned: true,
+        visible: false,
+        scrollable: false
+    }).data("kendoWindow");
+    $settlementByBtnInfo.center();
+
     $(function () {
        $('.settlement-btn').click(function () {
            var settlement = {};
@@ -869,12 +882,15 @@
            $.ajax({
                url: '/settlement/create',
                type:'post',
-               dataType:'json',
+               dataType:'html',
                contentType: "application/json;charset=utf-8",
                data:JSON.stringify(settlement),
                async:false,
                success:function (data) {
-                   return data;
+                   if(data!=="failure"){
+                       $settlementByBtnInfo.content(data);
+                       $settlementByBtnInfo.open();
+                   }
                },
                error:function () {
                    alert('发生未知错误，请稍后再试');

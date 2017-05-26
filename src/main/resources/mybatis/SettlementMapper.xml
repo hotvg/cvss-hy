@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.cvss.mapper.SettlementMapper" >
-    <insert id="inertSettlement" parameterType="com.cvss.pojo.CvSettlement">
+    <insert id="inertSettlement" useGeneratedKeys="true" keyProperty="settlementId" parameterType="com.cvss.pojo.CvSettlement">
         INSERT INTO cv_settlement (internal_models,parts_json,user_id,total_price,create_time)
         VALUES (#{internalModels},#{partsJson},#{userId},#{totalPrice},#{createTime});
     </insert>

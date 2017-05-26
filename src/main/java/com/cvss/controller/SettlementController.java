@@ -27,11 +27,16 @@ public class SettlementController {
     private ISettlementService iSettlementService;
 
     @RequestMapping(value = "/create")
-    @ResponseBody
-    public int createSettlement(@RequestBody CvSettlement cvSettlement,HttpServletRequest request){
+    public String createSettlement(@RequestBody CvSettlement cvSettlement,HttpServletRequest request, Model model){
         SysUser sysUser = (SysUser)request.getSession().getAttribute("sysUser");
         cvSettlement.setUserId(sysUser.getUserId());
-        return this.iSettlementService.inertSettlement(cvSettlement);
+        int result = this.iSettlementService.inertSettlement(cvSettlement);
+        if(result>0){
+            CvSettlementPojo cvSettlementPojo = this.iSettlementService.selectInfo(cvSettlement.getSettlementId());
+            model.addAttribute("cvSettlementPojo",cvSettlementPojo);
+            return "settlement/info";
+        }
+        return "failure";
     }
 
     @RequestMapping(value = "/destroy")

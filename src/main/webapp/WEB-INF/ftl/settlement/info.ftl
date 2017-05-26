@@ -1,5 +1,4 @@
 
-<#include "include/header.ftl"/>
 <#assign base=request.contextPath />
 <link rel="stylesheet" href="${base}/resources/css/settlement.css">
 <body>

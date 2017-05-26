@@ -98,7 +98,7 @@
             visible: false,
             scrollable: false,
             content: {
-                dataType: "json",
+                dataType: "html",
                 iframe: true
             }
         }).data("kendoWindow");
@@ -113,38 +113,64 @@
             title:'<strong>结算详情</strong>',
             pinned: true,
             visible: false,
-            scrollable: false,
-            content: {
-                dataType: "json",
-                iframe: true
-            }
+            scrollable: false
         }).data("kendoWindow");
         $homeSettlementResult.center();
 
         $('#auto-search-btn').click(function () {
             var internalModels = $('#auto-div-input').val();
             if (internalModels !== '') {
-                $homeSearchResult.refresh({
-                    url: "/search/result?internalModels=" + internalModels
+                $.ajax({
+                    url: '/search/result',
+                    type:'post',
+                    dataType:'html',
+                    data:{internalModels:internalModels},
+                    async:false,
+                    success:function (data) {
+                        $homeSearchResult.content(data);
+                        $homeSearchResult.open();
+                    },
+                    error:function () {
+                        alert('发生未知错误，请稍后再试');
+                    }
                 });
-                $homeSearchResult.open();
             }
         });
 
         $('.btn-hot-search').click(function () {
             var internalModels = $(this).children('.search-content').text();
-            $homeSearchResult.refresh({
-                url: "/search/result?internalModels=" + internalModels
+            $.ajax({
+                url: '/search/result',
+                type:'post',
+                dataType:'html',
+                data:{internalModels:internalModels},
+                async:false,
+                success:function (data) {
+                    $homeSearchResult.content(data);
+                    $homeSearchResult.open();
+                },
+                error:function () {
+                    alert('发生未知错误，请稍后再试');
+                }
             });
-            $homeSearchResult.open();
         });
 
         $('.btn-home-settlement').click(function () {
             var settlementId =  $(this).children('input').val();
-            $homeSettlementResult.refresh({
-                url: "/settlement/read/info?settlementId="+settlementId
+            $.ajax({
+                url: '/settlement/read/info',
+                type:'post',
+                dataType:'html',
+                data:{settlementId:settlementId},
+                async:false,
+                success:function (data) {
+                    $homeSettlementResult.content(data);
+                    $homeSettlementResult.open();
+                },
+                error:function () {
+                    alert('发生未知错误，请稍后再试');
+                }
             });
-            $homeSettlementResult.open();
         });
 
     });
